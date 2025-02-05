@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            animation: gradientBG 15s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .weather-card {
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .weather-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .weather-icon {
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
+        }
+
+        .detail-card {
+            transition: all 0.3s ease;
+        }
+
+        .detail-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="p-6 md:p-10">
+    <div class="max-w-md mx-auto glass rounded-2xl p-8 weather-card">
+        <!-- Search Bar -->
+        <div class="relative mb-10">
+            <input type="text" 
+                class="w-full search-input rounded-xl py-4 px-6 pl-14 text-white placeholder-white/70 outline-none text-lg"
+                placeholder="Search city...">
+            <i class="fas fa-search absolute left-5 top-5 text-white/70"></i>
+        </div>
+
+        <!-- Main Weather Display -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-white mb-4 tracking-wide">New York</h1>
+            <i class="fas fa-cloud weather-icon text-white text-7xl mb-6"></i>
+            <p class="text-6xl font-bold text-white mb-3">72°F</p>
+            <p class="text-2xl text-white/90 font-light">Partly Cloudy</p>
+        </div>
+
+        <!-- Weather Details -->
+        <div class="grid grid-cols-2 gap-6 mb-10">
+            <div class="detail-card glass rounded-xl p-5 flex items-center">
+                <i class="fas fa-tint text-white/90 mr-4 text-2xl weather-icon"></i>
+                <div>
+                    <p class="text-white/70 text-sm font-light">Humidity</p>
+                    <p class="text-white font-semibold text-xl">65%</p>
+                </div>
+            </div>
+            <div class="detail-card glass rounded-xl p-5 flex items-center">
+                <i class="fas fa-wind text-white/90 mr-4 text-2xl weather-icon"></i>
+                <div>
+                    <p class="text-white/70 text-sm font-light">Wind Speed</p>
+                    <p class="text-white font-semibold text-xl">8 mph</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forecast Preview -->
+        <div class="grid grid-cols-4 gap-4">
+            <div class="text-center detail-card glass rounded-xl p-4">
+                <p class="text-white/80 text-sm mb-3 font-medium">Mon</p>
+                <i class="fas fa-sun weather-icon text-white text-xl mb-3"></i>
+                <p class="text-white font-semibold text-lg">75°F</p>
+            </div>
+            <div class="text-center detail-card glass rounded-xl p-4">
+                <p class="text-white/80 text-sm mb-3 font-medium">Tue</p>
+                <i class="fas fa-cloud-rain weather-icon text-white text-xl mb-3"></i>
+                <p class="text-white font-semibold text-lg">70°F</p>
+            </div>
+            <div class="text-center detail-card glass rounded-xl p-4">
+                <p class="text-white/80 text-sm mb-3 font-medium">Wed</p>
+                <i class="fas fa-sun weather-icon text-white text-xl mb-3"></i>
+                <p class="text-white font-semibold text-lg">73°F</p>
+            </div>
+            <div class="text-center detail-card glass rounded-xl p-4">
+                <p class="text-white/80 text-sm mb-3 font-medium">Thu</p>
+                <i class="fas fa-cloud-rain weather-icon text-white text-xl mb-3"></i>
+                <p class="text-white font-semibold text-lg">69°F</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Invoice</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+        .form-control {
+            border: 1px solid #e0e6ed;
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            border-color: #5e72e4;
+            box-shadow: 0 0 0 0.2rem rgba(94,114,228,0.15);
+        }
+        .btn {
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #5e72e4, #825ee4);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #4558c9, #6e47d4);
+            transform: translateY(-1px);
+        }
+        .btn-success {
+            background: linear-gradient(45deg, #2dce89, #2dcecc);
+            border: none;
+        }
+        .btn-success:hover {
+            background: linear-gradient(45deg, #26af74, #26afb0);
+            transform: translateY(-1px);
+        }
+        .btn-danger {
+            background: linear-gradient(45deg, #f5365c, #f56036);
+            border: none;
+        }
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table th {
+            background: #f8f9fe;
+            border: none;
+            padding: 1rem;
+            font-weight: 600;
+        }
+        .table td {
+            padding: 1rem;
+            border-color: #f2f4f8;
+        }
+        .company-logo {
+            width: 120px;
+            height: 120px;
+            background: #f8f9fe;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .company-logo span {
+            font-size: 2rem;
+            color: #5e72e4;
+        }
+        .invoice-header {
+            background: linear-gradient(45deg, #5e72e4, #825ee4);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+        .invoice-header h4 {
+            margin: 0;
+            opacity: 0.9;
+        }
+        .delete-row {
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            line-height: 30px;
+            text-align: center;
+        }
+        .new-row {
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card animate__animated animate__fadeIn">
+            <div class="card-body p-4">
+                <div class="invoice-header">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="company-logo">
+                                <span>★</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h4>INVOICE</h4>
+                            <p class="mb-0">INV-2025-001</p>
+                        </div>
+                        <div class="col-auto">
+                            <h4>Date: <span id="current-date"></span></h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-sm-6">
+                        <div class="p-4 bg-light rounded-3">
+                            <h6 class="text-muted mb-3">From</h6>
+                            <div class="mb-1"><strong>Your Company Name</strong></div>
+                            <div class="text-muted">123 Business Street</div>
+                            <div class="text-muted">Business City, 12345</div>
+                            <div class="text-muted">business@example.com</div>
+                            <div class="text-muted">+1 234 567 8900</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-4 bg-light rounded-3">
+                            <h6 class="text-muted mb-3">Bill To</h6>
+                            <input type="text" class="form-control mb-2" placeholder="Client Name">
+                            <input type="text" class="form-control mb-2" placeholder="Address">
+                            <input type="text" class="form-control mb-2" placeholder="City, ZIP">
+                            <input type="email" class="form-control mb-2" placeholder="Email">
+                            <input type="tel" class="form-control" placeholder="Phone">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px">#</th>
+                                <th>Item</th>
+                                <th class="text-end" style="width: 100px">Quantity</th>
+                                <th class="text-end" style="width: 150px">Unit Price</th>
+                                <th class="text-end" style="width: 150px">Total</th>
+                                <th class="text-end" style="width: 50px"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoice-items">
+                            <tr>
+                                <td>1</td>
+                                <td><input type="text" class="form-control" placeholder="Item description"></td>
+                                <td><input type="number" class="form-control text-end quantity" value="1"></td>
+                                <td><input type="number" class="form-control text-end price" value="0.00"></td>
+                                <td class="text-end item-total">$0.00</td>
+                                <td class="text-end">
+                                    <button class="btn btn-danger btn-sm delete-row">×</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-lg-4 col-sm-5">
+                        <button class="btn btn-primary" id="add-item">
+                            <i class="fas fa-plus"></i> Add Item
+                        </button>
+                    </div>
+                    <div class="col-lg-4 col-sm-5 ms-auto">
+                        <div class="bg-light rounded-3 p-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Subtotal</span>
+                                <strong id="subtotal">$0.00</strong>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Tax (10%)</span>
+                                <strong id="tax">$0.00</strong>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <span>Total</span>
+                                <strong id="total" class="text-primary">$0.00</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-end mt-4">
+                    <button class="btn btn-success">
+                        Generate Invoice
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let rowCount = 1;
+            
+            // Set current date
+            const today = new Date();
+            document.getElementById('current-date').textContent = today.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            function updateTotals() {
+                let subtotal = 0;
+                document.querySelectorAll('tr').forEach(row => {
+                    const quantity = parseFloat(row.querySelector('.quantity')?.value || 0);
+                    const price = parseFloat(row.querySelector('.price')?.value || 0);
+                    const total = quantity * price;
+                    if (row.querySelector('.item-total')) {
+                        row.querySelector('.item-total').textContent = '$' + total.toFixed(2);
+                        subtotal += total;
+                    }
+                });
+
+                const tax = subtotal * 0.1;
+                const total = subtotal + tax;
+
+                document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+                document.getElementById('tax').textContent = '$' + tax.toFixed(2);
+                document.getElementById('total').textContent = '$' + total.toFixed(2);
+            }
+
+            document.getElementById('add-item').addEventListener('click', function() {
+                rowCount++;
+                const newRow = document.createElement('tr');
+                newRow.className = 'new-row';
+                newRow.innerHTML = `
+                    <td>${rowCount}</td>
+                    <td><input type="text" class="form-control" placeholder="Item description"></td>
+                    <td><input type="number" class="form-control text-end quantity" value="1"></td>
+                    <td><input type="number" class="form-control text-end price" value="0.00"></td>
+                    <td class="text-end item-total">$0.00</td>
+                    <td class="text-end"><button class="btn btn-danger btn-sm delete-row">×</button></td>
+                `;
+                document.getElementById('invoice-items').appendChild(newRow);
+
+                newRow.querySelectorAll('input').forEach(input => {
+                    input.addEventListener('input', updateTotals);
+                });
+                
+                newRow.querySelector('.delete-row').addEventListener('click', function() {
+                    newRow.style.animation = 'fadeOut 0.3s ease-out';
+                    setTimeout(() => {
+                        newRow.remove();
+                        updateTotals();
+                    }, 300);
+                });
+            });
+
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', updateTotals);
+            });
+
+            document.querySelectorAll('.delete-row').forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    row.style.animation = 'fadeOut 0.3s ease-out';
+                    setTimeout(() => {
+                        row.remove();
+                        updateTotals();
+                    }, 300);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

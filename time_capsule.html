@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporal Vault</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        body {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .time-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            color: white;
+            padding: 15px;
+            transition: all 0.3s;
+        }
+
+        .time-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .time-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-capsule {
+            background: linear-gradient(45deg, #00ff87 0%, #60efff 100%);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 15px;
+            color: #000;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-capsule:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,255,135,0.3);
+        }
+
+        .btn-capsule::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .capsule-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #00ff87;
+            transition: all 0.4s;
+            margin: 20px 0;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .capsule-item:hover {
+            transform: translateX(10px) translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .neon-text {
+            text-shadow: 0 0 10px rgba(255,255,255,0.8),
+                         0 0 20px rgba(255,255,255,0.8),
+                         0 0 30px rgba(255,255,255,0.8);
+        }
+
+        .form-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        select.time-input option {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .badge {
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .badge-personal { background: linear-gradient(45deg, #FF6B6B, #FF8E8E); }
+        .badge-family { background: linear-gradient(45deg, #4FACFE, #00F2FE); }
+        .badge-career { background: linear-gradient(45deg, #43E97B, #38F9D7); }
+        .badge-dreams { background: linear-gradient(45deg, #FA709A, #FEE140); }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="glass-card mb-4 p-5">
+                    <div class="text-center mb-5">
+                        <h1 class="neon-text">Temporal Vault</h1>
+                        <p class="text-white-50">Preserve moments across time</p>
+                    </div>
+                    <form>
+                        <div class="mb-4">
+                            <label class="form-label">Message for the Future</label>
+                            <textarea class="form-control time-input" rows="4" placeholder="Write your message here..."></textarea>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Unlock Date</label>
+                                <input type="date" class="form-control time-input">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Category</label>
+                                <select class="form-control time-input">
+                                    <option>Personal</option>
+                                    <option>Family</option>
+                                    <option>Career</option>
+                                    <option>Dreams</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-capsule">
+                                <i class="fas fa-lock me-2"></i>Seal Memory
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="glass-card p-4">
+                    <h4 class="mb-4 neon-text">Sealed Memories</h4>
+                    <div class="capsule-item p-4 rounded">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1 text-white">Message to Tomorrow</h6>
+                                <small class="text-white-50">Opens: January 1, 2026</small>
+                            </div>
+                            <span class="badge badge-personal">Personal</span>
+                        </div>
+                    </div>
+                    <div class="capsule-item p-4 rounded">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1 text-white">Future Vision</h6>
+                                <small class="text-white-50">Opens: December 25, 2025</small>
+                            </div>
+                            <span class="badge badge-dreams">Dreams</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

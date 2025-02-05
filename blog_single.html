@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Poetry of Space - Modern Blog</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --accent: #7C3AED;
+            --gradient-start: #EEF2FF;
+            --gradient-end: #ffffff;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            line-height: 1.8;
+            color: var(--primary);
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .post-header {
+            padding: 10rem 0 4rem;
+        }
+        
+        .post-title {
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            font-size: 4rem;
+        }
+        
+        .post-meta {
+            font-size: 1.1rem;
+            color: #6B7280;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .post-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .post-meta span::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        
+        .post-content {
+            font-size: 1.2rem;
+            line-height: 1.9;
+            color: #374151;
+        }
+        
+        .post-content p {
+            margin-bottom: 2rem;
+        }
+        
+        .post-content h2 {
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin: 4rem 0 2rem;
+            letter-spacing: -1px;
+        }
+        
+        .featured-image {
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin: 3rem 0 4rem;
+        }
+        
+        .post-tags {
+            display: flex;
+            gap: 1rem;
+            margin: 4rem 0;
+        }
+        
+        .tag {
+            background: rgba(124,58,237,0.1);
+            color: var(--accent);
+            padding: 0.5rem 1.2rem;
+            border-radius: 100px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        
+        .tag:hover {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .author-section {
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-top: 4rem;
+            margin-top: 4rem;
+        }
+        
+        .author-bio {
+            font-size: 1.1rem;
+            color: #4B5563;
+        }
+        
+        .author-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        @media (max-width: 768px) {
+            .post-title {
+                font-size: 2.5rem;
+            }
+            .post-header {
+                padding: 8rem 0 3rem;
+            }
+            .post-content {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand display-6" href="#">ÆSTHETIC</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Journal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <article>
+        <header class="post-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <h1 class="post-title mb-4">The Poetry of Space: How Architecture Shapes Our Experience</h1>
+                        <div class="post-meta">
+                            <span>February 4, 2025</span>
+                            <span>5 min read</span>
+                            <span>Architecture</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <img src="/api/placeholder/1200/800" alt="Featured Image" class="img-fluid featured-image">
+                    
+                    <div class="post-content">
+                        <p>Architecture is more than just the practical arrangement of walls and windows—it's a profound exploration of how space affects human emotion and behavior. Through careful consideration of light, form, and material, architects create environments that can inspire, calm, or energize us.</p>
+
+                        <h2>The Language of Space</h2>
+                        <p>Just as poetry uses rhythm and metaphor to convey meaning, architecture employs scale, proportion, and sequence to communicate with its inhabitants. A well-designed space can tell a story, guide movement, and create emotional resonance without using a single word.</p>
+
+                        <p>The interplay of light and shadow, the transition between spaces, and the careful orchestration of views all contribute to the architectural experience. These elements work together to create what we might call the "poetry" of space—a harmonious composition that speaks to both our practical needs and our aesthetic sensibilities.</p>
+
+                        <h2>The Human Experience</h2>
+                        <p>Research has shown that our surroundings have a significant impact on our mental state and behavior. High ceilings can promote abstract thinking, while natural materials can reduce stress levels. The way we move through space affects our perception of time and our emotional state.</p>
+
+                        <div class="post-tags">
+                            <a href="#" class="tag">Architecture</a>
+                            <a href="#" class="tag">Design</a>
+                            <a href="#" class="tag">Space</a>
+                            <a href="#" class="tag">Psychology</a>
+                        </div>
+                    </div>
+
+                    <section class="author-section">
+                        <div class="d-flex align-items-center gap-4 mb-4">
+                            <img src="/api/placeholder/160/160" alt="Author" class="author-image">
+                            <div>
+                                <h5 class="mb-1">Sarah Anderson</h5>
+                                <p class="text-muted mb-0">Design Writer & Architect</p>
+                            </div>
+                        </div>
+                        <p class="author-bio">Sarah is an architect and writer exploring the intersection of design, psychology, and human behavior. She has designed spaces for leading cultural institutions and writes about architecture's impact on society.</p>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

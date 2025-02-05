@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Smart Task Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1c2c 0%, #2c1f4a 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(30, 32, 47, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #7490ff, #9f7aea);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 25px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #9f7aea, #7490ff);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline-light {
+            border-radius: 10px;
+        }
+
+        .hero-title {
+            background: linear-gradient(45deg, #7490ff, #9f7aea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .feature-card {
+            background: rgba(30, 32, 47, 0.95);
+            border: none;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, rgba(116, 144, 255, 0.2), rgba(159, 122, 234, 0.2));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7490ff;
+            font-size: 24px;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-card {
+            background: rgba(41, 44, 63, 0.95);
+            border: none;
+            border-radius: 15px;
+            padding: 2rem;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .pricing-card {
+            background: rgba(30, 32, 47, 0.95);
+            border: none;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .pricing-popular {
+            border: 2px solid #7490ff;
+        }
+
+        .footer {
+            background: rgba(30, 32, 47, 0.95);
+        }
+
+        .social-link {
+            color: #718096;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: #7490ff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">TaskFlow</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
+                </ul>
+                <div class="d-flex gap-3">
+                    <a href="#" class="btn btn-outline-light">Log In</a>
+                    <a href="#" class="btn btn-primary">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-5 mt-5">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="hero-title display-4 mb-4">Organize Your Tasks with Elegance</h1>
+                    <p class="lead text-muted mb-5">Stay productive and focused with our intuitive task management platform. Perfect for individuals and teams.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="btn btn-primary">Get Started Free</a>
+                        <a href="#" class="btn btn-outline-light">Watch Demo</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="/api/placeholder/600/400" alt="Task Management Dashboard" class="img-fluid rounded-4 shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container py-5">
+            <h2 class="text-center mb-5">Why Choose TaskFlow?</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card h-100 p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                        <h3>Smart Task Management</h3>
+                        <p class="text-muted">Organize tasks with intelligent categorization and priority settings.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card h-100 p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Team Collaboration</h3>
+                        <p class="text-muted">Work together seamlessly with real-time updates and sharing.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card h-100 p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Progress Tracking</h3>
+                        <p class="text-muted">Monitor your productivity with detailed analytics and insights.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-5">
+        <div class="container py-5">
+            <h2 class="text-center mb-5">What Our Users Say</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center mb-4">
+                            <img src="/api/placeholder/60/60" alt="User Avatar" class="avatar me-3">
+                            <div>
+                                <h5 class="mb-1">Sarah Johnson</h5>
+                                <p class="text-muted mb-0">Product Manager</p>
+                            </div>
+                        </div>
+                        <p class="mb-0">"TaskFlow has transformed how our team manages projects. The interface is intuitive and the features are exactly what we needed."</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center mb-4">
+                            <img src="/api/placeholder/60/60" alt="User Avatar" class="avatar me-3">
+                            <div>
+                                <h5 class="mb-1">Michael Chen</h5>
+                                <p class="text-muted mb-0">Freelance Designer</p>
+                            </div>
+                        </div>
+                        <p class="mb-0">"The best task management app I've ever used. Clean, beautiful, and helps me stay organized with multiple projects."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-5">
+        <div class="container py-5">
+            <h2 class="text-center mb-5">Simple, Transparent Pricing</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="pricing-card p-4">
+                        <h3>Free</h3>
+                        <h2 class="display-4 mb-4">$0</h2>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check me-2 text-primary"></i>Basic task management</li>
+                            <li class="mb-2"><i class="fas fa-check me-2 text-primary"></i>Up to 3 projects</li>
+                            <li class="mb-2"><i class="fas fa-check me-2 text-primary"></i>Basic analytics</li>
+                        </ul>
+                        <a href="#" class="btn btn-outline-light w-100">Get Started</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="pricing-card pricing-popular p-4">
+                        <h3>Pro</h3>
+                        <h2 class="display-4 mb-4">$9</h2>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check me-2 text-primary"></i>Advanced task management</li>
+                            <li class="mb-2"><i class="fas fa-check me-2 text-primary"></i>Unlimited projects</li>
+                            <li class="mb-2"><i class="fas fa-check me-2 text-primary"></i>Team collaboration</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary w-100">Get Started</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="pricing-card p-4">
+                        <h3>Enterprise</h3>
+                        <h2 class="display-4 mb-4">$29</h2>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check me-2 text-primary"></i>Custom features</li>
+                            <li class="mb-2"><i class="fas fa-check me-2 text-primary"></i>Priority support</li>
+                            <li class="mb-2"><i class="fas fa-check me-2 text-primary"></i>Advanced security</li>
+                        </ul>
+                        <a href="#" class="btn btn-outline-light w-100">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="mb-4">TaskFlow</h5>
+                    <p class="text-muted">Smart task management platform for modern teams and individuals.</p>
+                </div>
+                <div class="col-lg-2">
+                    <h5 class="mb-4">Product</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Features</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Pricing</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Tutorial</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <h5 class="mb-4">Company</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">About</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Blog</a></li>
+                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="mb-4">Stay Updated</h5>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Enter your email">
+                        <button class="btn btn-primary">Subscribe</button>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-5">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="text-muted mb-0">© 2025 TaskFlow. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-muted text-decoration-none me-3">Privacy Policy</a>
+                    <a href="#" class="text-muted text-decoration-none">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

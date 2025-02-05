@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DateMatch</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FE3C72;
+            --secondary: #424242;
+        }
+
+        body {
+            background: #f5f7fa;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .card-container {
+            width: 100%;
+            max-width: 400px;
+            height: 600px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-origin: 50% 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+            cursor: grab;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+        }
+
+        .action-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .action-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .action-button:hover {
+            transform: scale(1.1);
+        }
+
+        .like-button {
+            background: #27ae60;
+            color: white;
+        }
+
+        .dislike-button {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .super-like-button {
+            background: #3498db;
+            color: white;
+        }
+
+        .choice-stamp {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 80px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 10px solid;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            z-index: 100;
+        }
+
+        .like-stamp {
+            color: #27ae60;
+            border-color: #27ae60;
+        }
+
+        .nope-stamp {
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+        .super-like-stamp {
+            color: #3498db;
+            border-color: #3498db;
+        }
+
+        .match-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .match-content {
+            text-align: center;
+            color: white;
+        }
+
+        .match-animation {
+            font-size: 100px;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .bio-text {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .interest-tag {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-fire"></i> DateMatch
+            </a>
+            <div>
+                <button class="btn">
+                    <i class="fas fa-user"></i>
+                </button>
+                <button class="btn">
+                    <i class="fas fa-comments"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Card Stack -->
+    <div class="container mt-4">
+        <div class="card-container" id="cardStack">
+            <!-- Cards will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="action-button dislike-button" onclick="handleDislike()">
+            <i class="fas fa-times"></i>
+        </button>
+        <button class="action-button super-like-button" onclick="handleSuperLike()">
+            <i class="fas fa-star"></i>
+        </button>
+        <button class="action-button like-button" onclick="handleLike()">
+            <i class="fas fa-heart"></i>
+        </button>
+    </div>
+
+    <!-- Choice Stamps -->
+    <div class="choice-stamp like-stamp">LIKE</div>
+    <div class="choice-stamp nope-stamp">NOPE</div>
+    <div class="choice-stamp super-like-stamp">SUPER LIKE</div>
+
+    <!-- Match Overlay -->
+    <div class="match-overlay">
+        <div class="match-content">
+            <div class="match-animation">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h2>It's a Match!</h2>
+            <p>You and Sarah have liked each other</p>
+            <button class="btn btn-light mt-3">Send Message</button>
+            <button class="btn btn-outline-light mt-3 ms-2">Keep Swiping</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sample profile data
+            const profiles = [
+                {
+                    name: 'Sarah, 25',
+                    bio: 'Adventure seeker and coffee enthusiast.',
+                    interests: ['Travel', 'Photography', 'Hiking'],
+                    image: '/api/placeholder/400/600'
+                },
+                {
+                    name: 'Emily, 28',
+                    bio: 'Art director by day, chef by night.',
+                    interests: ['Art', 'Cooking', 'Music'],
+                    image: '/api/placeholder/400/600'
+                },
+                {
+                    name: 'Jessica, 24',
+                    bio: 'Yoga instructor and mindfulness practitioner.',
+                    interests: ['Yoga', 'Meditation', 'Nature'],
+                    image: '/api/placeholder/400/600'
+                }
+            ];
+
+            let currentProfileIndex = 0;
+            const cardContainer = document.getElementById('cardStack');
+
+            function createCard(profile) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${profile.image}" alt="${profile.name}">
+                    <div class="card-content">
+                        <h3>${profile.name}</h3>
+                        <p class="bio-text">${profile.bio}</p>
+                        <div>
+                            ${profile.interests.map(interest => 
+                                `<span class="interest-tag">${interest}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+                return card;
+            }
+
+            function showNextCard() {
+                if (currentProfileIndex >= profiles.length) {
+                    cardContainer.innerHTML = '<div class="text-center p-4">No more profiles</div>';
+                    return;
+                }
+
+                const card = createCard(profiles[currentProfileIndex]);
+                cardContainer.innerHTML = '';
+                cardContainer.appendChild(card);
+                initializeDrag(card);
+            }
+
+            function initializeDrag(card) {
+                let startX = 0;
+                let startY = 0;
+                let initialX = 0;
+                let initialY = 0;
+                let xOffset = 0;
+                let yOffset = 0;
+                let isDragging = false;
+
+                function handleDragStart(e) {
+                    const point = e.touches ? e.touches[0] : e;
+                    startX = point.clientX - xOffset;
+                    startY = point.clientY - yOffset;
+                    isDragging = true;
+                }
+
+                function handleDrag(e) {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    
+                    const point = e.touches ? e.touches[0] : e;
+                    const currentX = point.clientX - startX;
+                    const currentY = point.clientY - startY;
+                    
+                    xOffset = currentX;
+                    yOffset = currentY;
+
+                    const rotate = currentX * 0.1;
+                    card.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotate}deg)`;
+
+                    updateStamps(currentX);
+                }
+
+                function handleDragEnd() {
+                    if (!isDragging) return;
+                    isDragging = false;
+
+                    if (Math.abs(xOffset) > 100) {
+                        const direction = xOffset > 0 ? 1 : -1;
+                        animateSwipe(card, direction);
+                    } else {
+                        resetCard(card);
+                    }
+
+                    hideStamps();
+                }
+
+                card.addEventListener('mousedown', handleDragStart);
+                card.addEventListener('mousemove', handleDrag);
+                card.addEventListener('mouseup', handleDragEnd);
+                card.addEventListener('mouseleave', handleDragEnd);
+
+                card.addEventListener('touchstart', handleDragStart);
+                card.addEventListener('touchmove', handleDrag);
+                card.addEventListener('touchend', handleDragEnd);
+            }
+
+            function updateStamps(currentX) {
+                const stamps = document.querySelectorAll('.choice-stamp');
+                stamps.forEach(stamp => stamp.style.display = 'none');
+
+                if (currentX > 100) {
+                    document.querySelector('.like-stamp').style.display = 'block';
+                } else if (currentX < -100) {
+                    document.querySelector('.nope-stamp').style.display = 'block';
+                }
+            }
+
+            function hideStamps() {
+                document.querySelectorAll('.choice-stamp').forEach(stamp => 
+                    stamp.style.display = 'none'
+                );
+            }
+
+            function animateSwipe(card, direction) {
+                card.style.transform = `translate(${direction * window.innerWidth}px, ${yOffset}px) rotate(${90 * direction}deg)`;
+                setTimeout(() => {
+                    card.remove();
+                    currentProfileIndex++;
+                    showNextCard();
+
+                    if (direction > 0 && Math.random() > 0.5) {
+                        showMatch();
+                    }
+                }, 300);
+            }
+
+            function resetCard(card) {
+                card.style.transform = 'translate(0px, 0px) rotate(0deg)';
+                xOffset = 0;
+                yOffset = 0;
+            }
+
+            function showMatch() {
+                document.querySelector('.match-overlay').style.display = 'flex';
+            }
+
+            // Button handlers
+            window.handleLike = () => {
+                const card = document.querySelector('.card');
+                if (card) animateSwipe(card, 1);
+            };
+
+            window.handleDislike = () => {
+                const card = document.querySelector('.card');
+                if (card) animateSwipe(card, -1);
+            };
+
+            window.handleSuperLike = () => {
+                const card = document.querySelector('.card');
+                if (card) {
+                    card.style.transform = 'translateY(-1000px)';
+                    setTimeout(() => {
+                        card.remove();
+                        currentProfileIndex++;
+                        showNextCard();
+                    }, 300);
+                }
+            };
+
+            // Close match overlay
+            document.querySelector('.match-overlay').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+
+            // Start the app
+            showNextCard();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Invoice</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .btn {
+            border-radius: 8px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #5e72e4, #825ee4);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #4558c9, #6e47d4);
+            transform: translateY(-1px);
+        }
+        .preview-container {
+            background: #fff;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+        .preview-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .download-options {
+            background: #f8f9fe;
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        .download-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            background: white;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .download-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .download-option.selected {
+            border: 2px solid #5e72e4;
+        }
+        .format-icon {
+            width: 40px;
+            height: 40px;
+            background: #f8f9fe;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-weight: bold;
+            color: #5e72e4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-body p-4">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h4 class="mb-4">Preview Invoice</h4>
+                        <div class="preview-container">
+                            <img src="/api/placeholder/800/1000" alt="Invoice Preview" class="preview-image">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="download-options">
+                            <h5 class="mb-4">Download Options</h5>
+                            
+                            <div class="download-option selected">
+                                <div class="format-icon">PDF</div>
+                                <div>
+                                    <h6 class="mb-1">PDF Format</h6>
+                                    <small class="text-muted">Best for printing and sharing</small>
+                                </div>
+                            </div>
+                            
+                            <div class="download-option">
+                                <div class="format-icon">CSV</div>
+                                <div>
+                                    <h6 class="mb-1">CSV Data</h6>
+                                    <small class="text-muted">Raw data export</small>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <label class="mb-2">Additional Options</label>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="includeLogo">
+                                    <label class="form-check-label" for="includeLogo">
+                                        Include Company Logo
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="signature">
+                                    <label class="form-check-label" for="signature">
+                                        Add Digital Signature
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="watermark">
+                                    <label class="form-check-label" for="watermark">
+                                        Include Watermark
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <button class="btn btn-primary w-100">
+                                    Download Invoice
+                                </button>
+                                <div class="text-center mt-3">
+                                    <small class="text-muted">By downloading, you agree to our terms</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelectorAll('.download-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.download-option').forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>

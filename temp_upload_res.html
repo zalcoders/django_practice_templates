@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Success</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #22c55e, #16a34a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            margin: 0 auto 2rem;
+        }
+
+        .file-details {
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .btn-action {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            border: none;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-outline {
+            border: 2px solid #6366f1;
+            color: #6366f1;
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: #6366f1;
+        }
+
+        .share-link {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .share-link input {
+            border: none;
+            flex-grow: 1;
+            outline: none;
+            color: #6b7280;
+        }
+
+        .copy-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(99, 102, 241, 0.1);
+            color: #6366f1;
+            border: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .timer {
+            color: #6b7280;
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div class="success-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        
+                        <h4 class="text-center mb-4 fw-bold">Upload Successful!</h4>
+                        
+                        <div class="file-details">
+                            <div class="detail-row">
+                                <span class="text-muted">File Name</span>
+                                <span class="fw-semibold">document.pdf</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="text-muted">Size</span>
+                                <span>2.4 MB</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="text-muted">Uploaded</span>
+                                <span>Just now</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="text-muted">Type</span>
+                                <span>PDF Document</span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-3">
+                            <button class="btn btn-primary btn-action">
+                                <i class="fas fa-download me-2"></i>Download File
+                            </button>
+                            <button class="btn btn-outline btn-action">
+                                <i class="fas fa-upload me-2"></i>Upload Another
+                            </button>
+                        </div>
+
+                        <div class="share-link">
+                            <input type="text" value="https://example.com/file/abc123" readonly>
+                            <button class="copy-btn">
+                                <i class="fas fa-copy me-2"></i>Copy
+                            </button>
+                        </div>
+
+                        <div class="timer">
+                            <i class="fas fa-clock me-2"></i>
+                            File will be available for the next 24 hours
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.copy-btn').addEventListener('click', function() {
+            const input = document.querySelector('.share-link input');
+            input.select();
+            document.execCommand('copy');
+            
+            this.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-copy me-2"></i>Copy';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

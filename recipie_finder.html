@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00dc82;
+            --dark-bg: #121212;
+            --darker-bg: #0a0a0a;
+            --card-bg: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                        url('/api/placeholder/1200/400');
+            background-size: cover;
+            background-position: center;
+            padding: 120px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0, 220, 130, 0.15), rgba(0, 0, 0, 0));
+            z-index: 1;
+        }
+
+        .hero-section .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .recipe-card {
+            background: var(--card-bg);
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 220, 130, 0.15);
+        }
+
+        .recipe-card img {
+            transition: transform 0.5s ease;
+        }
+
+        .recipe-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            border-radius: 20px;
+            padding: 8px 15px;
+            background: rgba(0, 220, 130, 0.9);
+            border: none;
+        }
+
+        .cooking-time {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .navbar {
+            background-color: var(--darker-bg) !important;
+            padding: 15px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-control, .form-select {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(0, 220, 130, 0.25);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: var(--darker-bg);
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background-color: #00b368;
+            transform: translateY(-1px);
+        }
+
+        .section-title {
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 60px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+
+        .filter-section {
+            background-color: var(--darker-bg);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: -50px;
+            position: relative;
+            z-index: 3;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .rating-badge {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .newsletter-section {
+            background: linear-gradient(45deg, var(--darker-bg), var(--card-bg));
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 2rem 0;
+        }
+
+        footer {
+            background-color: var(--darker-bg);
+            padding: 4rem 0 2rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-color);
+            color: var(--darker-bg) !important;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="bi bi-egg-fried me-2 text-primary"></i>
+                <span class="fw-bold">Recipe Finder</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Popular</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Submit Recipe</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 mb-4 fw-bold">Discover Delicious Recipes</h1>
+            <p class="lead mb-5 text-light">Find and share the best recipes from around the world</p>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="input-group input-group-lg mb-4">
+                        <input type="text" class="form-control" placeholder="Search recipes...">
+                        <button class="btn btn-primary px-4">
+                            <i class="bi bi-search me-2"></i>Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <div class="container">
+        <div class="filter-section">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option selected>Meal Type</option>
+                        <option>Breakfast</option>
+                        <option>Lunch</option>
+                        <option>Dinner</option>
+                        <option>Snacks</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option selected>Cuisine</option>
+                        <option>Italian</option>
+                        <option>Mexican</option>
+                        <option>Asian</option>
+                        <option>Mediterranean</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option selected>Cooking Time</option>
+                        <option>Under 30 mins</option>
+                        <option>30-60 mins</option>
+                        <option>Over 60 mins</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option selected>Dietary Restrictions</option>
+                        <option>Vegetarian</option>
+                        <option>Vegan</option>
+                        <option>Gluten-Free</option>
+                        <option>Dairy-Free</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipe Cards Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title">Trending Recipes</h2>
+            <div class="row g-4">
+                <!-- Recipe Card 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="recipe-card h-100">
+                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Recipe 1">
+                        <span class="category-badge">Italian</span>
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Homemade Pizza Margherita</h5>
+                            <p class="card-text text-secondary">Classic Italian pizza with fresh mozzarella, tomatoes, and basil.</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="cooking-time">
+                                    <i class="bi bi-clock me-1"></i>45 mins
+                                </span>
+                                <span class="rating-badge">
+                                    <i class="bi bi-star-fill text-warning me-1"></i>
+                                    4.8
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recipe Card 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="recipe-card h-100">
+                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Recipe 2">
+                        <span class="category-badge">Vegetarian</span>
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Buddha Bowl</h5>
+                            <p class="card-text text-secondary">Healthy bowl with quinoa, roasted vegetables, and tahini dressing.</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="cooking-time">
+                                    <i class="bi bi-clock me-1"></i>30 mins
+                                </span>
+                                <span class="rating-badge">
+                                    <i class="bi bi-star-fill text-warning me-1"></i>
+                                    4.6
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recipe Card 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="recipe-card h-100">
+                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Recipe 3">
+                        <span class="category-badge">Spicy</span>
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Spicy Chicken Curry</h5>
+                            <p class="card-text text-secondary">Rich and flavorful curry with tender chicken and aromatic spices.</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="cooking-time">
+                                    <i class="bi bi-clock me-1"></i>60 mins
+                                </span>
+                                <span class="rating-badge">
+                                    <i class="bi bi-star-fill text-warning me-1"></i>
+                                    4.7
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="container">
+        <div class="newsletter-section text-center">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <h3 class="fw-bold mb-4">Stay Updated with New Recipes</h3>
+                    <p class="text-secondary mb-4">Subscribe to our newsletter and never miss a delicious recipe!</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Enter your email">
+                        <button class="btn btn-primary px-4">
+                            <i class="bi bi-envelope me-2"></i>Subscribe
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-4">About Recipe Finder</h5>
+                    <p class="text-secondary">Discover and share delicious recipes from around the world. Join our community of food lovers!</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-4">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">About Us</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Contact</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-4">Connect With Us</h5>
+                    <div class="social-links d-flex gap-3">
+                        <a href="#" class="text-secondary"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-secondary"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-secondary"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-secondary"><i class="bi bi-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center text-secondary mt-5 pt-4 border-top">
+                <small>&copy; 2025 Recipe Finder. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

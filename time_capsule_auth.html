@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporal Vault - Authentication</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        body {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            padding: 3rem;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .auth-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            color: white;
+            padding: 15px;
+            transition: all 0.3s;
+            margin-bottom: 1rem;
+        }
+
+        .auth-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .auth-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-auth {
+            background: linear-gradient(45deg, #00ff87 0%, #60efff 100%);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 15px;
+            color: #000;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-auth:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,255,135,0.3);
+        }
+
+        .neon-text {
+            text-shadow: 0 0 10px rgba(255,255,255,0.8),
+                         0 0 20px rgba(255,255,255,0.8),
+                         0 0 30px rgba(255,255,255,0.8);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .social-auth {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 2rem 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .toggle-form a {
+            color: #00ff87;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .toggle-form a:hover {
+            text-shadow: 0 0 10px rgba(0,255,135,0.8);
+        }
+
+        #loginForm, #signupForm {
+            display: none;
+        }
+
+        .active {
+            display: block !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="glass-card">
+            <form id="loginForm" class="active">
+                <h2 class="neon-text">Login</h2>
+                <input type="email" class="form-control auth-input" placeholder="Email">
+                <input type="password" class="form-control auth-input" placeholder="Password">
+                <button type="submit" class="btn btn-auth">Login</button>
+                <div class="divider">
+                    <span>or continue with</span>
+                </div>
+                <div class="social-auth">
+                    <a href="#" class="social-btn"><i class="fab fa-google"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+                </div>
+                <div class="toggle-form">
+                    <p>Don't have an account? <a href="#" onclick="toggleForm()">Sign up</a></p>
+                </div>
+            </form>
+
+            <form id="signupForm">
+                <h2 class="neon-text">Sign Up</h2>
+                <input type="text" class="form-control auth-input" placeholder="Full Name">
+                <input type="email" class="form-control auth-input" placeholder="Email">
+                <input type="password" class="form-control auth-input" placeholder="Password">
+                <input type="password" class="form-control auth-input" placeholder="Confirm Password">
+                <button type="submit" class="btn btn-auth">Sign Up</button>
+                <div class="divider">
+                    <span>or sign up with</span>
+                </div>
+                <div class="social-auth">
+                    <a href="#" class="social-btn"><i class="fab fa-google"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+                </div>
+                <div class="toggle-form">
+                    <p>Already have an account? <a href="#" onclick="toggleForm()">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm() {
+            document.getElementById('loginForm').classList.toggle('active');
+            document.getElementById('signupForm').classList.toggle('active');
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

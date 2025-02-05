@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Survey Form</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --secondary: #ec4899;
+            --dark: #1f2937;
+            --darker: #111827;
+        }
+        
+        body {
+            background-color: var(--darker);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .form-control, .form-select {
+            background-color: var(--dark);
+            border: 2px solid #374151;
+            color: #fff;
+            padding: 0.8rem;
+            border-radius: 1rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: var(--dark);
+            border-color: var(--primary);
+            color: #fff;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 1rem;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .step-container {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+        }
+
+        .step-container::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #374151;
+            z-index: 1;
+        }
+
+        .step {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark);
+            border: 2px solid #374151;
+            position: relative;
+            z-index: 2;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border: none;
+            transform: scale(1.1);
+        }
+
+        .step.completed {
+            background: #10B981;
+            border: none;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .interest-check {
+            display: none;
+        }
+
+        .interest-label {
+            display: block;
+            padding: 1rem;
+            border: 2px solid #374151;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .interest-check:checked + .interest-label {
+            border-color: var(--primary);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .rating-container {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .rating-item {
+            flex: 1;
+            aspect-ratio: 1;
+            position: relative;
+        }
+
+        .rating-input {
+            display: none;
+        }
+
+        .rating-label {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark);
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .rating-input:checked + .rating-label {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="bg-dark p-4 p-md-5 rounded-4 shadow-lg">
+                    <div class="step-container mb-5">
+                        <div class="step active">1</div>
+                        <div class="step">2</div>
+                        <div class="step">3</div>
+                    </div>
+
+                    <form id="surveyForm" class="needs-validation" novalidate>
+                        <!-- Step 1: Personal Information -->
+                        <div class="form-step active" id="step1">
+                            <h2 class="gradient-text display-6 fw-bold mb-4">Personal Details</h2>
+                            <div class="mb-4">
+                                <input type="text" class="form-control" id="name" placeholder="Full Name" required>
+                                <div class="invalid-feedback">Please enter your name</div>
+                            </div>
+                            <div class="mb-4">
+                                <input type="email" class="form-control" id="email" placeholder="Email Address" required>
+                                <div class="invalid-feedback">Please enter a valid email</div>
+                            </div>
+                            <div class="mb-4">
+                                <input type="number" class="form-control" id="age" placeholder="Age" required>
+                                <div class="invalid-feedback">Please enter your age</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Preferences -->
+                        <div class="form-step" id="step2">
+                            <h2 class="gradient-text display-6 fw-bold mb-4">Your Interests</h2>
+                            <div class="mb-4">
+                                <select class="form-select" id="favoriteColor" required>
+                                    <option value="">Select Favorite Color</option>
+                                    <option value="red">Crimson Red</option>
+                                    <option value="blue">Cosmic Blue</option>
+                                    <option value="green">Neon Green</option>
+                                    <option value="purple">Royal Purple</option>
+                                </select>
+                                <div class="invalid-feedback">Please select a color</div>
+                            </div>
+                            <div class="row g-3 mb-4">
+                                <div class="col-6">
+                                    <input type="checkbox" class="interest-check" id="gaming">
+                                    <label class="interest-label" for="gaming">Gaming</label>
+                                </div>
+                                <div class="col-6">
+                                    <input type="checkbox" class="interest-check" id="music">
+                                    <label class="interest-label" for="music">Music</label>
+                                </div>
+                                <div class="col-6">
+                                    <input type="checkbox" class="interest-check" id="art">
+                                    <label class="interest-label" for="art">Art</label>
+                                </div>
+                                <div class="col-6">
+                                    <input type="checkbox" class="interest-check" id="tech">
+                                    <label class="interest-label" for="tech">Tech</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Feedback -->
+                        <div class="form-step" id="step3">
+                            <h2 class="gradient-text display-6 fw-bold mb-4">Your Feedback</h2>
+                            <div class="rating-container mb-4">
+                                <div class="rating-item">
+                                    <input type="radio" name="rating" class="rating-input" id="rating1" value="1" required>
+                                    <label class="rating-label" for="rating1">
+                                        <span class="fs-3 fw-bold">1</span>
+                                        <small>Poor</small>
+                                    </label>
+                                </div>
+                                <div class="rating-item">
+                                    <input type="radio" name="rating" class="rating-input" id="rating2" value="2">
+                                    <label class="rating-label" for="rating2">
+                                        <span class="fs-3 fw-bold">2</span>
+                                        <small>Fair</small>
+                                    </label>
+                                </div>
+                                <div class="rating-item">
+                                    <input type="radio" name="rating" class="rating-input" id="rating3" value="3">
+                                    <label class="rating-label" for="rating3">
+                                        <span class="fs-3 fw-bold">3</span>
+                                        <small>Good</small>
+                                    </label>
+                                </div>
+                                <div class="rating-item">
+                                    <input type="radio" name="rating" class="rating-input" id="rating4" value="4">
+                                    <label class="rating-label" for="rating4">
+                                        <span class="fs-3 fw-bold">4</span>
+                                        <small>Great</small>
+                                    </label>
+                                </div>
+                                <div class="rating-item">
+                                    <input type="radio" name="rating" class="rating-input" id="rating5" value="5">
+                                    <label class="rating-label" for="rating5">
+                                        <span class="fs-3 fw-bold">5</span>
+                                        <small>Perfect</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <textarea class="form-control" id="comments" rows="4" placeholder="Share your thoughts with us..." required></textarea>
+                                <div class="invalid-feedback">Please provide your feedback</div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="d-flex justify-content-between mt-5 pt-4 border-top border-secondary">
+                            <button type="button" class="btn btn-link text-muted prev-step" style="display: none;">Back</button>
+                            <button type="button" class="btn btn-primary next-step">Continue</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let currentStep = 1;
+            const form = document.getElementById('surveyForm');
+            const steps = document.querySelectorAll('.form-step');
+            const stepIndicators = document.querySelectorAll('.step');
+            const nextBtn = document.querySelector('.next-step');
+            const prevBtn = document.querySelector('.prev-step');
+
+            function showStep(stepNumber) {
+                steps.forEach(step => step.classList.remove('active'));
+                document.getElementById(`step${stepNumber}`).classList.add('active');
+                
+                stepIndicators.forEach((indicator, index) => {
+                    indicator.classList.remove('active', 'completed');
+                    if (index + 1 === stepNumber) {
+                        indicator.classList.add('active');
+                    } else if (index + 1 < stepNumber) {
+                        indicator.classList.add('completed');
+                    }
+                });
+
+                prevBtn.style.display = stepNumber === 1 ? 'none' : 'block';
+                nextBtn.textContent = stepNumber === 3 ? 'Submit' : 'Continue';
+            }
+
+            function validateStep(stepNumber) {
+                const currentStepEl = document.getElementById(`step${stepNumber}`);
+                const inputs = currentStepEl.querySelectorAll('input, select, textarea');
+                let isValid = true;
+
+                inputs.forEach(input => {
+                    if (input.type === 'checkbox') return;
+                    if (input.hasAttribute('required') && !input.value) {
+                        input.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        input.classList.remove('is-invalid');
+                    }
+                });
+
+                if (stepNumber === 2) {
+                    const checkboxes = currentStepEl.querySelectorAll('input[type="checkbox"]');
+                    if (![...checkboxes].some(cb => cb.checked)) {
+                        isValid = false;
+                        alert('Please select at least one interest');
+                    }
+                }
+
+                return isValid;
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (validateStep(currentStep)) {
+                    if (currentStep === 3) {
+                        form.submit();
+                    } else {
+                        currentStep++;
+                        showStep(currentStep);
+                    }
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                currentStep--;
+                showStep(currentStep);
+            });
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (validateStep(currentStep)) {
+                    alert('Form submitted successfully!');
+                }
+            });
+
+            showStep(1);
+        });
+    </script>
+</body>
+</html>

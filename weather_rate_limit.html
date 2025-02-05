@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>429 Too Many Requests</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            animation: gradientBG 15s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .error-card {
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .error-card:hover {
+            transform: translateY(-5px);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .icon-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .retry-button {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .retry-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .retry-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @keyframes countdown {
+            from { stroke-dashoffset: 0; }
+            to { stroke-dashoffset: 283; }
+        }
+
+        .progress-ring__circle {
+            stroke-dasharray: 283;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 1s linear;
+        }
+    </style>
+</head>
+<body class="p-6 md:p-10 flex items-center justify-center">
+    <div class="max-w-lg w-full glass rounded-2xl p-8 error-card text-center">
+        <div class="mb-8">
+            <i class="fas fa-hourglass-half text-white/90 text-6xl icon-pulse"></i>
+        </div>
+        
+        <h1 class="text-4xl font-bold text-white mb-4 tracking-wide">429</h1>
+        <h2 class="text-2xl text-white/90 font-light mb-6">Too Many Requests</h2>
+        
+        <p class="text-white/80 mb-8 text-lg">
+            Please slow down! You've made too many requests in a short time period.
+        </p>
+
+        <div class="glass rounded-xl p-5 mb-8 inline-block">
+            <div class="flex items-center justify-center gap-4">
+                <svg class="transform -rotate-90 w-12 h-12">
+                    <circle
+                        cx="24"
+                        cy="24"
+                        r="20"
+                        stroke="rgba(255,255,255,0.2)"
+                        stroke-width="4"
+                        fill="none"
+                    />
+                    <circle
+                        class="progress-ring__circle"
+                        cx="24"
+                        cy="24"
+                        r="20"
+                        stroke="white"
+                        stroke-width="4"
+                        fill="none"
+                    />
+                </svg>
+                <div class="text-left">
+                    <p class="text-white/70 text-sm font-light">Retry after</p>
+                    <p class="text-white font-semibold text-xl">
+                        <span id="countdown">30</span> seconds
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <button id="retryButton" disabled class="retry-button text-white px-8 py-3 rounded-xl font-medium">
+                Try Again
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const countdownDisplay = document.getElementById('countdown');
+            const retryButton = document.getElementById('retryButton');
+            const circle = document.querySelector('.progress-ring__circle');
+            const radius = circle.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+            
+            circle.style.strokeDasharray = `${circumference} ${circumference}`;
+            
+            let countdown = 30;
+            
+            function updateCountdown() {
+                countdownDisplay.textContent = countdown;
+                const offset = circumference - (countdown / 30) * circumference;
+                circle.style.strokeDashoffset = offset;
+                
+                if (countdown === 0) {
+                    retryButton.disabled = false;
+                    return;
+                }
+                
+                countdown--;
+                setTimeout(updateCountdown, 1000);
+            }
+            
+            updateCountdown();
+        });
+    </script>
+</body>
+</html>

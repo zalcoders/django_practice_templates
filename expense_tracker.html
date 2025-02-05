@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #4f46e5;
+        }
+        body {
+            background-color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .stat-card {
+            border: none;
+            border-radius: 16px;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .expense-form-card {
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .chart-card {
+            border: none;
+            border-radius: 16px;
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .custom-table {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .custom-table thead {
+            background-color: #f1f5f9;
+        }
+        .badge {
+            padding: 0.5em 1em;
+            border-radius: 8px;
+        }
+        .category-food { background-color: #22c55e; }
+        .category-transport { background-color: #3b82f6; }
+        .category-shopping { background-color: #ec4899; }
+        .category-bills { background-color: #f59e0b; }
+        .category-other { background-color: #64748b; }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand text-primary" href="#">
+                <i class="fas fa-wallet me-2"></i>ExpenseFlow
+            </a>
+            <div class="d-flex align-items-center">
+                <div class="dropdown">
+                    <button class="btn btn-light rounded-circle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="card stat-card bg-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-subtitle mb-2 opacity-75">Total Expenses</h6>
+                                <h3 class="card-title mb-0">$2,547.63</h3>
+                            </div>
+                            <div class="rounded-circle bg-white bg-opacity-25 p-3">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-subtitle mb-2 opacity-75">Monthly Budget</h6>
+                                <h3 class="card-title mb-0">$4,000.00</h3>
+                            </div>
+                            <div class="rounded-circle bg-white bg-opacity-25 p-3">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card bg-info text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-subtitle mb-2 opacity-75">Total Savings</h6>
+                                <h3 class="card-title mb-0">$1,452.37</h3>
+                            </div>
+                            <div class="rounded-circle bg-white bg-opacity-25 p-3">
+                                <i class="fas fa-piggy-bank"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card bg-warning text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="card-subtitle mb-2 opacity-75">Pending Bills</h6>
+                                <h3 class="card-title mb-0">$847.00</h3>
+                            </div>
+                            <div class="rounded-circle bg-white bg-opacity-25 p-3">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-8">
+                <div class="card chart-card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Expense Trends</h5>
+                        <canvas id="expenseChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card chart-card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Spending by Category</h5>
+                        <canvas id="categoryChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Expense Section -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card expense-form-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="card-title mb-0">Add New Expense</h5>
+                            <button class="btn btn-primary rounded-pill px-4">
+                                <i class="fas fa-plus me-2"></i>Add Expense
+                            </button>
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="expenseTitle" placeholder="Expense Title">
+                                    <label for="expenseTitle">Expense Title</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="amount" placeholder="Amount">
+                                    <label for="amount">Amount ($)</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <select class="form-select" id="category">
+                                        <option>Select Category</option>
+                                        <option>Food & Dining</option>
+                                        <option>Transportation</option>
+                                        <option>Shopping</option>
+                                        <option>Bills & Utilities</option>
+                                        <option>Other</option>
+                                    </select>
+                                    <label for="category">Category</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Expenses -->
+        <div class="card expense-form-card">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="card-title mb-0">Recent Expenses</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            This Month
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Last Month</a></li>
+                            <li><a class="dropdown-item" href="#">Last 3 Months</a></li>
+                            <li><a class="dropdown-item" href="#">Custom Range</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table custom-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Grocery Shopping</td>
+                                <td><span class="badge category-food">Food & Dining</span></td>
+                                <td>Oct 15, 2023</td>
+                                <td>$156.85</td>
+                                <td><span class="badge bg-success">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>Uber Ride</td>
+                                <td><span class="badge category-transport">Transportation</span></td>
+                                <td>Oct 14, 2023</td>
+                                <td>$24.50</td>
+                                <td><span class="badge bg-success">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>Amazon Purchase</td>
+                                <td><span class="badge category-shopping">Shopping</span></td>
+                                <td>Oct 13, 2023</td>
+                                <td>$89.99</td>
+                                <td><span class="badge bg-warning">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>Electricity Bill</td>
+                                <td><span class="badge category-bills">Bills & Utilities</span></td>
+                                <td>Oct 12, 2023</td>
+                                <td>$145.00</td>
+                                <td><span class="badge bg-danger">Due</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        // Expense Trends Chart
+        const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+        new Chart(expenseCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                datasets: [{
+                    label: 'Monthly Expenses',
+                    data: [2100, 1800, 2300, 2800, 2400, 2100, 2600, 2300, 2500, 2547.63],
+                    borderColor: '#6366f1',
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: true,
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Category Distribution Chart
+        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+        new Chart(categoryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Food & Dining', 'Transportation', 'Shopping', 'Bills & Utilities', 'Other'],
+                datasets: [{
+                    data: [35, 15, 20, 25, 5],
+                    backgroundColor: [
+                        '#22c55e',
+                        '#3b82f6',
+                        '#ec4899',
+                        '#f59e0b',
+                        '#64748b'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+    </script>
+</body>
+</html>

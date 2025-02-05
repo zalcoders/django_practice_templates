@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Leaderboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0a0b0f;
+            color: #e2e8f0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        .custom-card {
+            background: linear-gradient(145deg, #151823, #1a1f2e);
+            border: 1px solid #2a3142;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        .rank-circle {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .leaderboard-item {
+            background: linear-gradient(90deg, rgba(26,31,46,0) 0%, rgba(26,31,46,0.5) 50%, rgba(26,31,46,0) 100%);
+            transition: all 0.3s ease;
+        }
+        .leaderboard-item:hover {
+            background: linear-gradient(90deg, rgba(37,99,235,0.1) 0%, rgba(37,99,235,0.2) 50%, rgba(37,99,235,0.1) 100%);
+            transform: translateX(8px);
+        }
+        .leaderboard-item:hover .rank-circle {
+            transform: scale(1.1) rotate(-10deg);
+        }
+        .rank-1 {
+            background: linear-gradient(45deg, #ffd700, #ffa500);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        .rank-2 {
+            background: linear-gradient(45deg, #c0c0c0, #a0a0a0);
+            box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
+        }
+        .rank-3 {
+            background: linear-gradient(45deg, #cd7f32, #b87333);
+            box-shadow: 0 0 15px rgba(205, 127, 50, 0.3);
+        }
+        .rank-other {
+            background: #2a3142;
+            color: #8b93a7;
+        }
+        .points-badge {
+            background: linear-gradient(45deg, #3b82f6, #2563eb);
+            padding: 6px 16px;
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.2);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .level-tag {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(37, 99, 235, 0.2);
+            color: #60a5fa;
+            margin-left: 8px;
+        }
+        .avatar-wrapper {
+            position: relative;
+        }
+        .status-online {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 10px;
+            height: 10px;
+            background: #22c55e;
+            border-radius: 50%;
+            border: 2px solid #1a1f2e;
+        }
+    </style>
+</head>
+<body class="py-5">
+    <div class="container">
+        <div class="card custom-card border-0 mx-auto" style="max-width: 800px;">
+            <div class="card-header bg-transparent border-bottom border-dark py-4">
+                <div class="d-flex justify-content-between align-items-center px-3">
+                    <div>
+                        <h4 class="mb-0 fw-bold text-white">Elite Players</h4>
+                        <small class="text-primary">Season 7 Rankings</small>
+                    </div>
+                    <span class="points-badge">Weekly Challenge</span>
+                </div>
+            </div>
+            
+            <div class="card-body p-0">
+                <!-- First Place -->
+                <div class="leaderboard-item d-flex align-items-center p-4 border-bottom border-dark">
+                    <div class="rank-circle rank-1 rounded-circle d-flex align-items-center justify-content-center">
+                        <span class="text-white fw-bold">1</span>
+                    </div>
+                    <div class="ms-4 flex-grow-1">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-wrapper">
+                                    <img class="rounded-circle" src="/api/placeholder/48/48" width="48" height="48" alt="Avatar">
+                                    <div class="status-online"></div>
+                                </div>
+                                <div class="ms-3">
+                                    <div class="d-flex align-items-center">
+                                        <h6 class="fw-bold mb-1 text-white">NightStalker</h6>
+                                        <span class="level-tag">LVL 99</span>
+                                    </div>
+                                    <span class="text-primary small">Legendary Elite</span>
+                                </div>
+                            </div>
+                            <div class="points-badge">98,845</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Place -->
+                <div class="leaderboard-item d-flex align-items-center p-4 border-bottom border-dark">
+                    <div class="rank-circle rank-2 rounded-circle d-flex align-items-center justify-content-center">
+                        <span class="text-white fw-bold">2</span>
+                    </div>
+                    <div class="ms-4 flex-grow-1">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-wrapper">
+                                    <img class="rounded-circle" src="/api/placeholder/48/48" width="48" height="48" alt="Avatar">
+                                </div>
+                                <div class="ms-3">
+                                    <div class="d-flex align-items-center">
+                                        <h6 class="fw-bold mb-1 text-white">ShadowBlade</h6>
+                                        <span class="level-tag">LVL 95</span>
+                                    </div>
+                                    <span class="text-primary small">Elite Warrior</span>
+                                </div>
+                            </div>
+                            <div class="points-badge">87,683</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Third Place -->
+                <div class="leaderboard-item d-flex align-items-center p-4 border-bottom border-dark">
+                    <div class="rank-circle rank-3 rounded-circle d-flex align-items-center justify-content-center">
+                        <span class="text-white fw-bold">3</span>
+                    </div>
+                    <div class="ms-4 flex-grow-1">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-wrapper">
+                                    <img class="rounded-circle" src="/api/placeholder/48/48" width="48" height="48" alt="Avatar">
+                                    <div class="status-online"></div>
+                                </div>
+                                <div class="ms-3">
+                                    <div class="d-flex align-items-center">
+                                        <h6 class="fw-bold mb-1 text-white">PhoenixRising</h6>
+                                        <span class="level-tag">LVL 92</span>
+                                    </div>
+                                    <span class="text-primary small">Elite Ranger</span>
+                                </div>
+                            </div>
+                            <div class="points-badge">76,492</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fourth Place -->
+                <div class="leaderboard-item d-flex align-items-center p-4 border-bottom border-dark">
+                    <div class="rank-circle rank-other rounded-circle d-flex align-items-center justify-content-center">
+                        <span class="fw-bold">4</span>
+                    </div>
+                    <div class="ms-4 flex-grow-1">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-wrapper">
+                                    <img class="rounded-circle" src="/api/placeholder/48/48" width="48" height="48" alt="Avatar">
+                                </div>
+                                <div class="ms-3">
+                                    <div class="d-flex align-items-center">
+                                        <h6 class="fw-bold mb-1 text-white">FrostBite</h6>
+                                        <span class="level-tag">LVL 90</span>
+                                    </div>
+                                    <span class="text-primary small">Veteran</span>
+                                </div>
+                            </div>
+                            <div class="points-badge">65,401</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fifth Place -->
+                <div class="leaderboard-item d-flex align-items-center p-4">
+                    <div class="rank-circle rank-other rounded-circle d-flex align-items-center justify-content-center">
+                        <span class="fw-bold">5</span>
+                    </div>
+                    <div class="ms-4 flex-grow-1">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-wrapper">
+                                    <img class="rounded-circle" src="/api/placeholder/48/48" width="48" height="48" alt="Avatar">
+                                    <div class="status-online"></div>
+                                </div>
+                                <div class="ms-3">
+                                    <div class="d-flex align-items-center">
+                                        <h6 class="fw-bold mb-1 text-white">ThunderStrike</h6>
+                                        <span class="level-tag">LVL 88</span>
+                                    </div>
+                                    <span class="text-primary small">Veteran</span>
+                                </div>
+                            </div>
+                            <div class="points-badge">54,375</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

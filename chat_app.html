@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Chat</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #f3f4f6;
+            --accent-color: #4f46e5;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f6f7ff 0%, #eef1ff 100%);
+            min-height: 100vh;
+        }
+        
+        .chat-container {
+            max-height: 70vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) transparent;
+        }
+        
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb {
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+        .message {
+            max-width: 70%;
+            margin-bottom: 1.5rem;
+            animation: fadeIn 0.5s ease-in-out;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .message.received {
+            background: white;
+            border-radius: 20px 20px 20px 5px;
+            transform-origin: left bottom;
+        }
+        
+        .message.sent {
+            background: var(--primary-color);
+            color: white;
+            margin-left: auto;
+            border-radius: 20px 20px 5px 20px;
+            transform-origin: right bottom;
+        }
+        
+        .chat-input {
+            border-radius: 25px;
+            border: 2px solid #e5e7eb;
+            padding: 0.75rem 1.25rem;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .chat-header {
+            background: white;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.95);
+        }
+        
+        .online-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .online-indicator::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            opacity: 0.5;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            70% {
+                transform: scale(2);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+        
+        .send-button {
+            background: var(--primary-color);
+            border: none;
+            width: 45px;
+            height: 45px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .send-button:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+        
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+            padding: 2px;
+        }
+        
+        .message-time {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 0.5rem;
+            position: absolute;
+            bottom: 100%;
+            left: 1rem;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #94a3b8;
+            border-radius: 50%;
+            animation: typingAnimation 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card animate__animated animate__fadeIn">
+                    <div class="chat-header p-4">
+                        <div class="d-flex align-items-center">
+                            <img src="/api/placeholder/45/45" class="user-avatar rounded-circle me-3" alt="User Avatar">
+                            <div class="flex-grow-1">
+                                <h5 class="mb-1 fw-bold">Sarah Anderson</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="online-indicator me-2"></div>
+                                    <small class="text-muted">Active now</small>
+                                </div>
+                            </div>
+                            <button class="btn btn-light rounded-circle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-container p-4">
+                        <div class="message received p-3">
+                            <p class="mb-1">Hey! Just reviewed the latest design mockups 👋</p>
+                            <div class="message-time text-muted">10:30 AM</div>
+                        </div>
+                        
+                        <div class="message sent p-3">
+                            <p class="mb-1">That's great! What do you think about the new color palette? 🎨</p>
+                            <div class="message-time text-white-50">10:32 AM</div>
+                        </div>
+                        
+                        <div class="message received p-3">
+                            <p class="mb-1">Love it! The contrast is much better now. The client will be impressed! ✨</p>
+                            <div class="message-time text-muted">10:33 AM</div>
+                            <div class="typing-indicator">
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer bg-white p-4 border-top-0">
+                        <div class="input-group align-items-center">
+                            <button class="btn btn-light rounded-circle me-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                    <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
+                                </svg>
+                            </button>
+                            <input type="text" class="form-control chat-input" placeholder="Type your message...">
+                            <button class="btn send-button rounded-circle ms-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi bi-send" viewBox="0 0 16 16">
+                                    <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

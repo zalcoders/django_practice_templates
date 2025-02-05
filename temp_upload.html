@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .upload-area {
+            border: 3px dashed #e0e6ed;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upload-area:hover, .upload-area.dragover {
+            border-color: #6366f1;
+            background: linear-gradient(145deg, rgba(99, 102, 241, 0.05), rgba(99, 102, 241, 0.1));
+            transform: translateY(-2px);
+        }
+        
+        .upload-icon {
+            font-size: 4rem;
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .upload-area:hover .upload-icon {
+            transform: scale(1.1);
+        }
+        
+        .btn-upload {
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+        }
+
+        .file-info {
+            display: none;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .progress {
+            display: none;
+            margin-top: 1.5rem;
+            height: 8px;
+            border-radius: 6px;
+            background: rgba(99, 102, 241, 0.1);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            transition: width 0.4s ease;
+        }
+
+        .alert-success {
+            background: linear-gradient(145deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.2));
+            border: none;
+            border-radius: 12px;
+            color: #166534;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .alert-success i {
+            font-size: 1.25rem;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .success-animation {
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        .file-preview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: linear-gradient(45deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            color: #6366f1;
+        }
+
+        .remove-file {
+            border: none;
+            background: none;
+            color: #ef4444;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .remove-file:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h4 class="text-center mb-4 fw-bold" style="background: linear-gradient(45deg, #6366f1, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                            Upload Your Files
+                        </h4>
+                        
+                        <div class="upload-area" id="uploadArea">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <h5 class="fw-bold mb-2">Drag & Drop your files here</h5>
+                            <p class="text-muted mb-3">or</p>
+                            <label class="btn btn-upload text-white">
+                                <span>Choose Files</span>
+                                <input type="file" id="fileInput" class="d-none">
+                            </label>
+                            <small class="d-block text-muted mt-3">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Maximum file size: 10MB
+                            </small>
+                        </div>
+
+                        <div class="file-info" id="fileInfo">
+                            <div class="file-preview">
+                                <div class="file-icon">
+                                    <i class="fas fa-file"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="fw-semibold file-name">filename.txt</div>
+                                    <small class="text-muted">Ready to upload</small>
+                                </div>
+                                <button class="remove-file" id="removeFile">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="progress" id="uploadProgress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                 role="progressbar" style="width: 0%"></div>
+                        </div>
+
+                        <div class="alert alert-success mt-3 d-none" id="successAlert">
+                            <i class="fas fa-check-circle"></i>
+                            <span>File uploaded successfully!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.querySelector('.file-name');
+        const removeFile = document.getElementById('removeFile');
+        const progressBar = document.querySelector('.progress-bar');
+        const progress = document.getElementById('uploadProgress');
+        const successAlert = document.getElementById('successAlert');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => {
+                uploadArea.classList.add('dragover');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => {
+                uploadArea.classList.remove('dragover');
+            });
+        });
+
+        uploadArea.addEventListener('drop', handleDrop);
+        fileInput.addEventListener('change', handleFileSelect);
+        removeFile.addEventListener('click', resetUpload);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const file = dt.files[0];
+            handleFile(file);
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            handleFile(file);
+        }
+
+        function handleFile(file) {
+            fileName.textContent = file.name;
+            fileInfo.style.display = 'block';
+            progress.style.display = 'flex';
+            
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    successAlert.classList.remove('d-none');
+                    successAlert.classList.add('success-animation');
+                } else {
+                    width += 2;
+                    progressBar.style.width = width + '%';
+                }
+            }, 50);
+        }
+
+        function resetUpload() {
+            fileInput.value = '';
+            fileInfo.style.display = 'none';
+            progress.style.display = 'none';
+            progressBar.style.width = '0%';
+            successAlert.classList.add('d-none');
+            successAlert.classList.remove('success-animation');
+        }
+    </script>
+</body>
+</html>

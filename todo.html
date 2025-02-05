@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Todo List</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1c2c 0%, #2c1f4a 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: rgba(30, 32, 47, 0.95);
+        }
+
+        .todo-item {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            background: rgba(41, 44, 63, 0.95);
+            color: #e2e8f0;
+        }
+
+        .todo-item:hover {
+            transform: translateX(5px);
+            background: rgba(49, 52, 75, 0.95);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #2d3748;
+            padding: 12px 20px;
+            background: rgba(41, 44, 63, 0.95);
+            color: #e2e8f0;
+        }
+
+        .form-control:focus {
+            background: rgba(49, 52, 75, 0.95);
+            box-shadow: 0 0 0 3px rgba(116, 144, 255, 0.25);
+            border-color: #7490ff;
+            color: #e2e8f0;
+        }
+
+        .form-control::placeholder {
+            color: #718096;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #7490ff, #9f7aea);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 25px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #9f7aea, #7490ff);
+            transform: translateY(-1px);
+        }
+
+        .completed {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        .delete-btn {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: #fc8181;
+        }
+
+        .todo-item:hover .delete-btn {
+            opacity: 0.7;
+        }
+
+        .delete-btn:hover {
+            opacity: 1 !important;
+            color: #fc8181;
+        }
+
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #7490ff;
+            margin-right: 12px;
+            background-color: transparent;
+        }
+
+        .form-check-input:checked {
+            background-color: #7490ff;
+            border-color: #7490ff;
+        }
+
+        .form-check-label {
+            font-size: 1.1rem;
+            color: #e2e8f0;
+            padding-top: 2px;
+        }
+
+        .btn-group .btn {
+            border-radius: 8px;
+            margin: 0 2px;
+            border-color: #2d3748;
+            color: #cbd5e0;
+            font-weight: 500;
+            background: transparent;
+        }
+
+        .btn-group .btn:hover {
+            background: rgba(49, 52, 75, 0.95);
+            color: #e2e8f0;
+            border-color: #4a5568;
+        }
+
+        .btn-group .btn.active {
+            background: linear-gradient(45deg, #7490ff, #9f7aea);
+            border-color: transparent;
+            color: white;
+        }
+
+        h1 {
+            background: linear-gradient(45deg, #7490ff, #9f7aea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .input-group {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        .btn-link {
+            color: #cbd5e0;
+            text-decoration: none;
+        }
+
+        .btn-link:hover {
+            color: #7490ff;
+        }
+
+        .text-muted {
+            color: #718096 !important;
+        }
+
+        .list-group-item {
+            border: none;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body p-4 p-md-5">
+                        <h1 class="text-center mb-4">My Tasks</h1>
+                        
+                        <!-- Add Todo Form -->
+                        <form class="mb-5">
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-lg border-0" 
+                                       placeholder="Add a new task..." required>
+                                <button class="btn btn-primary px-4" type="submit">
+                                    <i class="fas fa-plus me-2"></i>Add Task
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Todo List -->
+                        <div class="list-group mb-4">
+                            <div class="todo-item list-group-item d-flex align-items-center p-3">
+                                <div class="form-check flex-grow-1">
+                                    <input class="form-check-input" type="checkbox">
+                                    <label class="form-check-label">
+                                        Design new website mockup
+                                    </label>
+                                </div>
+                                <button class="btn btn-link delete-btn p-0 ms-3">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+
+                            <div class="todo-item list-group-item d-flex align-items-center p-3">
+                                <div class="form-check flex-grow-1">
+                                    <input class="form-check-input" type="checkbox" checked>
+                                    <label class="form-check-label completed">
+                                        Review project requirements
+                                    </label>
+                                </div>
+                                <button class="btn btn-link delete-btn p-0 ms-3">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+
+                            <div class="todo-item list-group-item d-flex align-items-center p-3">
+                                <div class="form-check flex-grow-1">
+                                    <input class="form-check-input" type="checkbox">
+                                    <label class="form-check-label">
+                                        Schedule team meeting
+                                    </label>
+                                </div>
+                                <button class="btn btn-link delete-btn p-0 ms-3">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Todo Stats -->
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <small class="text-muted fw-bold">3 tasks remaining</small>
+                            <div class="btn-group btn-group-sm shadow-sm" role="group">
+                                <button class="btn btn-outline-secondary active">All</button>
+                                <button class="btn btn-outline-secondary">Active</button>
+                                <button class="btn btn-outline-secondary">Completed</button>
+                            </div>
+                            <button class="btn btn-link btn-sm text-decoration-none">
+                                Clear completed
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
