@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>429 - Too Many Requests</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            color: white;
+            line-height: 1.6;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container-fluid {
+            max-width: 1200px;
+        }
+
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .content-wrapper {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .left-section {
+            padding: 2rem;
+        }
+
+        .right-section {
+            padding: 2rem;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 2rem;
+            height: 100%;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 900;
+            line-height: 1;
+            margin: 0;
+            background: linear-gradient(120deg, #fff, rgba(255, 255, 255, 0.5));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .error-title {
+            font-size: 2rem;
+            margin: 1rem 0 2rem;
+            font-weight: 600;
+        }
+
+        .timer-container {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            margin: 2rem auto;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .timer-ring {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: absolute;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .timer-ring::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: rgba(255, 255, 255, 0.8);
+            animation: rotate 1s linear infinite;
+        }
+
+        .countdown {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .request-info {
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-dot.error { background-color: #FF6B6B; }
+        .status-dot.warning { background-color: #FFD93D; }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            animation: slide 2s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .btn-modern {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 0 0.5rem;
+        }
+
+        .btn-modern:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .left-section, .right-section {
+                padding: 1rem;
+            }
+
+            .error-code {
+                font-size: 6rem;
+            }
+
+            .error-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-page">
+        <div class="container-fluid">
+            <div class="content-wrapper">
+                <!-- Left Section -->
+                <div class="left-section glass-panel">
+                    <div class="error-code">429</div>
+                    <h1 class="error-title">Too Many Requests</h1>
+                    <p>Our servers are experiencing high traffic. Please wait before making another request.</p>
+                    
+                    <div class="timer-container">
+                        <div class="timer-ring"></div>
+                        <div class="countdown">30s</div>
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-3 mt-4">
+                        <a href="/" class="btn-modern">Home</a>
+                        <button class="btn-modern" onclick="window.location.reload()">Retry</button>
+                    </div>
+                </div>
+
+                <!-- Right Section -->
+                <div class="right-section glass-panel">
+                    <h2 class="h4 mb-4">Request Status</h2>
+                    
+                    <div class="request-info">
+                        <div class="info-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span><span class="status-dot error"></span>Current Status</span>
+                                <span>Rate Limited</span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span><span class="status-dot warning"></span>Rate Limit</span>
+                                <span>100/100 requests</span>
+                            </div>
+                        </div>
+
+                        <div class="progress-bar position-relative"></div>
+
+                        <div class="info-item">
+                            <div><strong>Time Window:</strong> 60 seconds</div>
+                            <div><strong>Next Reset:</strong> 30 seconds</div>
+                            <div><strong>Current Usage:</strong> 100%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

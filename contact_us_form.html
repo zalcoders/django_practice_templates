@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Gaming</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500&display=swap');
+
+        body {
+            background: #0f1923;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255, 65, 84, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 90% 10%, rgba(0, 255, 255, 0.1) 0%, transparent 40%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .contact-form {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            border-radius: 15px;
+            background: rgba(17, 23, 35, 0.95);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.3),
+                        inset 0 0 2px rgba(255, 65, 84, 0.3);
+            border: 1px solid rgba(255, 65, 84, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-control {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 2px solid #1f2937;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(17, 24, 39, 0.8);
+            color: #e2e8f0;
+            margin-bottom: 20px;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 2px rgba(255, 65, 84, 0.2);
+            border-color: #ff4154;
+            background: rgba(17, 24, 39, 0.95);
+        }
+
+        .form-control::placeholder {
+            color: #4b5563;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #00ffff;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .btn-submit {
+            padding: 12px 35px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            background: #ff4154;
+            border: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            background: #ff2c42;
+            box-shadow: 0 5px 15px rgba(255, 65, 84, 0.4);
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .contact-header h2 {
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #ff4154, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .contact-header p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff4154;
+            z-index: 10;
+        }
+
+        .icon-input {
+            padding-left: 45px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 65, 84, 0.2);
+        }
+
+        .contact-info-item {
+            text-align: center;
+            color: #94a3b8;
+            background: rgba(17, 24, 39, 0.6);
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 65, 84, 0.1);
+        }
+
+        .contact-info-item i {
+            font-size: 1.5rem;
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+
+        .contact-info-item p {
+            margin-bottom: 0;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ff4154;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff2c42;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="contact-form">
+            <div class="contact-header">
+                <h2>Join The Elite</h2>
+                <p>Level up your gaming experience. Connect with us now.</p>
+            </div>
+            
+            <form>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" class="form-control icon-input" id="firstName" placeholder="Player Name" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <i class="fas fa-gamepad input-icon"></i>
+                            <input type="text" class="form-control icon-input" id="gamerTag" placeholder="Gamer Tag" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" class="form-control icon-input" id="email" placeholder="Your Email" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-server input-icon"></i>
+                    <input type="text" class="form-control icon-input" id="subject" placeholder="Subject" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-message input-icon" style="top: 25px;"></i>
+                    <textarea class="form-control icon-input" id="message" rows="5" placeholder="Your Message" required></textarea>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-submit">
+                        Send Message
+                        <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </form>
+
+            <div class="contact-info">
+                <div class="contact-info-item">
+                    <i class="fas fa-headset"></i>
+                    <p>24/7 Support</p>
+                </div>
+                <div class="contact-info-item">
+                    <i class="fas fa-globe"></i>
+                    <p>Global Servers</p>
+                </div>
+                <div class="contact-info-item">
+                    <i class="fab fa-discord"></i>
+                    <p>Join Discord</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

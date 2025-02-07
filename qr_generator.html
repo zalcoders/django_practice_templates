@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern QR Code Generator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        .gradient-custom {
+            background: linear-gradient(to right, #667eea, #764ba2);
+        }
+        .card {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 15px;
+        }
+        .form-control:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 0 0.2rem rgba(118, 75, 162, 0.25);
+        }
+        .btn-primary {
+            background-color: #764ba2;
+            border: none;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #667eea;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="gradient-custom min-vh-100 d-flex align-items-center py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="card shadow-lg">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-4">QR Code Generator</h2>
+                        <div class="mb-4">
+                            <label for="text" class="form-label">Enter your text or URL</label>
+                            <input type="text" class="form-control form-control-lg" id="text" placeholder="https://example.com">
+                        </div>
+                        <div class="mb-4">
+                            <label for="size" class="form-label">QR Code Size</label>
+                            <select class="form-select form-select-lg" id="size">
+                                <option value="100">Small</option>
+                                <option value="200" selected>Medium</option>
+                                <option value="300">Large</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary w-100 btn-lg mb-4" onclick="generateQR()">Generate QR Code</button>
+                        <div id="qrcode" class="d-flex justify-content-center"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let qr = null;
+        
+        function generateQR() {
+            const text = document.getElementById('text').value;
+            const size = document.getElementById('size').value;
+            
+            if (text) {
+                const qrContainer = document.getElementById('qrcode');
+                qrContainer.innerHTML = '';
+                
+                qr = new QRCode(qrContainer, {
+                    text: text,
+                    width: parseInt(size),
+                    height: parseInt(size),
+                    colorDark: "#764ba2",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            }
+        }
+
+        // Generate QR code on Enter key press
+        document.getElementById('text').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateQR();
+            }
+        });
+    </script>
+</body>
+</html>
