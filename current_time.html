@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Clock Display</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(45deg, #000428, #004e92);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-content {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .clock-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: clamp(20px, 4vw, 30px);
+            padding: clamp(1.5rem, 4vw, 3rem);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: min(90vw, 400px);
+            margin: 0 auto;
+        }
+
+        .analog-clock {
+            width: min(70vw, 250px);
+            height: min(70vw, 250px);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            margin: 0 auto 2rem;
+        }
+
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            border-radius: 4px;
+        }
+
+        .hour-hand {
+            width: min(1.6%, 4px);
+            height: 24%;
+            background: #ff5e62;
+        }
+
+        .minute-hand {
+            width: min(1.2%, 3px);
+            height: 32%;
+            background: #00f2fe;
+        }
+
+        .second-hand {
+            width: min(0.8%, 2px);
+            height: 36%;
+            background: #ffffff;
+        }
+
+        .center-dot {
+            position: absolute;
+            width: min(5%, 12px);
+            height: min(5%, 12px);
+            border-radius: 50%;
+            background: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .time-marks {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .mark {
+            position: absolute;
+            width: min(0.8%, 2px);
+            height: 4%;
+            background: rgba(255, 255, 255, 0.3);
+            left: 50%;
+            transform-origin: 50% 125px;
+        }
+
+        .digital-time {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 2px;
+        }
+
+        .date {
+            font-size: clamp(0.9rem, 3vw, 1.2rem);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+        }
+
+        .timezone-form-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: clamp(20px, 4vw, 30px);
+            padding: clamp(1.5rem, 4vw, 3rem);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: min(90vw, 400px);
+            margin: 0 auto;
+        }
+
+        .form-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 0.9rem;
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1rem;
+            width: 100%;
+        }
+
+        .form-select option {
+            background: #004e92;
+            color: white;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .submit-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .status-message {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+            display: none;
+        }
+
+        .status-success {
+            background: rgba(46, 213, 115, 0.2);
+            color: #2ed573;
+        }
+
+        .status-error {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+        }
+
+        .current-timezone {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .timezone-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.5rem;
+        }
+
+        .timezone-value {
+            font-size: 1.1rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        @media (max-width: 576px) {
+            .clock-container, .timezone-form-container {
+                padding: 1.5rem;
+            }
+            .digital-time {
+                font-size: 2rem;
+            }
+            .date {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <!-- Clock Container -->
+        <div class="clock-container">
+            <div class="analog-clock">
+                <div class="time-marks" id="time-marks"></div>
+                <div class="hand hour-hand" id="hour"></div>
+                <div class="hand minute-hand" id="minute"></div>
+                <div class="hand second-hand" id="second"></div>
+                <div class="center-dot"></div>
+            </div>
+            <div class="digital-time" id="digital-time">00:00:00</div>
+            <div class="date" id="date">Monday, January 1, 2024</div>
+        </div>
+
+        <!-- Timezone Form Container -->
+        <div class="timezone-form-container">
+            <div class="current-timezone">
+                <div class="timezone-label">Current Timezone:</div>
+                <div class="timezone-value" id="current-timezone">UTC (Coordinated Universal Time)</div>
+            </div>
+            <form id="timezone-form">
+                <div class="mb-3">
+                    <label for="timezone" class="form-label">Select Timezone</label>
+                    <select class="form-select" id="timezone" name="timezone" required>
+                        <option value="">Choose timezone...</option>
+                        <option value="UTC">UTC (Greenwich Mean Time)</option>
+                        <option value="America/New_York">Eastern Time (ET)</option>
+                        <option value="America/Chicago">Central Time (CT)</option>
+                        <option value="America/Denver">Mountain Time (MT)</option>
+                        <option value="America/Los_Angeles">Pacific Time (PT)</option>
+                        <option value="Asia/Tokyo">Japan Standard Time (JST)</option>
+                        <option value="Europe/London">British Time (BST/GMT)</option>
+                        <option value="Europe/Paris">Central European Time (CET)</option>
+                        <option value="Asia/Dubai">Gulf Standard Time (GST)</option>
+                        <option value="Asia/Singapore">Singapore Time (SGT)</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">Update Timezone</button>
+                <div id="status-message" class="status-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set your initial date and time here
+        const initialDateTime = new Date('2024-02-11T15:30:45');
+        const startTime = initialDateTime.getTime();
+        const offsetFromReal = startTime - new Date().getTime();
+        
+        // Create time marks
+        const timeMarks = document.getElementById('time-marks');
+        for (let i = 0; i < 60; i++) {
+            const mark = document.createElement('div');
+            mark.className = 'mark';
+            mark.style.transform = `rotate(${i * 6}deg)`;
+            if (i % 5 === 0) {
+                mark.style.height = '6%';
+                mark.style.width = 'min(1.2%, 3px)';
+                mark.style.background = 'rgba(255, 255, 255, 0.5)';
+            }
+            timeMarks.appendChild(mark);
+        }
+
+        function updateClock() {
+            const now = new Date(new Date().getTime() + offsetFromReal);
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const milliseconds = now.getMilliseconds();
+
+            const secondDegrees = (seconds + milliseconds / 1000) * 6;
+            const minuteDegrees = (minutes + seconds / 60) * 6;
+            const hourDegrees = (hours % 12 + minutes / 60) * 30;
+
+            document.getElementById('second').style.transform = `rotate(${secondDegrees}deg)`;
+            document.getElementById('minute').style.transform = `rotate(${minuteDegrees}deg)`;
+            document.getElementById('hour').style.transform = `rotate(${hourDegrees}deg)`;
+
+            document.getElementById('digital-time').textContent = now.toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+
+            document.getElementById('date').textContent = now.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            requestAnimationFrame(updateClock);
+        }
+
+        // Form submission handling
+        document.getElementById('timezone-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const statusMessage = document.getElementById('status-message');
+            const timezone = form.timezone.value;
+
+            try {
+                const response = await fetch('/api/timezone', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ timezone }),
+                });
+
+                statusMessage.style.display = 'block';
+                
+                if (response.ok) {
+                    statusMessage.className = 'status-message status-success';
+                    statusMessage.textContent = 'Timezone updated successfully!';
+                    // Update the displayed timezone
+                    document.getElementById('current-timezone').textContent = 
+                        document.getElementById('timezone').options[document.getElementById('timezone').selectedIndex].text;
+                } else {
+                    throw new Error('Failed to update timezone');
+                }
+            } catch (error) {
+                statusMessage.className = 'status-message status-error';
+                statusMessage.textContent = 'Failed to update timezone. Please try again.';
+            }
+
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 3000);
+        });
+
+        updateClock();
+    </script>
+</body>
+</html>
