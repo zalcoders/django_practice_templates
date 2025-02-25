@@ -54,6 +54,57 @@
             color: #4b5563;
         }
 
+        /* File input styling */
+        .file-input-group {
+            position: relative;
+            margin-bottom: 25px;
+            border: 2px dashed #1f2937;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: rgba(17, 24, 39, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .file-input-group:hover {
+            border-color: #ff4154;
+            background: rgba(17, 24, 39, 0.95);
+        }
+
+        .file-input-group input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-input-content {
+            pointer-events: none;
+        }
+
+        .file-input-icon {
+            font-size: 2rem;
+            color: #ff4154;
+            margin-bottom: 10px;
+        }
+
+        .file-input-text {
+            color: #00ffff;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .file-input-subtext {
+            color: #4b5563;
+            font-size: 0.9rem;
+        }
+
         .form-label {
             font-weight: 600;
             color: #00ffff;
@@ -76,6 +127,7 @@
             text-transform: uppercase;
             position: relative;
             overflow: hidden;
+            color: white;
         }
 
         .btn-submit:hover {
@@ -159,7 +211,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -210,6 +261,15 @@
                 <div class="input-group">
                     <i class="fas fa-server input-icon"></i>
                     <input type="text" class="form-control icon-input" id="subject" placeholder="Subject" required>
+                </div>
+
+                <div class="file-input-group">
+                    <input type="file" id="attachment" accept=".jpg,.png,.pdf,.zip">
+                    <div class="file-input-content">
+                        <i class="fas fa-cloud-upload-alt file-input-icon"></i>
+                        <div class="file-input-text">Drop your file here</div>
+                        <div class="file-input-subtext">or click to browse</div>
+                    </div>
                 </div>
 
                 <div class="input-group">
