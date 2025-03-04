@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Survey Builder</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient-start: #4158D0;
+            --primary-gradient-mid: #C850C0;
+            --primary-gradient-end: #FFCC70;
+            --transition-speed: 0.4s;
+            --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+            overflow-x: hidden;
+            padding-bottom: 4rem;
+        }
+
+        .header-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-speed) ease;
+        }
+
+        .header-container.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+
+        .survey-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-mid));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0;
+        }
+
+        .progress {
+            height: 0.5rem;
+            background-color: rgba(0, 0, 0, 0.05);
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        .progress-bar {
+            background: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-mid));
+            transition: width 0.6s ease-in-out;
+        }
+
+        .completion-text {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-left: auto;
+            font-weight: 500;
+        }
+
+        main {
+            margin-top: 4.5rem;
+            position: relative;
+        }
+
+
+
+        .question-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-speed) ease;
+            margin-bottom: 2rem;
+            border: none;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transform: translateY(0);
+            overflow: hidden;
+        }
+
+        .question-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-5px);
+        }
+
+
+
+        .question-text {
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Toggle Switch (Yes/No) */
+        .toggle-container {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .toggle-btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2rem;
+            border: 2px solid #eaeaea;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            background-color: #fff;
+            font-weight: 600;
+            min-width: 100px;
+            user-select: none;
+        }
+
+        .toggle-radio {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-radio:checked+.toggle-btn {
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-mid)) border-box;
+            color: var(--primary-gradient-mid);
+            box-shadow: 0 5px 15px rgba(200, 80, 192, 0.15);
+        }
+
+        .toggle-radio:focus+.toggle-btn {
+            box-shadow: 0 0 0 3px rgba(200, 80, 192, 0.25);
+        }
+
+        .toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Custom Checkboxes */
+        .custom-checkbox-container {
+            margin-top: 1rem;
+        }
+
+        .custom-checkbox-item {
+            position: relative;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            border-radius: 0.75rem;
+            transition: all var(--transition-speed) ease;
+            background-color: #fff;
+            border: 1px solid #eaeaea;
+            display: block;
+        }
+
+        .custom-checkbox-item:hover {
+            background-color: #f8f9fa;
+            transform: translateX(3px);
+        }
+
+        .custom-checkbox-input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .custom-checkbox-item .checkmark {
+            position: absolute;
+            top: 50%;
+            left: 1rem;
+            transform: translateY(-50%);
+            height: 1.25rem;
+            width: 1.25rem;
+            border-radius: 0.35rem;
+            border: 2px solid #eaeaea;
+            transition: all var(--transition-speed) ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+        }
+
+        .custom-checkbox-input:checked~.checkmark {
+            background: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-mid));
+            border-color: transparent;
+        }
+
+        .custom-checkbox-input:checked~.checkmark:after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: white;
+            font-size: 0.75rem;
+        }
+
+        .custom-checkbox-input:checked~.custom-checkbox-text {
+            color: var(--primary-gradient-mid);
+            font-weight: 500;
+        }
+
+        /* Floating Label Textarea */
+        .floating-textarea {
+            position: relative;
+            margin-top: 1.5rem;
+        }
+
+        .floating-textarea textarea {
+            width: 100%;
+            padding: 1.25rem;
+            border: 2px solid #eaeaea;
+            border-radius: 0.75rem;
+            background-color: white;
+            min-height: 120px;
+            transition: all var(--transition-speed) ease;
+            font-family: inherit;
+            font-size: 1rem;
+            line-height: 1.5;
+            resize: none;
+        }
+
+        .floating-textarea label {
+            position: absolute;
+            top: 1.25rem;
+            left: 1.25rem;
+            color: #6c757d;
+            transition: all var(--transition-speed) ease;
+            pointer-events: none;
+            font-size: 1rem;
+            background-color: transparent;
+            padding: 0 0.25rem;
+        }
+
+        .floating-textarea textarea:focus,
+        .floating-textarea textarea:not(:placeholder-shown) {
+            border-color: var(--primary-gradient-mid);
+            box-shadow: 0 5px 15px rgba(200, 80, 192, 0.15);
+            outline: none;
+        }
+
+        .floating-textarea textarea:focus+label,
+        .floating-textarea textarea:not(:placeholder-shown)+label {
+            top: -0.5rem;
+            left: 1rem;
+            font-size: 0.85rem;
+            color: var(--primary-gradient-mid);
+            background-color: white;
+            font-weight: 500;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            transition: all var(--transition-speed) ease;
+            font-weight: 500;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-previous {
+            background-color: white;
+            border: 2px solid #eaeaea;
+            color: #6c757d;
+        }
+
+        .btn-previous:hover {
+            background-color: #f8f9fa;
+            transform: translateX(-3px);
+        }
+
+        .btn-next {
+            background: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-mid));
+            border: none;
+            color: white;
+        }
+
+        .btn-next:hover {
+            transform: translateX(3px);
+            box-shadow: 0 5px 15px rgba(200, 80, 192, 0.3);
+        }
+
+        .btn-submit {
+            background: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-mid));
+            border: none;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(200, 80, 192, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(200, 80, 192, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(200, 80, 192, 0);
+            }
+        }
+
+        /* Slide Animation */
+        .slide-enter {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        .slide-enter-active {
+            opacity: 1;
+            transform: translateX(0);
+            transition: opacity 500ms, transform 500ms;
+        }
+
+        /* Responsive Styles */
+
+
+        @media (max-width: 767.98px) {
+            .header-container {
+                padding: 0.75rem 1rem;
+            }
+
+            .survey-title {
+                font-size: 1.25rem;
+            }
+
+            main {
+                margin-top: 4rem;
+            }
+
+            .question-card {
+                border-radius: 0.75rem;
+            }
+
+            .question-text {
+                font-size: 1.1rem;
+            }
+
+            .toggle-container {
+                gap: 1rem;
+            }
+
+            .toggle-btn {
+                padding: 0.6rem 1.25rem;
+                min-width: 80px;
+            }
+
+            .navigation-buttons {
+                margin-top: 1.5rem;
+            }
+
+            .nav-btn {
+                padding: 0.6rem 1.25rem;
+                min-width: 100px;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .toggle-container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .toggle-btn {
+                width: 100%;
+            }
+
+            .floating-textarea textarea {
+                padding: 1rem;
+            }
+
+            .floating-textarea label {
+                top: 1rem;
+                left: 1rem;
+            }
+        }
+
+        /* Touch-friendly inputs for mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .custom-checkbox-item {
+                padding: 1rem 1rem 1rem 3rem;
+            }
+
+            .toggle-btn,
+            .custom-checkbox-item,
+            .nav-btn {
+                min-height: 48px;
+                /* Minimum touch target size */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main Header -->
+    <header class="header-container py-3 px-4">
+        <div class="d-flex align-items-center mb-2">
+            <h1 class="survey-title">User Experience Survey</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <!-- All Questions in One Card -->
+                <div class="card question-card p-4">
+                    <div class="card-body">
+                        <!-- Question 1 -->
+                        <div class="question-section mb-5">
+
+                            <h2 class="question-text">How satisfied are you with our service?</h2>
+
+                            <div class="toggle-container">
+                                <label>
+                                    <input type="radio" name="satisfaction" class="toggle-radio" value="very_satisfied">
+                                    <div class="toggle-btn">
+                                        <i class="fas fa-smile me-2"></i> Very Satisfied
+                                    </div>
+                                </label>
+                                <label>
+                                    <input type="radio" name="satisfaction" class="toggle-radio" value="satisfied">
+                                    <div class="toggle-btn">
+                                        <i class="fas fa-meh me-2"></i> Satisfied
+                                    </div>
+                                </label>
+                                <label>
+                                    <input type="radio" name="satisfaction" class="toggle-radio" value="not_satisfied">
+                                    <div class="toggle-btn">
+                                        <i class="fas fa-frown me-2"></i> Not Satisfied
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 2 -->
+                        <div class="question-section mb-5">
+
+                            <h2 class="question-text">How did you hear about us?</h2>
+
+                            <div class="custom-checkbox-container">
+                                <label class="custom-checkbox-item">
+                                    <input type="radio" class="custom-checkbox-input" name="source"
+                                        value="social_media">
+                                    <span class="checkmark"></span>
+                                    <span class="custom-checkbox-text">Social Media</span>
+                                </label>
+
+                                <label class="custom-checkbox-item">
+                                    <input type="radio" class="custom-checkbox-input" name="source" value="friend">
+                                    <span class="checkmark"></span>
+                                    <span class="custom-checkbox-text">Friend or Colleague</span>
+                                </label>
+
+                                <label class="custom-checkbox-item">
+                                    <input type="radio" class="custom-checkbox-input" name="source" value="search">
+                                    <span class="checkmark"></span>
+                                    <span class="custom-checkbox-text">Search Engine</span>
+                                </label>
+
+                                <label class="custom-checkbox-item">
+                                    <input type="radio" class="custom-checkbox-input" name="source"
+                                        value="advertisement">
+                                    <span class="checkmark"></span>
+                                    <span class="custom-checkbox-text">Advertisement</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 3 -->
+                        <div class="question-section mb-5">
+
+                            <h2 class="question-text">Have you used our services before?</h2>
+
+                            <div class="toggle-container">
+                                <label>
+                                    <input type="radio" name="used_before" class="toggle-radio" value="yes">
+                                    <div class="toggle-btn">
+                                        <i class="fas fa-check me-2"></i> Yes
+                                    </div>
+                                </label>
+                                <label>
+                                    <input type="radio" name="used_before" class="toggle-radio" value="no">
+                                    <div class="toggle-btn">
+                                        <i class="fas fa-times me-2"></i> No
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 4 -->
+                        <div class="question-section mb-5">
+
+                            <h2 class="question-text">Which features are most important to you?</h2>
+
+                            <div class="custom-checkbox-container">
+                                <label class="custom-checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox-input" name="features"
+                                        value="ease_of_use">
+                                    <span class="checkmark"></span>
+                                    <span class="custom-checkbox-text">Ease of use</span>
+                                </label>
+
+                                <label class="custom-checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox-input" name="features" value="speed">
+                                    <span class="checkmark"></span>
+                                    <span class="custom-checkbox-text">Speed & performance</span>
+                                </label>
+
+                                <label class="custom-checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox-input" name="features" value="design">
+                                    <span class="checkmark"></span>
+                                    <span class="custom-checkbox-text">Modern design & aesthetics</span>
+                                </label>
+
+                                <label class="custom-checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox-input" name="features"
+                                        value="customer_support">
+                                    <span class="checkmark"></span>
+                                    <span class="custom-checkbox-text">Customer support</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 5 -->
+                        <div class="question-section">
+
+                            <h2 class="question-text">Do you have any suggestions for improvement?</h2>
+
+                            <div class="floating-textarea">
+                                <textarea id="suggestions" placeholder=" "></textarea>
+                                <label for="suggestions">Share your thoughts here...</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="navigation-buttons">
+                    <div></div> <!-- Empty div for spacing -->
+                    <button class="btn btn-submit nav-btn">
+                        Submit <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Header scroll effect
+            window.addEventListener('scroll', function () {
+                const header = document.querySelector('.header-container');
+                if (window.scrollY > 10) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Toggle buttons animation
+            const toggleRadios = document.querySelectorAll('.toggle-radio');
+            toggleRadios.forEach(radio => {
+                radio.addEventListener('change', function () {
+                    const parentCard = this.closest('.question-card');
+
+                    // Add a subtle bounce effect
+                    parentCard.style.transform = 'translateY(-8px)';
+                    setTimeout(() => {
+                        parentCard.style.transform = 'translateY(0)';
+                    }, 300);
+                });
+            });
+
+            // Checkbox interactions
+            const checkboxInputs = document.querySelectorAll('.custom-checkbox-input');
+            checkboxInputs.forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    const checkboxItem = this.closest('.custom-checkbox-item');
+
+                    if (this.checked) {
+                        checkboxItem.style.transform = 'translateX(5px)';
+                        setTimeout(() => {
+                            checkboxItem.style.transform = 'translateX(3px)';
+                        }, 200);
+                    } else {
+                        checkboxItem.style.transform = 'translateX(0)';
+                    }
+                });
+            });
+
+
+
+            // Navigation buttons interaction
+            const submitButton = document.querySelector('.btn-submit');
+
+            submitButton.addEventListener('click', function () {
+                // Simulate form submission with animation
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                this.disabled = true;
+
+                setTimeout(() => {
+                    alert('Survey submitted successfully! Thank you for your feedback.');
+                    this.innerHTML = '<i class="fas fa-check"></i> Submitted';
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SurveyForge 2025</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #a5b4fc;
+            --accent-color: #4f46e5;
+            --light-color: #f9fafb;
+            --dark-color: #1f2937;
+        }
+
+        body {
+            background-color: #f3f4f8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-color);
+        }
+
+        .app-header {
+            background: linear-gradient(120deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-container {
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            background-color: white;
+        }
+
+        .sidebar {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: calc(100vh - 200px);
+            overflow-y: auto;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .question-card .card-actions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .question-type {
+            font-size: 0.8rem;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .drag-handle {
+            cursor: grab;
+            color: #9ca3af;
+        }
+
+        .component-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+
+        .component-list .list-group-item {
+            cursor: pointer;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .component-list .list-group-item:hover {
+            background-color: var(--light-color);
+            transform: translateX(5px);
+        }
+
+        .form-switch .form-check-input {
+            width: 2.5em;
+            height: 1.25em;
+        }
+
+        .form-switch .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .card-toolbar {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .preview-container {
+            background-color: #f3f4f8;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-placeholder {
+            border: 2px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .preview-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .conditional-logic {
+            background-color: #f3f4f8;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: 1px dashed #d1d5db;
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                height: auto;
+                margin-bottom: 2rem;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1a1c23;
+                color: #f9fafb;
+            }
+
+            .app-container,
+            .sidebar,
+            .question-card {
+                background-color: #252836;
+                border-color: rgba(255, 255, 255, 0.05);
+            }
+
+            .question-type {
+                background-color: #374151;
+                color: #e5e7eb;
+            }
+
+            .card-toolbar,
+            .component-list .list-group-item:hover {
+                background-color: #2d303e;
+            }
+
+            .preview-container {
+                background-color: #1e2029;
+            }
+
+            .question-placeholder {
+                border-color: #4b5563;
+                color: #9ca3af;
+            }
+
+            .conditional-logic {
+                background-color: #2d303e;
+                border-color: #4b5563;
+            }
+        }
+
+        /* Custom dropdown styles */
+        .custom-dropdown {
+            position: relative;
+        }
+
+        .custom-dropdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            text-align: left;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            background-color: white;
+            border: 1px solid #d1d5db;
+            cursor: pointer;
+        }
+
+        .custom-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .custom-dropdown-menu.show {
+            display: block;
+        }
+
+        .custom-dropdown-item {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+
+        .custom-dropdown-item:hover {
+            background-color: #f3f4f8;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-0">SurveyForge 2025</h1>
+                    <p class="mb-0 opacity-75">Advanced Survey Builder</p>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-light me-2">
+                        <i class="fas fa-floppy-disk me-2"></i> Save
+                    </button>
+                    <button class="btn btn-outline-light">
+                        <i class="fas fa-paper-plane me-2"></i> Publish
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-4 mb-5">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="app-container fade-in">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <input type="text" class="form-control form-control-lg shadow-sm" placeholder="Survey Title"
+                                value="Customer Satisfaction Survey 2025">
+                            <div class="text-muted mt-2">
+                                <small>Last edited: Feb 26, 2025 • Responses: 0</small>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-outline-secondary">
+                                    <i class="fas fa-eye me-2"></i> Preview
+                                </button>
+                                <button class="btn btn-outline-secondary">
+                                    <i class="fas fa-gear me-2"></i> Settings
+                                </button>
+                                <button class="btn btn-outline-secondary">
+                                    <i class="fas fa-share-nodes me-2"></i> Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="sidebar">
+                                <h5 class="mb-3">Question Types</h5>
+                                <div class="component-list list-group">
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-font component-icon"></i>
+                                        <span>Short Text</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-align-left component-icon"></i>
+                                        <span>Long Text</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-check-square component-icon"></i>
+                                        <span>Multiple Choice</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-list component-icon"></i>
+                                        <span>Checkbox List</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-sort-numeric-down component-icon"></i>
+                                        <span>Number Scale</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-star component-icon"></i>
+                                        <span>Rating</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-calendar-alt component-icon"></i>
+                                        <span>Date & Time</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-th component-icon"></i>
+                                        <span>Matrix / Grid</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-upload component-icon"></i>
+                                        <span>File Upload</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-image component-icon"></i>
+                                        <span>Image Choice</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-sliders-h component-icon"></i>
+                                        <span>Slider</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-map-marker-alt component-icon"></i>
+                                        <span>Location</span>
+                                    </div>
+                                </div>
+
+                                <h5 class="mt-4 mb-3">Layout Elements</h5>
+                                <div class="component-list list-group">
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-heading component-icon"></i>
+                                        <span>Heading</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-paragraph component-icon"></i>
+                                        <span>Paragraph</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-grip-lines component-icon"></i>
+                                        <span>Divider</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-columns component-icon"></i>
+                                        <span>Columns</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-images component-icon"></i>
+                                        <span>Media</span>
+                                    </div>
+                                </div>
+
+                                <h5 class="mt-4 mb-3">Advanced</h5>
+                                <div class="component-list list-group">
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-random component-icon"></i>
+                                        <span>Logic Jump</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-calculator component-icon"></i>
+                                        <span>Calculation</span>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center" draggable="true">
+                                        <i class="fas fa-code component-icon"></i>
+                                        <span>Custom HTML</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-toolbar d-flex justify-content-between align-items-center">
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="badge bg-primary rounded-pill">3 questions</span>
+                                </div>
+                            </div>
+
+                            <div class="preview-container">
+                                <!-- Example question cards -->
+                                <div class="question-card fade-in">
+                                    <div class="card-actions">
+                                        <button class="btn btn-sm btn-light rounded-circle">
+                                            <i class="fas fa-clone"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-light rounded-circle">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        <span class="drag-handle ms-2">
+                                            <i class="fas fa-grip-vertical"></i>
+                                        </span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="fas fa-grip-vertical drag-handle me-2"></i>
+                                        <div>
+                                            <span class="question-type">Multiple Choice</span>
+                                            <h5 class="mb-0">How satisfied are you with our product?</h5>
+                                        </div>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q1">
+                                        <label class="form-check-label">Very satisfied</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q1">
+                                        <label class="form-check-label">Satisfied</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q1">
+                                        <label class="form-check-label">Neutral</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q1">
+                                        <label class="form-check-label">Dissatisfied</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q1">
+                                        <label class="form-check-label">Very dissatisfied</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="q1">
+                                        <label class="form-check-label">Other (Please specify)</label>
+                                        <input type="text" class="form-control form-control-sm mt-1"
+                                            placeholder="Your answer" disabled>
+                                    </div>
+
+                                    <div class="mt-3 d-flex justify-content-end">
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-plus me-1"></i> Add Option
+                                        </button>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="required1">
+                                            <label class="form-check-label" for="required1">Required</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <button class="btn btn-sm btn-outline-secondary" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#logic1">
+                                            <i class="fas fa-code-branch me-1"></i> Logic
+                                        </button>
+
+                                        <div class="collapse mt-3" id="logic1">
+                                            <div class="conditional-logic">
+                                                <p class="mb-2"><small>If respondent selects:</small></p>
+                                                <div class="custom-dropdown mb-2">
+                                                    <div class="custom-dropdown-toggle">
+                                                        <span>Very dissatisfied</span>
+                                                        <i class="fas fa-chevron-down"></i>
+                                                    </div>
+                                                </div>
+
+                                                <p class="mb-2"><small>Then:</small></p>
+                                                <div class="custom-dropdown mb-2">
+                                                    <div class="custom-dropdown-toggle">
+                                                        <span>Show Question</span>
+                                                        <i class="fas fa-chevron-down"></i>
+                                                    </div>
+                                                </div>
+
+                                                <div class="custom-dropdown">
+                                                    <div class="custom-dropdown-toggle">
+                                                        <span>How can we improve?</span>
+                                                        <i class="fas fa-chevron-down"></i>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between mt-3">
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-plus me-1"></i> Add Condition
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-secondary">
+                                                        <i class="fas fa-trash me-1"></i> Remove
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-card fade-in">
+                                    <div class="card-actions">
+                                        <button class="btn btn-sm btn-light rounded-circle">
+                                            <i class="fas fa-clone"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-light rounded-circle">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        <span class="drag-handle ms-2">
+                                            <i class="fas fa-grip-vertical"></i>
+                                        </span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="fas fa-grip-vertical drag-handle me-2"></i>
+                                        <div>
+                                            <span class="question-type">Star Rating</span>
+                                            <h5 class="mb-0">How would you rate our customer service?</h5>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="d-flex me-4">
+                                            <i class="fas fa-star fa-2x text-warning"></i>
+                                            <i class="fas fa-star fa-2x text-warning"></i>
+                                            <i class="fas fa-star fa-2x text-warning"></i>
+                                            <i class="fas fa-star fa-2x text-warning"></i>
+                                            <i class="far fa-star fa-2x text-warning"></i>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted">4 out of 5</small>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <div>
+                                            <small class="text-muted">Poor</small>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted">Excellent</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="required2" checked>
+                                            <label class="form-check-label" for="required2">Required</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-card fade-in">
+                                    <div class="card-actions">
+                                        <button class="btn btn-sm btn-light rounded-circle">
+                                            <i class="fas fa-clone"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-light rounded-circle">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        <span class="drag-handle ms-2">
+                                            <i class="fas fa-grip-vertical"></i>
+                                        </span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="fas fa-grip-vertical drag-handle me-2"></i>
+                                        <div>
+                                            <span class="question-type">Long Text</span>
+                                            <h5 class="mb-0">How can we improve?</h5>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <textarea class="form-control" rows="3"
+                                            placeholder="Your feedback here..."></textarea>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="required3">
+                                            <label class="form-check-label" for="required3">Required</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-placeholder">
+                                    <i class="fas fa-plus-circle fa-2x mb-2"></i>
+                                    <p class="mb-0">Drag and drop question types here</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 text-center">
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i> Add Question
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview mode toggle button -->
+    <button class="btn btn-primary preview-toggle shadow">
+        <i class="fas fa-eye"></i>
+    </button>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Basic interactivity
+        document.addEventListener('DOMContentLoaded', function () {
+            // Make the dropdowns interactive
+            const dropdownToggles = document.querySelectorAll('.custom-dropdown-toggle');
+
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', function () {
+                    const parent = this.closest('.custom-dropdown');
+                    const menu = parent.querySelector('.custom-dropdown-menu');
+
+                    if (menu) {
+                        menu.classList.toggle('show');
+                    } else {
+                        // Create menu if it doesn't exist
+                        const newMenu = document.createElement('div');
+                        newMenu.className = 'custom-dropdown-menu show';
+
+                        // Sample items
+                        const items = ['Very satisfied', 'Satisfied', 'Neutral', 'Dissatisfied', 'Very dissatisfied'];
+
+                        items.forEach(item => {
+                            const itemEl = document.createElement('div');
+                            itemEl.className = 'custom-dropdown-item';
+                            itemEl.textContent = item;
+                            itemEl.addEventListener('click', function () {
+                                const toggleText = toggle.querySelector('span');
+                                toggleText.textContent = this.textContent;
+                                newMenu.classList.remove('show');
+                            });
+                            newMenu.appendChild(itemEl);
+                        });
+
+                        parent.appendChild(newMenu);
+                    }
+                });
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function (e) {
+                const dropdowns = document.querySelectorAll('.custom-dropdown-menu.show');
+                dropdowns.forEach(dropdown => {
+                    // Check if click is outside dropdown
+                    if (!dropdown.parentNode.contains(e.target)) {
+                        dropdown.classList.remove('show');
+                    }
+                });
+            });
+
+            // Preview mode toggle
+            const previewToggle = document.querySelector('.preview-toggle');
+            const questionCards = document.querySelectorAll('.question-card');
+
+            previewToggle.addEventListener('click', function () {
+                const icon = this.querySelector('i');
+                const isPreview = icon.classList.contains('fa-eye-slash');
+
+                if (isPreview) {
+                    // Exit preview mode
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+
+                    questionCards.forEach(card => {
+                        // Show edit controls
+                        const actions = card.querySelector('.card-actions');
+                        const dragHandle = card.querySelectorAll('.drag-handle');
+                        const buttons = card.querySelectorAll('button');
+
+                        if (actions) actions.style.display = 'flex';
+                        dragHandle.forEach(handle => handle.style.display = 'inline-block');
+                        buttons.forEach(button => button.disabled = false);
+                    });
+
+                    // Show toolbar
+                    document.querySelector('.card-toolbar').style.display = 'flex';
+                } else {
+                    // Enter preview mode
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+
+                    questionCards.forEach(card => {
+                        // Hide edit controls
+                        const actions = card.querySelector('.card-actions');
+                        const dragHandle = card.querySelectorAll('.drag-handle');
+                        const buttons = card.querySelectorAll('button');
+
+                        if (actions) actions.style.display = 'none';
+                        dragHandle.forEach(handle => handle.style.display = 'none');
+                        buttons.forEach(button => button.disabled = true);
+                    });
+
+                    // Hide toolbar
+                    document.querySelector('.card-toolbar').style.display = 'none';
+                }
+            });
+
+            // Simple drag and drop functionality
+            const componentItems = document.querySelectorAll('.component-list .list-group-item');
+            const dropZone = document.querySelector('.question-placeholder');
+
+            componentItems.forEach(item => {
+                item.addEventListener('dragstart', function (e) {
+                    e.dataTransfer.setData('text/plain', item.textContent.trim());
+                    setTimeout(() => {
+                        item.classList.add('dragging');
+                    }, 0);
+                });
+
+                item.addEventListener('dragend', function () {
+                    item.classList.remove('dragging');
+                });
+            });
+
+            dropZone.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                dropZone.classList.add('bg-light');
+            });
+
+            dropZone.addEventListener('dragleave', function () {
+                dropZone.classList.remove('bg-light');
+            });
+
+            dropZone.addEventListener('drop', function (e) {
+                e.preventDefault();
+                dropZone.classList.remove('bg-light');
+
+                const componentType = e.dataTransfer.getData('text/plain');
+
+                // Create a template based on question type
+                addNewQuestion(componentType);
+            });
+
+            // Function to add a new question
+            function addNewQuestion(type) {
+                // Create a new question card
+                const newCard = document.createElement('div');
+                newCard.className = 'question-card fade-in';
+
+                let questionContent = '';
+
+                // Generate content based on type
+                switch (type) {
+                    case 'Short Text':
+                        questionContent = createShortTextQuestion();
+                        break;
+                    case 'Long Text':
+                        questionContent = createLongTextQuestion();
+                        break;
+                    case 'Multiple Choice':
+                        questionContent = createMultipleChoiceQuestion();
+                        break;
+                    case 'Checkbox List':
+                        questionContent = createCheckboxQuestion();
+                        break;
+                    case 'Rating':
+                        questionContent = createRatingQuestion();
+                        break;
+                    default:
+                        questionContent = createGenericQuestion(type);
+                }
+
+                newCard.innerHTML = questionContent;
+
+                // Insert before the placeholder
+                dropZone.parentNode.insertBefore(newCard, dropZone);
+
+                // Update question count
+                updateQuestionCount();
+            }
+
+            // Helper functions to create different question types
+            function createShortTextQuestion() {
+                return `
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-light rounded-circle">
+                            <i class="fas fa-clone"></i>
+                        </button>
+                        <button class="btn btn-sm btn-light rounded-circle">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <span class="drag-handle ms-2">
+                            <i class="fas fa-grip-vertical"></i>
+                        </span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-grip-vertical drag-handle me-2"></i>
+                        <div>
+                            <span class="question-type">Short Text</span>
+                            <h5 class="mb-0" contenteditable="true">Your question here</h5>
+                        </div>
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" placeholder="Short answer text">
+                    </div>
+                    <div class="mt-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="required-new">
+                            <label class="form-check-label" for="required-new">Required</label>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function createLongTextQuestion() {
+                return `
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-light rounded-circle">
+                            <i class="fas fa-clone"></i>
+                        </button>
+                        <button class="btn btn-sm btn-light rounded-circle">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <span class="drag-handle ms-2">
+                            <i class="fas fa-grip-vertical"></i>
+                        </span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-grip-vertical drag-handle me-2"></i>
+                        <div>
+                            <span class="question-type">Long Text</span>
+                            <h5 class="mb-0" contenteditable="true">Your question here</h5>
+                        </div>
+                    </div>
+                    <div>
+                        <textarea class="form-control" rows="3" placeholder="Long answer text"></textarea>
+                    </div>
+                    <div class="mt-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="required-new">
+                            <label class="form-check-label" for="required-new">Required</label>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function createMultipleChoiceQuestion() {
+                return `
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-light rounded-circle">
+                            <i class="fas fa-clone"></i>
+                        </button>
+                        <button class="btn btn-sm btn-light rounded-circle">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <span class="drag-handle ms-2">
+                            <i class="fas fa-grip-vertical"></i>
+                        </span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-grip-vertical drag-handle me-2"></i>
+                        <div>
+                            <span class="question-type">Multiple Choice</span>
+                            <h5 class="mb-0" contenteditable="true">Your question here</h5>
+                        </div>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="q-new">
+                        <label class="form-check-label" contenteditable="true">Option 1</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="q-new">
+                        <label class="form-check-label" contenteditable="true">Option 2</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="q-new">
+                        <label class="form-check-label" contenteditable="true">Option 3</label>
+                    </div>
+                    <div class="mt-3 d-flex justify-content-end">
+                        <button class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-plus me-1"></i> Add Option
+                        </button>
+                    </div>
+                    <div class="mt-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="required-new">
+                            <label class="form-check-label" for="required-new">Required</label>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function createCheckboxQuestion() {
+                return `
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-light rounded-circle">
+                            <i class="fas fa-clone"></i>
+                        </button>
+                        <button class="btn btn-sm btn-light rounded-circle">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <span class="drag-handle ms-2">
+                            <i class="fas fa-grip-vertical"></i>
+                        </span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-grip-vertical drag-handle me-2"></i>
+                        <div>
+                            <span class="question-type">Checkbox List</span>
+                            <h5 class="mb-0" contenteditable="true">Your question here</h5>
+                        </div>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox">
+                        <label class="form-check-label" contenteditable="true">Option 1</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox">
+                        <label class="form-check-label" contenteditable="true">Option 2</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox">
+                        <label class="form-check-label" contenteditable="true">Option 3</label>
+                    </div>
+                    <div class="mt-3 d-flex justify-content-end">
+                        <button class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-plus me-1"></i> Add Option
+                        </button>
+                    </div>
+                    <div class="mt-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="required-new">
+                            <label class="form-check-label" for="required-new">Required</label>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function createRatingQuestion() {
+                return `
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-light rounded-circle">
+                            <i class="fas fa-clone"></i>
+                        </button>
+                        <button class="btn btn-sm btn-light rounded-circle">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <span class="drag-handle ms-2">
+                            <i class="fas fa-grip-vertical"></i>
+                        </span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-grip-vertical drag-handle me-2"></i>
+                        <div>
+                            <span class="question-type">Star Rating</span>
+                            <h5 class="mb-0" contenteditable="true">Your question here</h5>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex me-4">
+                            <i class="far fa-star fa-2x text-warning"></i>
+                            <i class="far fa-star fa-2x text-warning"></i>
+                            <i class="far fa-star fa-2x text-warning"></i>
+                            <i class="far fa-star fa-2x text-warning"></i>
+                            <i class="far fa-star fa-2x text-warning"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted">0 out of 5</small>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-3">
+                        <div>
+                            <small class="text-muted">Poor</small>
+                        </div>
+                        <div>
+                            <small class="text-muted">Excellent</small>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="required-new">
+                            <label class="form-check-label" for="required-new">Required</label>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function createGenericQuestion(type) {
+                return `
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-light rounded-circle">
+                            <i class="fas fa-clone"></i>
+                        </button>
+                        <button class="btn btn-sm btn-light rounded-circle">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <span class="drag-handle ms-2">
+                            <i class="fas fa-grip-vertical"></i>
+                        </span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-grip-vertical drag-handle me-2"></i>
+                        <div>
+                            <span class="question-type">${type}</span>
+                            <h5 class="mb-0" contenteditable="true">Your question here</h5>
+                        </div>
+                    </div>
+                    <div class="p-4 border rounded text-center bg-light">
+                        <i class="fas fa-cog me-2"></i> ${type} Component
+                    </div>
+                    <div class="mt-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="required-new">
+                            <label class="form-check-label" for="required-new">Required</label>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Update question count
+            function updateQuestionCount() {
+                const count = document.querySelectorAll('.question-card').length;
+                const badge = document.querySelector('.card-toolbar .badge');
+                badge.textContent = count + ' questions';
+            }
+
+            // Handle delete buttons
+            document.addEventListener('click', function (e) {
+                if (e.target.closest('.fa-trash')) {
+                    const card = e.target.closest('.question-card');
+                    if (card) {
+                        // Add fade out animation
+                        card.classList.add('fade-out');
+
+                        // Delete after animation
+                        setTimeout(() => {
+                            card.remove();
+                            updateQuestionCount();
+                        }, 300);
+                    }
+                }
+
+                // Handle add option button
+                if (e.target.closest('.btn-outline-primary')) {
+                    const btn = e.target.closest('.btn-outline-primary');
+
+                    // Check if it's an "Add Option" button
+                    if (btn.textContent.includes('Add Option')) {
+                        const card = btn.closest('.question-card');
+                        const lastOption = card.querySelector('.form-check:last-of-type');
+
+                        if (card.querySelector('input[type="radio"]')) {
+                            // For radio buttons
+                            const newOption = document.createElement('div');
+                            newOption.className = 'form-check mb-2';
+                            newOption.innerHTML = `
+                                <input class="form-check-input" type="radio" name="${lastOption.querySelector('input').name}">
+                                <label class="form-check-label" contenteditable="true">New Option</label>
+                            `;
+
+                            // Insert before the add button
+                            btn.closest('.mt-3').before(newOption);
+                        } else if (card.querySelector('input[type="checkbox"]')) {
+                            // For checkboxes
+                            const newOption = document.createElement('div');
+                            newOption.className = 'form-check mb-2';
+                            newOption.innerHTML = `
+                                <input class="form-check-input" type="checkbox">
+                                <label class="form-check-label" contenteditable="true">New Option</label>
+                            `;
+
+                            // Insert before the add button
+                            btn.closest('.mt-3').before(newOption);
+                        }
+                    }
+                }
+            });
+
+            // Add question button
+            const addQuestionBtn = document.querySelector('.btn-primary:not(.preview-toggle)');
+
+            addQuestionBtn.addEventListener('click', function () {
+                // Default to adding a multiple choice question
+                addNewQuestion('Multiple Choice');
+            });
+
+            // Implement star rating functionality
+            document.addEventListener('click', function (e) {
+                if (e.target.classList.contains('fa-star') || e.target.classList.contains('far') && e.target.classList.contains('fa-star')) {
+                    const stars = e.target.closest('.d-flex').querySelectorAll('i');
+                    const small = e.target.closest('.d-flex').nextElementSibling.querySelector('small');
+                    let rating = 0;
+
+                    for (let i = 0; i < stars.length; i++) {
+                        if (i <= Array.from(stars).indexOf(e.target)) {
+                            stars[i].className = 'fas fa-star fa-2x text-warning';
+                            rating++;
+                        } else {
+                            stars[i].className = 'far fa-star fa-2x text-warning';
+                        }
+                    }
+
+                    small.textContent = rating + ' out of 5';
+                }
+            });
+
+            // Advanced features for demonstration
+            // AI assist button (concept demo)
+            const title = document.querySelector('input[value="Customer Satisfaction Survey 2025"]');
+
+            title.addEventListener('input', function () {
+                // Demo feature - on title change, show "AI suggestions" toast after a delay
+                if (title.value.length > 15) {
+                    setTimeout(() => {
+                        // Create a toast notification with AI suggestions
+                        const toast = document.createElement('div');
+                        toast.className = 'toast position-fixed bottom-0 end-0 m-4 show';
+                        toast.setAttribute('role', 'alert');
+                        toast.innerHTML = `
+                            <div class="toast-header">
+                                <i class="fas fa-robot me-2 text-primary"></i>
+                                <strong class="me-auto">AI Assistant</strong>
+                                <small>Just now</small>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                            </div>
+                            <div class="toast-body">
+                                <p><small>I've analyzed your survey and have some suggestions:</small></p>
+                                <div class="d-flex align-items-center mb-2">
+                                    <button class="btn btn-sm btn-outline-primary me-2">
+                                        <i class="fas fa-plus me-1"></i> Add NPS Question
+                                    </button>
+                                    <small class="text-muted">Recommended for this type of survey</small>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-sm btn-outline-primary me-2">
+                                        <i class="fas fa-magic me-1"></i> Generate Questions
+                                    </button>
+                                    <small class="text-muted">Based on your industry</small>
+                                </div>
+                            </div>
+                        `;
+
+                        document.body.appendChild(toast);
+
+                        // Remove toast after 5 seconds
+                        setTimeout(() => {
+                            toast.remove();
+                        }, 5000);
+                    }, 1500);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREUS - Premium Audio Experience</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #e9d083;
+            --dark: #0A0A0A;
+            --dark-gray: #1E1E1E;
+            --light-gray: #F5F5F5;
+            --cream: #F8F6F0;
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--dark);
+            line-height: 1.7;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .btn {
+            border-radius: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+            padding: 12px 30px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gold {
+            background-color: var(--gold);
+            color: var(--dark);
+            border: none;
+        }
+
+        .btn-gold:hover {
+            background-color: var(--gold-light);
+            color: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-gold {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+        }
+
+        .btn-outline-gold:hover {
+            background-color: var(--gold);
+            color: var(--dark);
+        }
+
+        .navbar {
+            background-color: transparent;
+            padding: 20px 0;
+            transition: all 0.4s ease;
+        }
+
+        .navbar.scrolled {
+            background-color: rgba(10, 10, 10, 0.95);
+            padding: 10px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 28px;
+            letter-spacing: 2px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin: 0 10px;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--gold);
+            bottom: -4px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.8)), url('https://images.unsplash.com/photo-1558478551-1a378f63328e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&h=800&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .accent-line {
+            display: inline-block;
+            width: 100px;
+            height: 3px;
+            background-color: var(--gold);
+            margin: 15px 0;
+        }
+
+        .product-image-container {
+            position: relative;
+        }
+
+        .product-image {
+            border-radius: 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transition: transform 0.5s ease;
+        }
+
+        .product-image:hover {
+            transform: scale(1.03);
+        }
+
+        .gold-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background-color: var(--gold);
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            z-index: -1;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            color: var(--gold);
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .feature-card {
+            padding: 40px 30px;
+            background-color: white;
+            border: none;
+            border-radius: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: var(--gold);
+            opacity: 0.1;
+            border-radius: 50%;
+            top: -20px;
+            left: -20px;
+            z-index: 0;
+        }
+
+        .feature-icon {
+            color: var(--gold);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-title {
+            font-weight: 700;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-card {
+            position: relative;
+            padding: 30px;
+            background-color: white;
+            border-radius: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            margin-top: 40px;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: -40px;
+            left: 30px;
+        }
+
+        .testimonial-rating {
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-name {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .testimonial-date {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .specs-card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+
+        .specs-list li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .specs-list i {
+            color: var(--gold);
+            margin-right: 15px;
+        }
+
+        .price-tag {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+
+        .price-currency {
+            font-size: 1.5rem;
+            font-weight: 400;
+            vertical-align: super;
+        }
+
+        .review-filter-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .review-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .review-header {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .review-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .review-rating {
+            color: var(--gold);
+            margin-top: 5px;
+        }
+
+        .review-verified {
+            font-size: 0.8rem;
+            color: #28a745;
+            display: flex;
+            align-items: center;
+        }
+
+        .review-verified i {
+            margin-right: 5px;
+        }
+
+        .review-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .review-date {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .review-images {
+            display: flex;
+            overflow-x: auto;
+            margin: 15px 0;
+            padding-bottom: 10px;
+        }
+
+        .review-images img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .review-images img:hover {
+            transform: scale(1.05);
+        }
+
+        .review-actions {
+            margin-top: 15px;
+            display: flex;
+        }
+
+        .review-action-btn {
+            background-color: var(--light-gray);
+            border: none;
+            padding: 8px 15px;
+            margin-right: 10px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .review-action-btn:hover {
+            background-color: var(--gold-light);
+        }
+
+        .review-comments {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .review-comment {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .comment-content {
+            background-color: var(--light-gray);
+            padding: 15px;
+            border-radius: 0 15px 15px 15px;
+            flex: 1;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .comment-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .comment-date {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .comment-text {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        .review-form {
+            background-color: white;
+            padding: 40px;
+            border-radius: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .star-rating {
+            color: #ddd;
+            font-size: 1.5rem;
+            display: inline-block;
+        }
+
+        .star-rating .fas {
+            color: var(--gold);
+        }
+
+        .progress-bar {
+            background-color: var(--gold);
+        }
+
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 80px 0 40px;
+        }
+
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-list li {
+            margin-bottom: 15px;
+        }
+
+        .footer-list a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-list a:hover {
+            color: var(--gold);
+            padding-left: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 60px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .divider {
+            height: 5px;
+            width: 50px;
+            background-color: var(--gold);
+            margin: 15px 0;
+        }
+
+        @media (max-width: 991.98px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .feature-card,
+            .testimonial-card,
+            .specs-card,
+            .review-card,
+            .review-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">AUREUS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#specs">Specifications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Testimonials</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#reviews">Reviews</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-gold" href="#buy">Buy Now</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-content">
+                    <p class="section-subtitle mb-3">Premium Audio Experience</p>
+                    <h1 class="hero-title">AUREUS SOVEREIGN</h1>
+                    <div class="accent-line"></div>
+                    <p class="hero-subtitle">Experience sound perfection with our flagship wireless headphones, crafted
+                        from premium materials and engineered for the most discerning audiophiles.</p>
+                    <div class="d-flex mt-4">
+                        <a href="#buy" class="btn btn-gold me-3">Shop Now</a>
+                        <a href="#features" class="btn btn-outline-gold">Discover</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-5 mt-lg-0">
+                    <div class="product-image-container text-center text-lg-end">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80"
+                            alt="AUREUS SOVEREIGN Headphones" class="img-fluid product-image">
+                        <div class="gold-circle d-none d-lg-block"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5 py-md-7 bg-white" id="features">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <p class="section-subtitle">Unparalleled Quality</p>
+                <h2 class="section-title">Exceptional Features</h2>
+                <div class="accent-line mx-auto"></div>
+                <p class="lead mx-auto" style="max-width: 700px;">Our premium headphones are meticulously crafted with
+                    attention to every detail, offering an audio experience that transcends the ordinary.</p>
+            </div>
+
+            <div class="row g-4 mt-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <h4 class="feature-title">Advanced Noise Cancellation</h4>
+                        <p>Our proprietary algorithm adapts to your environment in real-time, creating a perfect cocoon
+                            of silence for immersive listening.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-battery-full"></i>
+                        </div>
+                        <h4 class="feature-title">50-Hour Battery Life</h4>
+                        <p>Enjoy uninterrupted listening for days with our industry-leading battery performance and
+                            rapid charging technology.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <h4 class="feature-title">Premium Sound Engineering</h4>
+                        <p>Custom-tuned 50mm diamond-coated drivers deliver pristine audio across the entire sound
+                            spectrum.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <h4 class="feature-title">Luxury Materials</h4>
+                        <p>Handcrafted with Italian leather, memory foam cushioning, and aerospace-grade aluminum for
+                            unmatched comfort and durability.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-bluetooth"></i>
+                        </div>
+                        <h4 class="feature-title">Multipoint Connectivity</h4>
+                        <p>Seamlessly connect to multiple devices simultaneously and switch between them with intuitive
+                            touch controls.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <h4 class="feature-title">IPX5 Water Resistance</h4>
+                        <p>Protected against rain, splashes, and perspiration, perfect for active lifestyles in any
+                            environment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Gallery Section -->
+    <section class="py-5 bg-light">
+        <div class="container py-5">
+            <div class="row g-4">
+                <div class="col-md-7">
+                    <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=700&h=500&q=80"
+                        alt="AUREUS SOVEREIGN Gold Edition" class="img-fluid shadow product-image">
+                </div>
+                <div class="col-md-5">
+                    <div class="row g-4 h-100">
+                        <div class="col-6">
+                            <img src="https://images.unsplash.com/photo-1599669454699-248893623440?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=350&h=250&q=80"
+                                alt="AUREUS SOVEREIGN Detail"
+                                class="img-fluid shadow product-image h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-6">
+                            <img src="https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=350&h=250&q=80"
+                                alt="AUREUS SOVEREIGN Side View"
+                                class="img-fluid shadow product-image h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="col-12">
+                            <img src="https://images.unsplash.com/photo-1481207727306-1a9f151fca7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=700&h=250&q=80"
+                                alt="AUREUS SOVEREIGN Accessories" class="img-fluid shadow product-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specifications Section -->
+    <section class="py-5 py-md-7 bg-white" id="specs">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-5 mb-5 mb-lg-0">
+                    <p class="section-subtitle">Technical Excellence</p>
+                    <h2 class="section-title">Technical Specifications</h2>
+                    <div class="divider"></div>
+                    <p class="lead">Engineered with precision, the AUREUS SOVEREIGN delivers exceptional performance in
+                        every aspect.</p>
+
+                    <div class="specs-card mt-4">
+                        <ul class="list-unstyled specs-list">
+                            <li><i class="fas fa-circle-check"></i> <strong>Driver:</strong> 50mm Diamond-coated dynamic
+                                drivers</li>
+                            <li><i class="fas fa-circle-check"></i> <strong>Frequency Response:</strong> 4Hz - 45kHz
+                                (extended range)</li>
+                            <li><i class="fas fa-circle-check"></i> <strong>Impedance:</strong> 32 Ohms</li>
+                            <li><i class="fas fa-circle-check"></i> <strong>Sensitivity:</strong> 105 dB/mW</li>
+                            <li><i class="fas fa-circle-check"></i> <strong>Battery Life:</strong> Up to 50 hours (ANC
+                                on), 65 hours (ANC off)</li>
+                            <li><i class="fas fa-circle-check"></i> <strong>Charging Time:</strong> 90 minutes full
+                                charge, 10-minute quick charge for 5 hours playback</li>
+                            <li><i class="fas fa-circle-check"></i> <strong>Bluetooth:</strong> 5.3 with aptX Lossless,
+                                LDAC, AAC support</li>
+                            <li><i class="fas fa-circle-check"></i> <strong>Noise Cancellation:</strong> Adaptive ANC
+                                with 8 precision microphones</li>
+                            <li><i class="fas fa-circle-check"></i> <strong>Water Resistance:</strong> IPX5 rating</li>
+                            <li><i class="fas fa-circle-check"></i> <strong>Weight:</strong> 310g</li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-5 text-center text-lg-start">
+                        <div class="price-tag mb-4">
+                            <span class="price-currency">$</span>599
+                        </div>
+                        <a href="#buy" class="btn btn-gold me-3">Add to Cart</a>
+                        <a href="#" class="btn btn-outline-gold">Download Manual</a>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-waveform"></i>
+                                </div>
+                                <h4 class="feature-title">Sound Profile</h4>
+                                <p>Meticulously tuned for audiophile-grade clarity with customizable EQ profiles.
+                                    Expansive soundstage with precise instrument separation for an immersive listening
+                                    experience.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-volume-mute"></i>
+                                </div>
+                                <h4 class="feature-title">Noise Cancellation</h4>
+                                <p>Class-leading ANC with adaptive technology that continuously adjusts to your
+                                    environment. Up to 40dB of noise reduction across all frequencies for complete
+                                    immersion.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-microphone-alt"></i>
+                                </div>
+                                <h4 class="feature-title">Call Quality</h4>
+                                <p>Crystal clear voice transmission with 4-mic beamforming technology and AI-powered
+                                    background noise suppression for perfect voice isolation in any environment.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-box-open"></i>
+                                </div>
+                                <h4 class="feature-title">In The Box</h4>
+                                <p>AUREUS SOVEREIGN headphones, handcrafted leather case, USB-C charging cable, premium
+                                    braided 3.5mm audio cable, airplane adapter, and microfiber cleaning cloth.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-5 py-md-7 bg-cream" id="testimonials">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <p class="section-subtitle">Client Experiences</p>
+                <h2 class="section-title">What Our Clients Say</h2>
+                <div class="accent-line mx-auto"></div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="testimonial-card">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="James Wilson"
+                            class="testimonial-avatar">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"After trying numerous high-end headphones over the years, the
+                            AUREUS SOVEREIGN stands in a league of its own. The sound quality is exceptional, with
+                            crystal clear highs and deep, punchy bass that never overwhelms. The noise cancellation is
+                            simply magical."</p>
+                        <h5 class="testimonial-name">James Wilson</h5>
+                        <p class="testimonial-date">Music Producer, Los Angeles</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="testimonial-card">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sophia Chen"
+                            class="testimonial-avatar">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"As a concert violinist, I'm extremely particular about audio
+                            quality. These headphones reveal details in my favorite recordings I've never heard before.
+                            The build quality is exceptional, and they're comfortable enough for all-day studio
+                            sessions."</p>
+                        <h5 class="testimonial-name">Sophia Chen</h5>
+                        <p class="testimonial-date">Classical Musician, Vienna</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="testimonial-card">
+                        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Marcus Johnson"
+                            class="testimonial-avatar">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="testimonial-text">"The sound quality and noise cancellation are phenomenal. Battery
+                            life exceeds expectations - I only charge them once a week. Nearly perfect, with only the
+                            companion app needing minor refinements. The headphones themselves are outstanding."</p>
+                        <h5 class="testimonial-name">Marcus Johnson</h5>
+                        <p class="testimonial-date">Tech Journalist, New York</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="py-5 py-md-7 bg-white" id="reviews">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <p class="section-subtitle">Verified Experiences</p>
+                <h2 class="section-title">Customer Reviews</h2>
+                <div class="accent-line mx-auto"></div>
+                <div class="d-flex justify-content-center align-items-center gap-3 mt-4">
+                    <div class="text-center">
+                        <span class="d-block" style="font-size: 48px; font-weight: 700; color: var(--dark);">4.8</span>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="text-muted mt-2 d-block">Based on 246 reviews</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review Filter -->
+            <div class="review-filter-card">
+                <div class="row align-items-center">
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <h5 class="mb-0">Filter Reviews</h5>
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <select class="form-select">
+                            <option selected>All Ratings</option>
+                            <option>5 Stars Only</option>
+                            <option>4 Stars Only</option>
+                            <option>3 Stars Only</option>
+                            <option>2 Stars Only</option>
+                            <option>1 Star Only</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <select class="form-select">
+                            <option selected>Most Recent</option>
+                            <option>Highest Rated</option>
+                            <option>Lowest Rated</option>
+                            <option>Most Helpful</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search reviews">
+                            <button class="btn btn-gold" type="button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review Stats -->
+            <div class="row mt-4 mb-5">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <div class="review-card h-100">
+                        <h5 class="mb-4">Rating Breakdown</h5>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span>5 stars</span>
+                                <span class="text-muted">182 reviews</span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar" style="width: 74%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span>4 stars</span>
+                                <span class="text-muted">45 reviews</span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar" style="width: 18%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span>3 stars</span>
+                                <span class="text-muted">12 reviews</span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar" style="width: 5%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span>2 stars</span>
+                                <span class="text-muted">5 reviews</span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar" style="width: 2%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span>1 star</span>
+                                <span class="text-muted">2 reviews</span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar" style="width: 1%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="review-card h-100">
+                        <h5 class="mb-4">Feature Ratings</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span>Sound Quality</span>
+                                        <div class="testimonial-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <span class="ms-2">4.9</span>
+                                        </div>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar" style="width: 98%"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span>Comfort</span>
+                                        <div class="testimonial-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                            <span class="ms-2">4.7</span>
+                                        </div>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar" style="width: 94%"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span>Battery Life</span>
+                                        <div class="testimonial-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <span class="ms-2">4.9</span>
+                                        </div>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar" style="width: 98%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span>Noise Cancellation</span>
+                                        <div class="testimonial-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                            <span class="ms-2">4.8</span>
+                                        </div>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar" style="width: 96%"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span>Build Quality</span>
+                                        <div class="testimonial-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <span class="ms-2">4.9</span>
+                                        </div>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar" style="width: 98%"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span>Value for Money</span>
+                                        <div class="testimonial-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <span class="ms-2">4.2</span>
+                                        </div>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar" style="width: 84%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review Submit Form -->
+            <div class="review-form">
+                <h4 class="mb-4">Write Your Review</h4>
+                <form>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="reviewName" placeholder="Your Name">
+                                <label for="reviewName">Your Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="email" class="form-control" id="reviewEmail" placeholder="Your Email">
+                                <label for="reviewEmail">Your Email</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Your Rating</label>
+                            <div class="star-rating mb-3">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="reviewTitle" placeholder="Review Title">
+                                <label for="reviewTitle">Review Title</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea class="form-control" id="reviewContent" style="height: 150px"
+                                    placeholder="Your Review"></textarea>
+                                <label for="reviewContent">Your Review</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Upload Photos (optional)</label>
+                            <input class="form-control" type="file" multiple>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Would you recommend this product?</label>
+                            <div class="d-flex mt-2">
+                                <div class="form-check me-4">
+                                    <input class="form-check-input" type="radio" name="recommend" id="recommendYes"
+                                        checked>
+                                    <label class="form-check-label" for="recommendYes">Yes</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="recommend" id="recommendNo">
+                                    <label class="form-check-label" for="recommendNo">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="verifiedPurchase">
+                                <label class="form-check-label" for="verifiedPurchase">
+                                    I verify that this is a genuine purchase
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-gold">Submit Review</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Customer Reviews -->
+            <div class="review-card">
+                <span class="review-date">2 days ago</span>
+                <div class="review-header">
+                    <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Elena Rodriguez"
+                        class="review-avatar">
+                    <div>
+                        <h5 class="mb-1">Elena Rodriguez</h5>
+                        <div class="review-rating mb-1">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="review-verified mb-0"><i class="fas fa-check-circle"></i> Verified Purchase</p>
+                    </div>
+                </div>
+
+                <h5 class="review-title mt-3">Perfect Travel Companion</h5>
+                <p>As a frequent international traveler, these headphones have been a game-changer for my long-haul
+                    flights. The noise cancellation is so effective that I can barely hear the airplane engines, and the
+                    battery life is phenomenal—I've gone through multiple 12-hour flights without needing to recharge.
+                    The carrying case is both sturdy and elegant, adding a touch of luxury to the overall experience.
+                </p>
+
+                <div class="review-images">
+                    <img src="https://images.unsplash.com/photo-1540821924489-7690c70c4eac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=80&h=80&q=80"
+                        alt="Review image 1">
+                    <img src="https://images.unsplash.com/photo-1575717318031-a091b22d72c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=80&h=80&q=80"
+                        alt="Review image 2">
+                </div>
+
+                <div class="review-actions">
+                    <button class="review-action-btn"><i class="fas fa-thumbs-up me-1"></i> Helpful (24)</button>
+                    <button class="review-action-btn"><i class="fas fa-comment me-1"></i> Comment</button>
+                </div>
+
+                <div class="review-comments">
+                    <h6 class="mb-3">Comments (2)</h6>
+                    <div class="review-comment">
+                        <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="David T." class="comment-avatar">
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-name">David T.</span>
+                                <span class="comment-date">1 day ago</span>
+                            </div>
+                            <p class="comment-text">How is the comfort for extended wear during long flights? Do your
+                                ears get warm?</p>
+                        </div>
+                    </div>
+                    <div class="review-comment mt-3">
+                        <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Elena R."
+                            class="comment-avatar">
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-name">Elena R.</span>
+                                <span class="comment-date">12 hours ago</span>
+                            </div>
+                            <p class="comment-text">Surprisingly comfortable! The memory foam adapts perfectly, and I've
+                                worn them for 8+ hours without discomfort. My ears stay relatively cool thanks to the
+                                breathable materials.</p>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Add a comment...">
+                            <button class="btn btn-gold">Post</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-card mt-4">
+                <span class="review-date">1 week ago</span>
+                <div class="review-header">
+                    <img src="https://randomuser.me/api/portraits/men/78.jpg" alt="Alexander Wei" class="review-avatar">
+                    <div>
+                        <h5 class="mb-1">Alexander Wei</h5>
+                        <div class="review-rating mb-1">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="review-verified mb-0"><i class="fas fa-check-circle"></i> Verified Purchase</p>
+                    </div>
+                </div>
+
+                <h5 class="review-title mt-3">Audiophile Approved</h5>
+                <p>I've been collecting high-end audio equipment for over a decade, and the AUREUS SOVEREIGN has earned
+                    a permanent place in my collection. The soundstage is remarkably wide for closed-back headphones,
+                    with exceptional detail retrieval that reveals nuances in familiar recordings I've never noticed
+                    before. The tonal balance is nearly perfect right out of the box, with a natural, uncolored
+                    presentation that works well across all genres. Construction quality is outstanding, using materials
+                    that feel like they'll last for years.</p>
+
+                <div class="review-actions">
+                    <button class="review-action-btn"><i class="fas fa-thumbs-up me-1"></i> Helpful (37)</button>
+                    <button class="review-action-btn"><i class="fas fa-comment me-1"></i> Comment</button>
+                </div>
+
+                <div class="review-comments">
+                    <h6 class="mb-3">Comments (1)</h6>
+                    <div class="review-comment">
+                        <img src="https://randomuser.me/api/portraits/women/62.jpg" alt="Sarah L."
+                            class="comment-avatar">
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-name">Sarah L.</span>
+                                <span class="comment-date">5 days ago</span>
+                            </div>
+                            <p class="comment-text">How would you say these compare to the HD800S for classical music
+                                specifically?</p>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Add a comment...">
+                            <button class="btn btn-gold">Post</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center mt-5">
+                <a href="#" class="btn btn-outline-gold">Load More Reviews</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <h3 class="footer-title">AUREUS</h3>
+                    <div class="accent-line"></div>
+                    <p class="mt-4">Experience sound perfection with our premium audio products, crafted with meticulous
+                        attention to detail for the most discerning audiophiles.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h5 class="footer-title">Shop</h5>
+                    <div class="divider"></div>
+                    <ul class="footer-list">
+                        <li><a href="#">Headphones</a></li>
+                        <li><a href="#">Earbuds</a></li>
+                        <li><a href="#">Speakers</a></li>
+                        <li><a href="#">Accessories</a></li>
+                        <li><a href="#">Gift Cards</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h5 class="footer-title">Support</h5>
+                    <div class="divider"></div>
+                    <ul class="footer-list">
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Warranty</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h5 class="footer-title">Company</h5>
+                    <div class="divider"></div>
+                    <ul class="footer-list">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Story</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h5 class="footer-title">Legal</h5>
+                    <div class="divider"></div>
+                    <ul class="footer-list">
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Accessibility</a></li>
+                        <li><a href="#">Legal Notices</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright text-center">
+                <p>&copy; 2025 AUREUS. All rights reserved. Handcrafted with excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function () {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Star rating functionality
+        const stars = document.querySelectorAll('.star-rating i');
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                stars.forEach((s, idx) => {
+                    if (idx <= index) {
+                        s.classList.remove('far');
+                        s.classList.add('fas');
+                    } else {
+                        s.classList.remove('fas');
+                        s.classList.add('far');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

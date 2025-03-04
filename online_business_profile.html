@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Card Creator</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #7c3aed;
+            --primary-light: #8b5cf6;
+            --primary-dark: #6d28d9;
+            --secondary-color: #06b6d4;
+            --accent-color: #f97316;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --form-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            --input-bg: #f8fafc;
+            --input-focus: rgba(124, 58, 237, 0.1);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(circle at 30% 20%, rgba(124, 58, 237, 0.05) 0%, transparent 30%),
+                radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 30%);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 2rem 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        body::before {
+            background-color: var(--primary-light);
+            top: -100px;
+            left: -100px;
+        }
+
+        body::after {
+            background-color: var(--secondary-color);
+            bottom: -100px;
+            right: -100px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: none;
+            border-radius: 24px;
+            box-shadow: var(--form-shadow);
+            overflow: hidden;
+            transform: translateZ(0);
+            backdrop-filter: blur(10px);
+            animation: card-appear 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes card-appear {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-header {
+            position: relative;
+            background: linear-gradient(120deg, var(--primary-color), var(--primary-dark));
+            padding: 3rem 2rem;
+            color: white;
+            border-bottom-left-radius: 80px;
+            overflow: hidden;
+        }
+
+        .form-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .header-subtitle {
+            opacity: 0.8;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card-body {
+            padding: 2.5rem;
+        }
+
+        .form-control,
+        .form-select {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            box-shadow: 0 0 0 4px var(--input-focus);
+            border-color: var(--primary-light);
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .btn {
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+        }
+
+        .input-group-text {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px 0 0 12px;
+        }
+
+        .form-section {
+            position: relative;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .form-section:hover {
+            border-color: rgba(124, 58, 237, 0.1);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.05);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .section-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            border-radius: 12px;
+            color: white;
+            margin-right: 12px;
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.2);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: all 0.3s ease;
+        }
+
+        .password-toggle {
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: var(--input-bg);
+            margin-top: 0.75rem;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            border-radius: 3px;
+            transition: width 0.5s ease, background 0.5s ease;
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(6, 182, 212, 0.1));
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .avatar-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .avatar-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .avatar-placeholder {
+            font-size: 3rem;
+            color: var(--primary-light);
+            opacity: 0.7;
+        }
+
+        .avatar-upload {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-size: 0.8rem;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .avatar-container:hover .avatar-upload {
+            opacity: 1;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(6, 182, 212, 0.1));
+            border-radius: 30px;
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            animation: tag-appear 0.5s forwards;
+        }
+
+        @keyframes tag-appear {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tag:hover {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(6, 182, 212, 0.15));
+            transform: translateY(-2px);
+        }
+
+        .tag .remove-tag {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tag .remove-tag:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: var(--text-color);
+        }
+
+        .toggle-button {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 28px;
+        }
+
+        .toggle-button input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.toggle-slider {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        }
+
+        input:checked+.toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .social-input {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .social-input:hover {
+            transform: translateX(5px);
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: white;
+            margin-right: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-linkedin {
+            background-color: #0077b5;
+        }
+
+        .social-twitter {
+            background-color: #1da1f2;
+        }
+
+        .social-instagram {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        /* Floating card animation */
+        .floating-cards-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 1.2rem;
+            opacity: 0.7;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .floating-card-1 {
+            width: 230px;
+            right: 5%;
+            top: 25%;
+            transform: rotate(6deg);
+            animation-delay: 0s;
+        }
+
+        .floating-card-2 {
+            width: 200px;
+            left: 5%;
+            bottom: 20%;
+            transform: rotate(-8deg);
+            animation-delay: -5s;
+        }
+
+        .floating-card-3 {
+            width: 180px;
+            right: 15%;
+            bottom: 10%;
+            transform: rotate(12deg);
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(var(--rotation, 6deg));
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(var(--rotation, 6deg));
+            }
+        }
+
+        .floating-card:hover {
+            opacity: 0.9;
+            transform: translateY(-10px) rotate(var(--rotation, 6deg));
+            z-index: 1;
+        }
+
+        .floating-card-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .floating-card-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+        }
+
+        .floating-card-contact {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .floating-card-contact i {
+            color: var(--primary-color);
+        }
+
+        /* Card preview with animation */
+        .card-preview {
+            position: relative;
+            width: 350px;
+            height: 220px;
+            /* Increased height to accommodate all information */
+            background: linear-gradient(135deg, #ffffff, #f7f7f7);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 2rem auto;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+
+        .card-preview:hover {
+            transform: rotateY(15deg);
+            box-shadow: -20px 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-preview.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-preview-content,
+        .qr-preview {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+        }
+
+        .qr-preview {
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            background: white;
+            padding: 1.2rem;
+        }
+
+        .qr-code-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .qr-code-placeholder {
+            width: 80px;
+            height: 80px;
+            background: rgba(124, 58, 237, 0.1);
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 4px;
+            padding: 8px;
+            margin-bottom: 8px;
+        }
+
+        .qr-inner {
+            grid-column: 1 / span 5;
+            grid-row: 1 / span 5;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 2px;
+        }
+
+        .qr-inner::before,
+        .qr-inner::after,
+        .qr-code-placeholder::before,
+        .qr-code-placeholder::after {
+            content: '';
+            background-color: var(--primary-color);
+        }
+
+        .qr-inner::before {
+            grid-column: 2 / span 2;
+            grid-row: 2 / span 2;
+        }
+
+        .qr-inner::after {
+            grid-column: 3 / span 1;
+            grid-row: 3 / span 1;
+        }
+
+        .qr-code-placeholder::before {
+            grid-column: 1 / span 2;
+            grid-row: 1 / span 2;
+        }
+
+        .qr-code-placeholder::after {
+            grid-column: 4 / span 2;
+            grid-row: 4 / span 2;
+        }
+
+        .qr-text {
+            font-size: 0.7rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .business-details {
+            text-align: left;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .business-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .business-description {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .business-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 0.75rem;
+        }
+
+        .business-category {
+            font-size: 0.65rem;
+            background: rgba(124, 58, 237, 0.1);
+            color: var(--primary-color);
+            padding: 2px 6px;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+
+        .business-address {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .business-address i {
+            margin-right: 0.4rem;
+            font-size: 0.8rem;
+            margin-top: 0.1rem;
+        }
+
+        .card-preview-flip {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-preview:hover .card-preview-flip {
+            opacity: 1;
+        }
+
+        .card-preview-flip button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card-preview-flip button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(6, 182, 212, 0.2));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .card-preview:hover::before {
+            opacity: 1;
+        }
+
+        .card-preview-content {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            backface-visibility: hidden;
+        }
+
+        .card-preview-logo {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-preview-logo::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.2));
+        }
+
+        .card-preview-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+            line-height: 1.3;
+        }
+
+        .card-preview-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .card-preview-detail {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.2;
+            width: 100%;
+        }
+
+        .card-preview-detail i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+            min-width: 18px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .card-preview-detail span {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: calc(100% - 25px);
+            flex: 1;
+        }
+
+        /* Decorative elements */
+        .decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .decoration-1 {
+            width: 300px;
+            height: 300px;
+            background-color: var(--primary-light);
+            top: 20%;
+            left: -150px;
+            animation: pulse 10s infinite alternate;
+        }
+
+        .decoration-2 {
+            width: 200px;
+            height: 200px;
+            background-color: var(--secondary-color);
+            bottom: 10%;
+            right: -100px;
+            animation: pulse 8s infinite alternate-reverse;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.1;
+                transform: scale(0.8);
+            }
+
+            100% {
+                opacity: 0.3;
+                transform: scale(1.2);
+            }
+        }
+
+        /* Interactive input animations */
+        .form-control,
+        .form-select {
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.1);
+        }
+
+        /* Custom animation classes */
+        .slide-up {
+            animation: slideUp 0.5s forwards;
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            10%,
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: translateX(-5px);
+            }
+
+            20%,
+            40%,
+            60%,
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        /* Custom success styles */
+        .success-animation {
+            text-align: center;
+            padding: 2rem;
+            display: none;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2rem;
+            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);
+            animation: successPop 0.5s forwards;
+        }
+
+        @keyframes successPop {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeIn 0.5s 0.3s forwards;
+        }
+
+        .success-subtext {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 0.5s 0.5s forwards;
+        }
+
+        /* Progress steps */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--border-color);
+            z-index: 1;
+        }
+
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            background-color: var(--card-bg);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--border-color);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active {
+            color: white;
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+        }
+
+        .progress-step.completed {
+            color: white;
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+        }
+
+        .step-label {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+            color: var(--text-muted);
+        }
+
+        .progress-step.active .step-label,
+        .progress-step.completed .step-label {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 991.98px) {
+            .floating-cards-container {
+                display: none;
+            }
+
+            .card-preview {
+                width: 280px;
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .form-header {
+                border-bottom-left-radius: 40px;
+                padding: 2rem 1.5rem;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .form-section {
+                padding: 1rem;
+            }
+
+            .avatar-container {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Decorative background elements -->
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+
+    <!-- Floating business cards for visual interest -->
+    <div class="floating-cards-container">
+        <div class="floating-card floating-card-1" style="--rotation: 6deg;">
+            <div class="floating-card-name">Sarah Johnson</div>
+            <div class="floating-card-title">Creative Director</div>
+            <div class="floating-card-contact">
+                <i class="fas fa-envelope"></i> sarah@design.co
+            </div>
+            <div class="floating-card-contact">
+                <i class="fas fa-phone"></i> (415) 555-1234
+            </div>
+        </div>
+        <div class="floating-card floating-card-2" style="--rotation: -8deg;">
+            <div class="floating-card-name">Michael Chen</div>
+            <div class="floating-card-title">Tech Consultant</div>
+            <div class="floating-card-contact">
+                <i class="fas fa-envelope"></i> mike@techsolutions.io
+            </div>
+        </div>
+        <div class="floating-card floating-card-3" style="--rotation: 12deg;">
+            <div class="floating-card-name">Elena Rodriguez</div>
+            <div class="floating-card-title">Marketing Specialist</div>
+            <div class="floating-card-contact">
+                <i class="fas fa-globe"></i> elenamarketing.com
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="form-header text-center">
+                        <h2 class="mb-3">Create Your Digital Identity</h2>
+                        <p class="header-subtitle">Design a stunning business card that makes your digital presence
+                            memorable and impactful</p>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Progress Steps -->
+                        <div class="progress-steps">
+                            <div class="progress-step active" data-step="1">
+                                1
+                                <span class="step-label">Personal</span>
+                            </div>
+                            <div class="progress-step" data-step="2">
+                                2
+                                <span class="step-label">Business</span>
+                            </div>
+                            <div class="progress-step" data-step="3">
+                                3
+                                <span class="step-label">Social</span>
+                            </div>
+                            <div class="progress-step" data-step="4">
+                                4
+                                <span class="step-label">Account</span>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Card Preview -->
+                        <div class="card-preview d-none d-md-block">
+                            <div class="card-preview-content">
+                                <div class="card-preview-logo">
+                                    <span id="previewLogoText">A</span>
+                                </div>
+                                <div class="card-preview-name" id="previewName">Your Name</div>
+                                <div class="card-preview-title" id="previewTitle">Your Position</div>
+                                <div class="card-preview-detail">
+                                    <i class="fas fa-envelope"></i>
+                                    <span id="previewEmail">your@email.com</span>
+                                </div>
+                                <div class="card-preview-detail">
+                                    <i class="fas fa-phone"></i>
+                                    <span id="previewPhone">(123) 456-7890</span>
+                                </div>
+                                <div class="card-preview-detail">
+                                    <i class="fas fa-globe"></i>
+                                    <span id="previewWebsite">yourwebsite.com</span>
+                                </div>
+                            </div>
+                            <div class="card-preview-flip">
+                                <button type="button" id="flipCardBtn">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                            <div class="qr-preview" id="qrPreview">
+                                <div class="qr-code-container">
+                                    <div class="qr-code-placeholder">
+                                        <div class="qr-inner"></div>
+                                    </div>
+                                    <div class="qr-text">Scan to connect</div>
+                                </div>
+                                <div class="business-details">
+                                    <div class="business-name" id="previewBusinessName">Your Business</div>
+                                    <div class="business-description" id="previewBusinessDesc">Your business description
+                                        will appear here. Add a short description to help people understand what you do.
+                                    </div>
+                                    <div class="business-categories" id="previewCategories">
+                                        <!-- Categories will be added dynamically -->
+                                    </div>
+                                    <div class="business-address" id="previewAddress">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Your address will appear here</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form id="businessCardForm">
+                            <!-- Step 1: Personal Information -->
+                            <div class="form-step" id="step1">
+                                <div class="form-section slide-up">
+                                    <div class="section-header">
+                                        <div class="section-icon">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <h4>Personal Information</h4>
+                                    </div>
+
+                                    <div class="text-center mb-4">
+                                        <div class="avatar-container">
+                                            <i class="fas fa-user avatar-placeholder"></i>
+                                            <img id="avatarPreview" class="avatar-preview" src="#"
+                                                alt="Profile preview">
+                                            <div class="avatar-upload">Click to upload</div>
+                                        </div>
+                                        <input type="file" id="avatarUpload" accept="image/*" class="d-none">
+                                        <label for="avatarUpload" class="btn btn-sm btn-outline-primary mt-2">
+                                            <i class="fas fa-camera me-2"></i>Choose Profile Picture
+                                        </label>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6 mb-3 mb-md-0">
+                                            <label for="firstName" class="form-label">First Name*</label>
+                                            <input type="text" class="form-control" id="firstName"
+                                                placeholder="Enter first name" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="lastName" class="form-label">Last Name*</label>
+                                            <input type="text" class="form-control" id="lastName"
+                                                placeholder="Enter last name" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="jobTitle" class="form-label">Job Title*</label>
+                                        <input type="text" class="form-control" id="jobTitle"
+                                            placeholder="e.g. Marketing Director, CEO, Consultant" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address*</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                            <input type="email" class="form-control" id="email"
+                                                placeholder="your@email.com" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Phone Number*</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                            <input type="tel" class="form-control" id="phone"
+                                                placeholder="(123) 456-7890" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button type="button" class="btn btn-primary next-step" data-step="1">
+                                        Continue <i class="fas fa-arrow-right ms-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Business Information -->
+                            <div class="form-step" id="step2" style="display: none;">
+                                <div class="form-section slide-up">
+                                    <div class="section-header">
+                                        <div class="section-icon">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <h4>Business Information</h4>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="businessName" class="form-label">Business Name*</label>
+                                        <input type="text" class="form-control" id="businessName"
+                                            placeholder="Enter your business name" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="website" class="form-label">Website</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-globe"></i></span>
+                                            <input type="url" class="form-control" id="website"
+                                                placeholder="https://your-website.com">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="businessAddress" class="form-label">Business Address</label>
+                                        <textarea class="form-control" id="businessAddress" rows="2"
+                                            placeholder="Enter your business address"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="businessDescription" class="form-label">Business Description</label>
+                                        <textarea class="form-control" id="businessDescription" rows="3"
+                                            placeholder="Brief description of your business or services"></textarea>
+                                        <div class="form-text text-end"><span id="descriptionCount">0</span>/250</div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label d-block">Business Categories</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="categoryInput"
+                                                placeholder="Add business categories (e.g. Technology, Retail)">
+                                            <button class="btn btn-outline-primary" type="button" id="addCategory">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="tag-container" id="categoriesContainer"></div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="button" class="btn btn-outline-secondary prev-step" data-step="2">
+                                        <i class="fas fa-arrow-left me-2"></i> Back
+                                    </button>
+                                    <button type="button" class="btn btn-primary next-step" data-step="2">
+                                        Continue <i class="fas fa-arrow-right ms-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Social Media -->
+                            <div class="form-step" id="step3" style="display: none;">
+                                <div class="form-section slide-up">
+                                    <div class="section-header">
+                                        <div class="section-icon">
+                                            <i class="fas fa-share-alt"></i>
+                                        </div>
+                                        <h4>Social Media</h4>
+                                    </div>
+
+                                    <div class="mb-3 social-input">
+                                        <label for="linkedin" class="form-label">LinkedIn Profile</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text social-icon social-linkedin"><i
+                                                    class="fab fa-linkedin-in"></i></span>
+                                            <input type="url" class="form-control" id="linkedin" name="linkedin"
+                                                placeholder="https://linkedin.com/in/your-profile">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 social-input">
+                                        <label for="twitter" class="form-label">X / Twitter Profile</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text social-icon social-twitter"><i
+                                                    class="fab fa-x-twitter"></i></span>
+                                            <input type="text" class="form-control" id="twitter" name="twitter"
+                                                placeholder="@yourusername">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 social-input">
+                                        <label for="instagram" class="form-label">Instagram Profile</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text social-icon social-instagram"><i
+                                                    class="fab fa-instagram"></i></span>
+                                            <input type="text" class="form-control" id="instagram" name="instagram"
+                                                placeholder="@yourusername">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label d-flex justify-content-between align-items-center">
+                                            <span>Add QR Code to Card</span>
+                                            <label class="toggle-button">
+                                                <input type="checkbox" id="qrCodeToggle">
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </label>
+                                        <div class="form-text">Make it easy for others to save your contact info</div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="button" class="btn btn-outline-secondary prev-step" data-step="3">
+                                        <i class="fas fa-arrow-left me-2"></i> Back
+                                    </button>
+                                    <button type="button" class="btn btn-primary next-step" data-step="3">
+                                        Continue <i class="fas fa-arrow-right ms-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Step 4: Account Details -->
+                            <div class="form-step" id="step4" style="display: none;">
+                                <div class="form-section slide-up">
+                                    <div class="section-header">
+                                        <div class="section-icon">
+                                            <i class="fas fa-lock"></i>
+                                        </div>
+                                        <h4>Account Details</h4>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Username*</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">@</span>
+                                            <input type="text" class="form-control" id="username"
+                                                placeholder="Choose a username" required>
+                                        </div>
+                                        <div class="form-text">This will be your unique URL: domain.com/<span
+                                                id="usernamePreview">username</span></div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password*</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" id="password"
+                                                placeholder="Create a strong password" required>
+                                            <span class="input-group-text password-toggle" id="togglePassword">
+                                                <i class="fas fa-eye"></i>
+                                            </span>
+                                        </div>
+                                        <div class="progress-container">
+                                            <div class="progress-bar" id="passwordStrength"></div>
+                                        </div>
+                                        <div class="form-text" id="passwordFeedback">Password should be at least 8
+                                            characters</div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="confirmPassword" class="form-label">Confirm Password*</label>
+                                        <input type="password" class="form-control" id="confirmPassword"
+                                            placeholder="Confirm your password" required>
+                                        <div class="form-text" id="passwordMatch"></div>
+                                    </div>
+
+                                    <div class="mb-3 mt-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                            <label class="form-check-label" for="termsCheck">
+                                                I agree to the <a href="#" class="text-decoration-none">Terms of
+                                                    Service</a> and <a href="#" class="text-decoration-none">Privacy
+                                                    Policy</a>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="marketingCheck">
+                                            <label class="form-check-label" for="marketingCheck">
+                                                Send me tips on how to make the most of my digital business card
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="button" class="btn btn-outline-secondary prev-step" data-step="4">
+                                        <i class="fas fa-arrow-left me-2"></i> Back
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        Create My Business Card <i class="fas fa-check ms-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Success Animation -->
+                            <div class="success-animation" id="successAnimation">
+                                <div class="success-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <h3 class="success-text">Your Business Card is Ready!</h3>
+                                <p class="success-subtext">Your digital presence is now live and ready to share</p>
+                                <button type="button" class="btn btn-primary">
+                                    View My Business Card <i class="fas fa-external-link-alt ms-2"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <p class="text-muted small">© 2025 Business Card Creator. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Multi-step form navigation
+            const steps = document.querySelectorAll('.form-step');
+            const progressSteps = document.querySelectorAll('.progress-step');
+
+            // Next step buttons
+            document.querySelectorAll('.next-step').forEach(button => {
+                button.addEventListener('click', function () {
+                    const currentStep = parseInt(this.getAttribute('data-step'));
+                    const nextStep = currentStep + 1;
+
+                    // Validate current step before proceeding
+                    if (validateStep(currentStep)) {
+                        // Hide current step
+                        document.getElementById(`step${currentStep}`).style.display = 'none';
+
+                        // Show next step
+                        document.getElementById(`step${nextStep}`).style.display = 'block';
+
+                        // Update progress indicator
+                        progressSteps.forEach(step => {
+                            const stepNum = parseInt(step.getAttribute('data-step'));
+                            if (stepNum === currentStep) {
+                                step.classList.remove('active');
+                                step.classList.add('completed');
+                            }
+                            if (stepNum === nextStep) {
+                                step.classList.add('active');
+                            }
+                        });
+
+                        // Animate elements in the new step
+                        const newStepElements = document.querySelectorAll(`#step${nextStep} .form-section`);
+                        newStepElements.forEach(el => {
+                            el.classList.add('slide-up');
+                        });
+
+                        // Scroll to top
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // Previous step buttons
+            document.querySelectorAll('.prev-step').forEach(button => {
+                button.addEventListener('click', function () {
+                    const currentStep = parseInt(this.getAttribute('data-step'));
+                    const prevStep = currentStep - 1;
+
+                    // Hide current step
+                    document.getElementById(`step${currentStep}`).style.display = 'none';
+
+                    // Show previous step
+                    document.getElementById(`step${prevStep}`).style.display = 'block';
+
+                    // Update progress indicator
+                    progressSteps.forEach(step => {
+                        const stepNum = parseInt(step.getAttribute('data-step'));
+                        if (stepNum === currentStep) {
+                            step.classList.remove('active');
+                        }
+                        if (stepNum === prevStep) {
+                            step.classList.remove('completed');
+                            step.classList.add('active');
+                        }
+                    });
+
+                    // Scroll to top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+
+            // Validate step
+            function validateStep(step) {
+                // Simple validation logic for demo
+                if (step === 1) {
+                    const firstName = document.getElementById('firstName').value;
+                    const lastName = document.getElementById('lastName').value;
+                    const email = document.getElementById('email').value;
+
+                    if (!firstName || !lastName || !email) {
+                        showValidationError('Please fill in all required fields');
+                        return false;
+                    }
+
+                    // Basic email validation
+                    if (!isValidEmail(email)) {
+                        showValidationError('Please enter a valid email address');
+                        return false;
+                    }
+                }
+
+                if (step === 2) {
+                    const businessName = document.getElementById('businessName').value;
+
+                    if (!businessName) {
+                        showValidationError('Please enter your business name');
+                        return false;
+                    }
+                }
+
+                if (step === 3) {
+                    // No required fields in step 3
+                    return true;
+                }
+
+                if (step === 4) {
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    const termsCheck = document.getElementById('termsCheck').checked;
+
+                    if (!username || !password || !confirmPassword) {
+                        showValidationError('Please fill in all required fields');
+                        return false;
+                    }
+
+                    if (password !== confirmPassword) {
+                        showValidationError('Passwords do not match');
+                        return false;
+                    }
+
+                    if (!termsCheck) {
+                        showValidationError('You must agree to the Terms of Service');
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            function isValidEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            function showValidationError(message) {
+                // Create a toast notification
+                const toast = document.createElement('div');
+                toast.className = 'position-fixed top-0 end-0 p-3 fade-in';
+                toast.style.zIndex = '9999';
+                toast.innerHTML = `
+                    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header bg-danger text-white">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <strong class="me-auto">Error</strong>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(toast);
+
+                // Remove the toast after 3 seconds
+                setTimeout(() => {
+                    toast.classList.add('fade-out');
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 300);
+                }, 3000);
+            }
+
+            // Form submission
+            document.getElementById('businessCardForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Hide the form steps
+                document.querySelectorAll('.form-step').forEach(step => {
+                    step.style.display = 'none';
+                });
+
+                // Show success animation
+                document.getElementById('successAnimation').style.display = 'block';
+            });
+
+            // Password visibility toggle
+            document.getElementById('togglePassword').addEventListener('click', function () {
+                const passwordInput = document.getElementById('password');
+                const icon = this.querySelector('i');
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+
+            // Password strength meter
+            document.getElementById('password').addEventListener('input', function () {
+                const password = this.value;
+                const strengthBar = document.getElementById('passwordStrength');
+                const feedback = document.getElementById('passwordFeedback');
+
+                // Calculate password strength
+                let strength = 0;
+
+                // Length check
+                if (password.length >= 8) {
+                    strength += 25;
+                }
+
+                // Character variety checks
+                if (password.match(/[A-Z]/)) strength += 15;
+                if (password.match(/[a-z]/)) strength += 10;
+                if (password.match(/[0-9]/)) strength += 25;
+                if (password.match(/[^A-Za-z0-9]/)) strength += 25;
+
+                // Cap at 100%
+                strength = Math.min(strength, 100);
+
+                // Update UI
+                strengthBar.style.width = strength + '%';
+
+                // Change color based on strength
+                if (strength <= 25) {
+                    strengthBar.style.background = 'linear-gradient(90deg, #ef4444, #f97316)';
+                    feedback.textContent = 'Weak password';
+                    feedback.style.color = '#ef4444';
+                } else if (strength <= 50) {
+                    strengthBar.style.background = 'linear-gradient(90deg, #f97316, #eab308)';
+                    feedback.textContent = 'Fair password';
+                    feedback.style.color = '#f97316';
+                } else if (strength <= 75) {
+                    strengthBar.style.background = 'linear-gradient(90deg, #eab308, #22c55e)';
+                    feedback.textContent = 'Good password';
+                    feedback.style.color = '#22c55e';
+                } else {
+                    strengthBar.style.background = 'linear-gradient(90deg, #22c55e, #06b6d4)';
+                    feedback.textContent = 'Strong password';
+                    feedback.style.color = '#06b6d4';
+                }
+            });
+
+            // Password match validation
+            document.getElementById('confirmPassword').addEventListener('input', function () {
+                const password = document.getElementById('password').value;
+                const confirmPassword = this.value;
+                const feedback = document.getElementById('passwordMatch');
+
+                if (confirmPassword === '') {
+                    feedback.textContent = '';
+                } else if (password === confirmPassword) {
+                    feedback.textContent = 'Passwords match ✓';
+                    feedback.style.color = '#22c55e';
+                } else {
+                    feedback.textContent = 'Passwords do not match ✗';
+                    feedback.style.color = '#ef4444';
+                }
+            });
+
+            // Avatar upload preview
+            document.getElementById('avatarUpload').addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const preview = document.getElementById('avatarPreview');
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                        document.querySelector('.avatar-placeholder').style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Click the avatar container to trigger file upload
+            document.querySelector('.avatar-container').addEventListener('click', function () {
+                document.getElementById('avatarUpload').click();
+            });
+
+            // Business description character count
+            document.getElementById('businessDescription').addEventListener('input', function () {
+                const count = this.value.length;
+                document.getElementById('descriptionCount').textContent = count;
+
+                if (count > 250) {
+                    this.value = this.value.substring(0, 250);
+                    document.getElementById('descriptionCount').textContent = 250;
+                }
+            });
+
+            // Add category tags and sync with preview
+            document.getElementById('addCategory').addEventListener('click', function () {
+                const input = document.getElementById('categoryInput');
+                const category = input.value.trim();
+
+                if (category) {
+                    addCategoryTag(category);
+                    input.value = '';
+                    updateCategoryPreview();
+                }
+            });
+
+            document.getElementById('categoryInput').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('addCategory').click();
+                }
+            });
+
+            function addCategoryTag(category) {
+                const container = document.getElementById('categoriesContainer');
+                const tag = document.createElement('div');
+                tag.className = 'tag';
+                tag.innerHTML = `
+                    ${category}
+                    <span class="remove-tag"><i class="fas fa-times"></i></span>
+                `;
+
+                tag.querySelector('.remove-tag').addEventListener('click', function () {
+                    tag.remove();
+                    updateCategoryPreview();
+                });
+
+                container.appendChild(tag);
+            }
+
+            function updateCategoryPreview() {
+                const categoryTags = document.querySelectorAll('#categoriesContainer .tag');
+                const previewContainer = document.getElementById('previewCategories');
+
+                // Clear existing categories
+                previewContainer.innerHTML = '';
+
+                // Add each category (limit to 4 to prevent overflow)
+                let count = 0;
+                categoryTags.forEach(tag => {
+                    if (count < 4) {
+                        const category = tag.textContent.trim();
+                        const categoryElement = document.createElement('span');
+                        categoryElement.className = 'business-category';
+                        categoryElement.textContent = category;
+                        previewContainer.appendChild(categoryElement);
+                        count++;
+                    } else if (count === 4) {
+                        const moreElement = document.createElement('span');
+                        moreElement.className = 'business-category';
+                        moreElement.textContent = '+ more';
+                        previewContainer.appendChild(moreElement);
+                        count++;
+                    }
+                });
+            }
+
+            // Register form field inputs to trigger preview updates
+            const previewInputs = [
+                'firstName', 'lastName', 'jobTitle', 'email',
+                'phone', 'website', 'businessName', 'businessDescription',
+                'businessAddress', 'linkedin', 'twitter', 'instagram'
+            ];
+
+            previewInputs.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', function () {
+                        updateCardPreview();
+                        animateCardPreviewUpdate();
+                    });
+                }
+            });
+
+            function animateCardPreviewUpdate() {
+                const cardPreview = document.querySelector('.card-preview');
+                cardPreview.classList.add('updating');
+
+                // Apply a quick pulse animation
+                cardPreview.animate([
+                    { transform: 'scale(1)', boxShadow: '-20px 20px 40px rgba(0, 0, 0, 0.2)' },
+                    { transform: 'scale(1.02)', boxShadow: '-25px 25px 50px rgba(0, 0, 0, 0.25)' },
+                    { transform: 'scale(1)', boxShadow: '-20px 20px 40px rgba(0, 0, 0, 0.2)' }
+                ], {
+                    duration: 300,
+                    easing: 'ease-in-out'
+                });
+
+                // Animate the specific element that was updated
+                const previewElements = document.querySelectorAll('.card-preview-content > div');
+                previewElements.forEach(el => {
+                    el.animate([
+                        { opacity: 0.7 },
+                        { opacity: 1 }
+                    ], {
+                        duration: 300,
+                        easing: 'ease-out'
+                    });
+                });
+            }
+
+            function updateCardPreview() {
+                const firstName = document.getElementById('firstName').value || 'Your';
+                const lastName = document.getElementById('lastName').value || 'Name';
+                const jobTitle = document.getElementById('jobTitle').value || 'Your Position';
+                const email = document.getElementById('email').value || 'your@email.com';
+                const phone = document.getElementById('phone').value || '(123) 456-7890';
+                const website = document.getElementById('website').value || 'yourwebsite.com';
+                const businessName = document.getElementById('businessName').value || 'Your Business';
+                const businessDescription = document.getElementById('businessDescription').value || 'Your business description will appear here. Add a short description to help people understand what you do.';
+                const businessAddress = document.getElementById('businessAddress').value || 'Your address will appear here';
+
+                // Social media
+                const linkedin = document.getElementById('linkedin').value || '';
+                const twitter = document.getElementById('twitter').value || '';
+                const instagram = document.getElementById('instagram').value || '';
+
+                // Update the preview elements - front side
+                document.getElementById('previewName').textContent = `${firstName} ${lastName}`;
+                document.getElementById('previewTitle').textContent = jobTitle;
+                document.getElementById('previewEmail').textContent = email;
+                document.getElementById('previewPhone').textContent = phone;
+                document.getElementById('previewWebsite').textContent = website;
+
+                // Update preview elements - back side (business details)
+                document.getElementById('previewBusinessName').textContent = businessName;
+                document.getElementById('previewBusinessDesc').textContent = businessDescription;
+
+                // Make sure the address span exists before updating its content
+                const addressSpan = document.getElementById('previewAddress').querySelector('span');
+                if (addressSpan) {
+                    addressSpan.textContent = businessAddress;
+                }
+
+                // Update logo text (first letter of first name or business)
+                const logoText = (businessName && businessName.charAt(0)) || firstName.charAt(0) || 'A';
+                document.getElementById('previewLogoText').textContent = logoText;
+
+                // Handle social media icons display
+                updateSocialMediaPreview('linkedin', linkedin);
+                updateSocialMediaPreview('twitter', twitter);
+                updateSocialMediaPreview('instagram', instagram);
+
+                // Update colors based on inputs for a personalized feel
+                updateCardPreviewColors(firstName, lastName, businessName);
+
+                // Update categories
+                updateCategoryPreview();
+            }
+
+            // Initialize the preview when the page loads
+            window.addEventListener('DOMContentLoaded', function () {
+                // Make sure to call this after all DOM elements are available
+                setTimeout(updateCardPreview, 100);
+            });
+
+            function updateSocialMediaPreview(platform, value) {
+                // Create or get social media preview elements if they don't exist
+                let socialElement = document.getElementById(`preview${platform.charAt(0).toUpperCase() + platform.slice(1)}`);
+
+                if (!value) {
+                    // If no value, remove the element if it exists
+                    if (socialElement) {
+                        socialElement.parentElement.remove();
+                    }
+                    return;
+                }
+
+                if (!socialElement) {
+                    // Create the element if it doesn't exist
+                    const socialContainer = document.createElement('div');
+                    socialContainer.className = 'card-preview-detail';
+
+                    const icon = document.createElement('i');
+                    icon.className = `fab fa-${platform}`;
+
+                    const span = document.createElement('span');
+                    span.id = `preview${platform.charAt(0).toUpperCase() + platform.slice(1)}`;
+
+                    socialContainer.appendChild(icon);
+                    socialContainer.appendChild(span);
+
+                    document.querySelector('.card-preview-content').appendChild(socialContainer);
+                    socialElement = span;
+                }
+
+                // Update the element with the value
+                const displayValue = platform === 'linkedin' ?
+                    (value.includes('linkedin.com') ? value.split('/').pop() : value) :
+                    value;
+
+                socialElement.textContent = displayValue;
+            }
+
+            function updateCardPreviewColors(firstName, lastName, businessName) {
+                // Generate a unique color based on user input
+                const stringToHash = (firstName + lastName + businessName).toLowerCase();
+                let hash = 0;
+                for (let i = 0; i < stringToHash.length; i++) {
+                    hash = stringToHash.charCodeAt(i) + ((hash << 5) - hash);
+                }
+
+                // Create a color hue based on the hash
+                const hue = Math.abs(hash % 360);
+
+                // Apply a nice gradient to the logo background
+                const logoElement = document.querySelector('.card-preview-logo');
+                logoElement.style.background = `linear-gradient(135deg, hsl(${hue}, 70%, 50%), hsl(${(hue + 40) % 360}, 70%, 40%))`;
+
+                // Update card accent colors
+                document.querySelectorAll('.card-preview-detail i').forEach(icon => {
+                    icon.style.color = `hsl(${hue}, 70%, 50%)`;
+                });
+
+                // Subtle background gradient
+                const cardElement = document.querySelector('.card-preview');
+                cardElement.style.background = `linear-gradient(135deg, white, hsl(${hue}, 15%, 97%))`;
+
+                // Add a subtle border
+                cardElement.style.border = `1px solid hsl(${hue}, 30%, 90%)`;
+            }
+
+            // Username preview
+            document.getElementById('username').addEventListener('input', function () {
+                const username = this.value || 'username';
+                document.getElementById('usernamePreview').textContent = username;
+            });
+
+            // QR code toggle handling
+            document.getElementById('qrCodeToggle').addEventListener('change', function () {
+                updateQRCodeVisibility(this.checked);
+            });
+
+            function updateQRCodeVisibility(show) {
+                const qrContainer = document.querySelector('.qr-code-container');
+                if (qrContainer) {
+                    if (show) {
+                        qrContainer.style.display = 'flex';
+                    } else {
+                        qrContainer.style.display = 'none';
+                    }
+                }
+            }
+
+            // Card flipping functionality
+            document.getElementById('flipCardBtn').addEventListener('click', function (e) {
+                e.stopPropagation(); // Prevent the card click from triggering
+                const cardPreview = document.querySelector('.card-preview');
+                cardPreview.classList.toggle('flipped');
+
+                // Make sure the QR preview is visible when flipped
+                document.getElementById('qrPreview').style.display = 'flex';
+            });
+
+            // Allow clicking anywhere on the card to flip it
+            document.querySelector('.card-preview').addEventListener('click', function () {
+                this.classList.toggle('flipped');
+
+                // Make sure the QR preview is visible when flipped
+                document.getElementById('qrPreview').style.display = 'flex';
+            });
+
+            document.getElementById('businessAddress').addEventListener('input', updateCardPreview);
+            document.getElementById('businessDescription').addEventListener('input', updateCardPreview);
+
+            // Initialize the QR side to be hidden initially
+            document.getElementById('qrPreview').style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>

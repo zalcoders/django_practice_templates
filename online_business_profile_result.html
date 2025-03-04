@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Digital Business Card</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* CSS Reset */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary-color: #7c3aed;
+            --primary-light: #8b5cf6;
+            --primary-dark: #6d28d9;
+            --secondary-color: #06b6d4;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(circle at 30% 20%, rgba(124, 58, 237, 0.05) 0%, transparent 30%),
+                radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 30%);
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            border: none;
+            overflow: hidden;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: var(--card-shadow);
+            animation: cardAppear 0.6s ease-out;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            margin: 0 auto;
+        }
+
+        @keyframes cardAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 1.8rem;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .profile-name {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .profile-title {
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 0.8rem;
+        }
+
+        .profile-company {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .card-body {
+            padding: 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+
+        .contact-item:hover {
+            background-color: rgba(124, 58, 237, 0.03);
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background-color: rgba(124, 58, 237, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            margin-right: 1rem;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover .contact-icon {
+            background-color: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.2rem;
+        }
+
+        .contact-value {
+            font-weight: 500;
+            color: var(--text-color);
+            word-break: break-word;
+        }
+
+        .contact-value a {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .contact-value a:hover {
+            color: var(--primary-color);
+        }
+
+        .card-flip-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            position: absolute;
+            top: 50px;
+        }
+
+        .card-flip {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .card-flip.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .card-front {
+            z-index: 2;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+
+        .flip-button {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .flip-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .business-header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-light));
+            color: white;
+            padding: 1.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .business-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .business-name {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .business-description {
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .action-button {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        .share-options {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 0.8rem;
+            width: 180px;
+            display: none;
+        }
+
+        .share-options.active {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .share-option {
+            display: flex;
+            align-items: center;
+            padding: 0.7rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .share-option:hover {
+            background-color: rgba(124, 58, 237, 0.1);
+        }
+
+        .share-option i {
+            margin-right: 0.8rem;
+            color: var(--primary-color);
+        }
+
+        .qr-code {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .qr-code.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .qr-code-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            position: relative;
+            max-width: 90%;
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .qr-code-img {
+            width: 200px;
+            height: 200px;
+            max-width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .qr-code-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .qr-code-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .qr-code-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .qr-code-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .qr-code-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+        }
+
+        @media (max-width: 576px) {
+            .card {
+                margin: 0 1rem;
+            }
+
+            .action-buttons {
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+
+            .action-button {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <div class="action-button" id="shareButton">
+            <i class="fas fa-share-alt"></i>
+        </div>
+        <div class="share-options" id="shareOptions">
+            <div class="share-option" data-share="copy">
+                <i class="fas fa-copy"></i>
+                <span>Copy Link</span>
+            </div>
+            <div class="share-option" data-share="email">
+                <i class="fas fa-envelope"></i>
+                <span>Email</span>
+            </div>
+            <div class="share-option" data-share="linkedin">
+                <i class="fab fa-linkedin-in"></i>
+                <span>LinkedIn</span>
+            </div>
+            <div class="share-option" data-share="whatsapp">
+                <i class="fab fa-whatsapp"></i>
+                <span>WhatsApp</span>
+            </div>
+        </div>
+
+        <div class="action-button" id="qrButton">
+            <i class="fas fa-qrcode"></i>
+        </div>
+
+        <div class="action-button" id="saveButton">
+            <i class="fas fa-download"></i>
+        </div>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div class="qr-code" id="qrModal">
+        <div class="qr-code-content">
+            <button class="qr-code-close" id="qrClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://example.com/card/johnsmith"
+                alt="QR Code" class="qr-code-img">
+            <h3 class="qr-code-title">Scan to save contact</h3>
+            <p class="qr-code-subtitle">Point your camera at the QR code to visit this digital business card</p>
+            <button class="qr-code-button" id="downloadQr">Download QR Code</button>
+        </div>
+    </div>
+
+    <div class="card-flip-container">
+        <div class="card-flip" id="cardFlip">
+            <!-- Front Side (Personal Info) -->
+            <div class="card-front">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <img src="https://i.pravatar.cc/150?img=12" alt="Profile" class="profile-img">
+                        <h1 class="profile-name">John Smith</h1>
+                        <p class="profile-title">Marketing Director</p>
+                        <div class="profile-company">Acme Corporation</div>
+
+                        <button class="flip-button" id="flipButton">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-label">Email</div>
+                                <div class="contact-value">
+                                    <a href="mailto:john@example.com">john@example.com</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-label">Phone</div>
+                                <div class="contact-value">
+                                    <a href="tel:+12345678901">(123) 456-7890</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-label">Website</div>
+                                <div class="contact-value">
+                                    <a href="https://example.com" target="_blank">example.com</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fab fa-linkedin-in"></i>
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-label">LinkedIn</div>
+                                <div class="contact-value">
+                                    <a href="https://linkedin.com/in/johnsmith" target="_blank">johnsmith</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fab fa-twitter"></i>
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-label">Twitter</div>
+                                <div class="contact-value">
+                                    <a href="https://twitter.com/johnsmith" target="_blank">@johnsmith</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-label">Instagram</div>
+                                <div class="contact-value">
+                                    <a href="https://instagram.com/johnsmith" target="_blank">@johnsmith</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back Side (Business Info) -->
+            <div class="card-back">
+                <div class="card">
+                    <div class="business-header">
+                        <h2 class="business-name">Acme Corporation</h2>
+                        <p class="business-description">
+                            Acme Corporation is a leading provider of innovative solutions for businesses worldwide.
+                            With over 15 years of experience, we're dedicated to helping our clients succeed through
+                            creative strategies and cutting-edge technology.
+                        </p>
+
+                        <div class="tags-container">
+                            <div class="tag">Marketing</div>
+                            <div class="tag">Technology</div>
+                            <div class="tag">Consulting</div>
+                            <div class="tag">Digital</div>
+                        </div>
+
+                        <button class="flip-button" id="flipBackButton">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-label">Address</div>
+                                <div class="contact-value">123 Business Avenue, Suite 500<br>San Francisco, CA 94107
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Card flip functionality
+            const cardFlip = document.getElementById('cardFlip');
+            const flipButton = document.getElementById('flipButton');
+            const flipBackButton = document.getElementById('flipBackButton');
+
+            flipButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                cardFlip.classList.toggle('flipped');
+            });
+
+            flipBackButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                cardFlip.classList.toggle('flipped');
+            });
+
+            // Share button functionality
+            const shareButton = document.getElementById('shareButton');
+            const shareOptions = document.getElementById('shareOptions');
+
+            shareButton.addEventListener('click', function () {
+                shareOptions.classList.toggle('active');
+            });
+
+            // Close share options when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!shareButton.contains(event.target) && !shareOptions.contains(event.target)) {
+                    shareOptions.classList.remove('active');
+                }
+            });
+
+            // Share options functionality
+            document.querySelectorAll('.share-option').forEach(option => {
+                option.addEventListener('click', function () {
+                    const shareType = this.getAttribute('data-share');
+                    const pageUrl = window.location.href;
+                    const pageTitle = "John Smith's Digital Business Card";
+
+                    switch (shareType) {
+                        case 'copy':
+                            navigator.clipboard.writeText(pageUrl)
+                                .then(() => {
+                                    showToast('Link copied to clipboard!');
+                                })
+                                .catch(err => {
+                                    console.error('Could not copy text: ', err);
+                                });
+                            break;
+                        case 'email':
+                            window.location.href = `mailto:?subject=${encodeURIComponent(pageTitle)}&body=${encodeURIComponent('Check out my digital business card: ' + pageUrl)}`;
+                            break;
+                        case 'linkedin':
+                            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`, '_blank');
+                            break;
+                        case 'whatsapp':
+                            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(pageTitle + ': ' + pageUrl)}`, '_blank');
+                            break;
+                    }
+
+                    // Hide share options after selection
+                    shareOptions.classList.remove('active');
+                });
+            });
+
+            // QR code functionality
+            const qrButton = document.getElementById('qrButton');
+            const qrModal = document.getElementById('qrModal');
+            const qrClose = document.getElementById('qrClose');
+            const downloadQr = document.getElementById('downloadQr');
+
+            qrButton.addEventListener('click', function () {
+                qrModal.classList.add('active');
+            });
+
+            qrClose.addEventListener('click', function () {
+                qrModal.classList.remove('active');
+            });
+
+            qrModal.addEventListener('click', function (event) {
+                if (event.target === qrModal) {
+                    qrModal.classList.remove('active');
+                }
+            });
+
+            // QR Code generation for download
+            downloadQr.addEventListener('click', function () {
+                // Create a temporary link to download the QR code
+                const qrImage = document.querySelector('.qr-code-img');
+                const link = document.createElement('a');
+                link.href = qrImage.src;
+                link.download = 'john_smith_qr_code.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                showToast('QR code downloaded!');
+            });
+
+            // vCard download functionality
+            const saveButton = document.getElementById('saveButton');
+
+            saveButton.addEventListener('click', function () {
+                // Create vCard content
+                const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:John Smith
+N:Smith;John;;;
+TITLE:Marketing Director
+ORG:Acme Corporation
+EMAIL:john@example.com
+TEL:(123) 456-7890
+URL:https://example.com
+ADR:;;123 Business Avenue, Suite 500;San Francisco;CA;94107;United States
+END:VCARD`;
+
+                // Create download link
+                const blob = new Blob([vcard], { type: 'text/vcard' });
+                const url = URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'john_smith.vcf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                showToast('Contact information downloaded!');
+            });
+
+            // Toast notification function
+            function showToast(message) {
+                // Create toast element
+                const toast = document.createElement('div');
+                toast.className = 'position-fixed top-0 end-0 p-3';
+                toast.style.zIndex = '5000';
+                toast.innerHTML = `
+                    <div class="toast show align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                ${message}
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(toast);
+
+                // Remove toast after 3 seconds
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+
+</html>

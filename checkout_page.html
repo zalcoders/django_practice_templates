@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAISON | Luxury Shopping Experience</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Google Fonts - Cormorant Garamond & Manrope -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Manrope:wght@200;300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* Custom color variables */
+    :root {
+      --luxury-black: #0A0A0A;
+      --luxury-dark: #1A1A1A;
+      --luxury-cream: #F8F5F0;
+      --luxury-gold: #CFAA4B;
+      --luxury-light-gold: #E9DEC0;
+      --luxury-light-gray: #EAEAEA;
+      --luxury-medium-gray: #888888;
+      --luxury-accent: #826A41;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background-color: var(--luxury-cream);
+      color: var(--luxury-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-weight: 300;
+      letter-spacing: 0.2px;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    .product-title {
+      font-family: 'Cormorant Garamond', serif;
+      letter-spacing: 0.75px;
+      font-weight: 500;
+    }
+
+    .btn-gold {
+      background: linear-gradient(145deg, var(--luxury-gold), var(--luxury-accent));
+      border: none;
+      color: var(--luxury-black);
+      font-weight: 500;
+      letter-spacing: 2px;
+      padding: 15px 32px;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+      border-radius: 2px;
+      font-size: 14px;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(207, 170, 75, 0.25);
+      color: var(--luxury-black);
+    }
+
+    .btn-gold:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+      transform: translateX(-100%);
+      transition: all 0.8s ease;
+    }
+
+    .btn-gold:hover:before {
+      transform: translateX(100%);
+    }
+
+    /* Checkout button pulse animation */
+    @keyframes subtlePulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(207, 170, 75, 0.4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 12px rgba(207, 170, 75, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(207, 170, 75, 0);
+      }
+    }
+
+    .checkout-btn {
+      animation: subtlePulse 3s infinite;
+    }
+
+    /* Split layout styling */
+    .cart-container {
+      min-height: 100vh;
+    }
+
+    .products-section {
+      padding: 50px 40px;
+      overflow-y: auto;
+    }
+
+    .summary-section {
+      background: linear-gradient(165deg, var(--luxury-dark) 0%, var(--luxury-black) 100%);
+      color: var(--luxury-cream);
+      padding: 50px 40px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: -15px 0 30px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Cart header styling */
+    .cart-header {
+      margin-bottom: 40px;
+    }
+
+    .cart-header h1 {
+      font-size: 42px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .items-count {
+      color: var(--luxury-medium-gray);
+      font-size: 15px;
+      letter-spacing: 1px;
+    }
+
+    /* Product card styling */
+    .product-card {
+      background-color: white;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 40px;
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.07);
+    }
+
+    .product-image {
+      height: 280px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-image::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0.05) 100%);
+      z-index: 1;
+    }
+
+    .product-card:hover .product-image::after {
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0.1) 100%);
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: var(--luxury-dark);
+      color: white;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      padding: 7px 14px;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+
+    .product-details {
+      padding: 30px;
+    }
+
+    .product-brand {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--luxury-medium-gray);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .product-title {
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .product-price {
+      font-size: 18px;
+      color: var(--luxury-dark);
+      font-weight: 400;
+      margin-top: 5px;
+    }
+
+    .product-description {
+      font-size: 14px;
+      color: var(--luxury-medium-gray);
+      margin: 15px 0;
+      line-height: 1.7;
+    }
+
+    /* Quantity control styling */
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      margin-top: 5px;
+    }
+
+    .product-card:hover .quantity-control {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .quantity-btn {
+      background-color: var(--luxury-light-gray);
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 2px;
+      color: var(--luxury-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 12px;
+    }
+
+    .quantity-btn:hover {
+      background-color: var(--luxury-gold);
+      color: var(--luxury-black);
+    }
+
+    .quantity-input {
+      width: 40px;
+      border: none;
+      text-align: center;
+      font-weight: 500;
+      background: transparent;
+      font-size: 15px;
+    }
+
+    /* Summary section styling */
+    .summary-title {
+      color: var(--luxury-gold);
+      font-size: 28px;
+      margin-bottom: 40px;
+      position: relative;
+      padding-bottom: 15px;
+      font-weight: 400;
+    }
+
+    .summary-title:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 1px;
+      background-color: var(--luxury-gold);
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(248, 245, 240, 0.07);
+    }
+
+    .item-title {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+
+    .item-price,
+    .item-quantity {
+      font-size: 14px;
+    }
+
+    .item-quantity {
+      color: var(--luxury-medium-gray);
+      font-weight: 300;
+    }
+
+    .subtotal-section {
+      margin: 40px 0;
+    }
+
+    .subtotal-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .subtotal-label {
+      color: var(--luxury-medium-gray);
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 25px;
+      margin-top: 25px;
+      border-top: 1px solid rgba(207, 170, 75, 0.3);
+    }
+
+    .total-label {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--luxury-gold);
+      letter-spacing: 1px;
+    }
+
+    .total-amount {
+      font-size: 24px;
+      font-weight: 300;
+      color: var(--luxury-gold);
+      transition: all 0.5s ease;
+    }
+
+    /* Price change animation */
+    @keyframes numberChange {
+      0% {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .number-change {
+      animation: numberChange 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    /* Additional styling elements */
+    .summary-footer {
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(248, 245, 240, 0.07);
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      font-size: 13px;
+      color: var(--luxury-medium-gray);
+    }
+
+    .info-item i {
+      color: var(--luxury-gold);
+      margin-right: 10px;
+      font-size: 14px;
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--luxury-cream);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--luxury-medium-gray);
+    }
+
+    .summary-section::-webkit-scrollbar-track {
+      background: rgba(248, 245, 240, 0.05);
+    }
+
+    .summary-section::-webkit-scrollbar-thumb {
+      background: rgba(248, 245, 240, 0.1);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 991.98px) {
+      .summary-section {
+        position: relative;
+        height: auto;
+        min-height: auto;
+      }
+
+      .product-card:hover .quantity-control {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .quantity-control {
+        opacity: 1;
+        transform: translateY(0);
+        margin-top: 15px;
+      }
+
+      .cart-header h1 {
+        font-size: 32px;
+      }
+
+      .summary-title {
+        font-size: 24px;
+      }
+
+      .total-amount {
+        font-size: 22px;
+      }
+
+      .btn-gold {
+        padding: 12px 24px;
+        width: 100%;
+      }
+
+      .products-section,
+      .summary-section {
+        padding: 30px 20px;
+      }
+    }
+
+    /* Product animation overlay */
+    .product-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(207, 170, 75, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .product-card:hover .product-overlay {
+      opacity: 1;
+    }
+
+    /* Subtle grain texture */
+    .grain-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIiBmaWx0ZXI9InVybCgjYSkiIG9wYWNpdHk9Ii4wNSIvPjwvc3ZnPg==');
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* Shopping cart icon */
+    .cart-icon {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: var(--luxury-cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      color: var(--luxury-dark);
+      z-index: 10;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .cart-icon i {
+      font-size: 18px;
+    }
+
+    .cart-icon:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: var(--luxury-gold);
+      color: white;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+    }
+
+    /* 3D effect on card hover */
+    .product-card {
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+
+    .card-3d-container {
+      transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+      transform: translateZ(0);
+    }
+
+    .product-card:hover .card-3d-container {
+      transform: translateZ(20px);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grain-overlay"></div>
+
+  <div class="container-fluid p-0">
+    <div class="cart-icon">
+      <i class="fas fa-shopping-bag"></i>
+      <span class="cart-count">3</span>
+    </div>
+
+    <div class="row g-0 cart-container">
+      <!-- Products Section -->
+      <div class="col-lg-8 products-section">
+        <div class="cart-header">
+          <h1>Shopping Collection</h1>
+          <span class="items-count">3 ITEMS IN YOUR CART</span>
+        </div>
+
+        <div class="row">
+          <!-- Product Card 1 -->
+          <div class="col-md-6 col-xl-4">
+            <div class="product-card">
+              <div class="card-3d-container">
+                <div class="product-badge">Limited Edition</div>
+                <div class="product-image" style="background-image: url('/api/placeholder/600/400');">
+                  <div class="product-overlay"></div>
+                </div>
+                <div class="product-details">
+                  <div class="product-brand">MAISON RIVIERA</div>
+                  <h3 class="product-title">Handcrafted Calfskin Leather Tote</h3>
+                  <p class="product-description">Meticulously crafted in our Milan atelier from the finest calfskin
+                    leather with 24k gold-plated hardware.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="product-price">€1,850.00</span>
+                    <div class="quantity-control">
+                      <button class="quantity-btn decrease-quantity">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                      <input type="text" class="quantity-input" value="1" readonly>
+                      <button class="quantity-btn increase-quantity">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 2 -->
+          <div class="col-md-6 col-xl-4">
+            <div class="product-card">
+              <div class="card-3d-container">
+                <div class="product-badge">Artisanal</div>
+                <div class="product-image" style="background-image: url('/api/placeholder/600/400');">
+                  <div class="product-overlay"></div>
+                </div>
+                <div class="product-details">
+                  <div class="product-brand">CHRONOS HERITAGE</div>
+                  <h3 class="product-title">Limited Edition Skeleton Timepiece</h3>
+                  <p class="product-description">Hand-assembled in Switzerland with 158 meticulously crafted components
+                    and a transparent sapphire caseback.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="product-price">€4,295.00</span>
+                    <div class="quantity-control">
+                      <button class="quantity-btn decrease-quantity">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                      <input type="text" class="quantity-input" value="1" readonly>
+                      <button class="quantity-btn increase-quantity">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 3 -->
+          <div class="col-md-6 col-xl-4">
+            <div class="product-card">
+              <div class="card-3d-container">
+                <div class="product-badge">Sustainable</div>
+                <div class="product-image" style="background-image: url('/api/placeholder/600/400');">
+                  <div class="product-overlay"></div>
+                </div>
+                <div class="product-details">
+                  <div class="product-brand">THALAY CASHMERE</div>
+                  <h3 class="product-title">Ultra-Fine Himalayan Cashmere Wrap</h3>
+                  <p class="product-description">Ethically sourced from high-altitude Himalayan goats and hand-woven by
+                    skilled artisans with traditional techniques.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="product-price">€650.00</span>
+                    <div class="quantity-control">
+                      <button class="quantity-btn decrease-quantity">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                      <input type="text" class="quantity-input" value="1" readonly>
+                      <button class="quantity-btn increase-quantity">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary Section -->
+      <div class="col-lg-4 summary-section">
+        <h2 class="summary-title">Collection Summary</h2>
+
+        <!-- Summary Items -->
+        <div class="summary-items">
+          <div class="summary-item">
+            <div class="item-info">
+              <h4 class="item-title">Handcrafted Calfskin Leather Tote</h4>
+              <span class="item-quantity">Quantity: 1</span>
+            </div>
+            <span class="item-price">€1,850.00</span>
+          </div>
+
+          <div class="summary-item">
+            <div class="item-info">
+              <h4 class="item-title">Limited Edition Skeleton Timepiece</h4>
+              <span class="item-quantity">Quantity: 1</span>
+            </div>
+            <span class="item-price">€4,295.00</span>
+          </div>
+
+          <div class="summary-item">
+            <div class="item-info">
+              <h4 class="item-title">Ultra-Fine Himalayan Cashmere Wrap</h4>
+              <span class="item-quantity">Quantity: 1</span>
+            </div>
+            <span class="item-price">€650.00</span>
+          </div>
+        </div>
+
+        <!-- Subtotal Section -->
+        <div class="subtotal-section">
+          <div class="subtotal-row">
+            <span class="subtotal-label">Merchandise</span>
+            <span class="subtotal-amount">€6,795.00</span>
+          </div>
+
+          <div class="subtotal-row">
+            <span class="subtotal-label">Shipping</span>
+            <span class="subtotal-amount">Complimentary</span>
+          </div>
+
+          <div class="subtotal-row">
+            <span class="subtotal-label">Estimated Taxes</span>
+            <span class="subtotal-amount">€679.50</span>
+          </div>
+        </div>
+
+        <!-- Total Section -->
+        <div class="total-row">
+          <span class="total-label">TOTAL</span>
+          <span class="total-amount">€7,474.50</span>
+        </div>
+
+        <!-- Checkout Button -->
+        <div class="mt-5">
+          <button class="btn btn-gold w-100 checkout-btn">PROCEED TO CHECKOUT</button>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="summary-footer">
+          <div class="info-item">
+            <i class="fas fa-shipping-fast"></i>
+            <span>Complimentary express shipping on all orders</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-box"></i>
+            <span>Signature gift packaging included</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-sync-alt"></i>
+            <span>30-day returns on all unused items</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-shield-alt"></i>
+            <span>Secure checkout with 256-bit encryption</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 & Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Initialize quantities and prices
+      const products = [
+        { name: 'Handcrafted Calfskin Leather Tote', price: 1850, quantity: 1 },
+        { name: 'Limited Edition Skeleton Timepiece', price: 4295, quantity: 1 },
+        { name: 'Ultra-Fine Himalayan Cashmere Wrap', price: 650, quantity: 1 }
+      ];
+
+      // Quantity control functionality
+      const increaseButtons = document.querySelectorAll('.increase-quantity');
+      const decreaseButtons = document.querySelectorAll('.decrease-quantity');
+      const quantityInputs = document.querySelectorAll('.quantity-input');
+      const itemQuantities = document.querySelectorAll('.item-quantity');
+      const itemPrices = document.querySelectorAll('.item-price');
+      const subtotalAmount = document.querySelector('.subtotal-amount');
+      const taxAmount = document.querySelectorAll('.subtotal-amount')[2];
+      const totalAmount = document.querySelector('.total-amount');
+      const cartCount = document.querySelector('.cart-count');
+
+      // Update summary and totals
+      function updateSummary() {
+        let subtotal = 0;
+        let totalItems = 0;
+
+        products.forEach((product, index) => {
+          // Update quantity display
+          quantityInputs[index].value = product.quantity;
+          itemQuantities[index].textContent = `Quantity: ${product.quantity}`;
+          totalItems += product.quantity;
+
+          // Update price display
+          const itemTotal = product.price * product.quantity;
+          itemPrices[index].textContent = `€${itemTotal.toFixed(2)}`;
+
+          subtotal += itemTotal;
+        });
+
+        // Update cart count
+        cartCount.textContent = totalItems;
+
+        // Add number-change animation class
+        subtotalAmount.classList.add('number-change');
+        taxAmount.classList.add('number-change');
+        totalAmount.classList.add('number-change');
+
+        // Update totals
+        subtotalAmount.textContent = `€${subtotal.toFixed(2)}`;
+        const tax = subtotal * 0.10;
+        taxAmount.textContent = `€${tax.toFixed(2)}`;
+        totalAmount.textContent = `€${(subtotal + tax).toFixed(2)}`;
+
+        // Remove animation class after animation completes
+        setTimeout(() => {
+          subtotalAmount.classList.remove('number-change');
+          taxAmount.classList.remove('number-change');
+          totalAmount.classList.remove('number-change');
+        }, 500);
+      }
+
+      // 3D card effect
+      const productCards = document.querySelectorAll('.product-card');
+
+      productCards.forEach(card => {
+        card.addEventListener('mousemove', function (e) {
+          const container = this.querySelector('.card-3d-container');
+          const rect = this.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          const xRotation = ((y - rect.height / 2) / rect.height) * 8;
+          const yRotation = ((x - rect.width / 2) / rect.width) * -8;
+
+          container.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg) translateZ(20px)`;
+        });
+
+        card.addEventListener('mouseleave', function () {
+          const container = this.querySelector('.card-3d-container');
+          container.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+        });
+      });
+
+      // Increase quantity
+      increaseButtons.forEach((button, index) => {
+        button.addEventListener('click', function () {
+          products[index].quantity++;
+          updateSummary();
+        });
+      });
+
+      // Decrease quantity
+      decreaseButtons.forEach((button, index) => {
+        button.addEventListener('click', function () {
+          if (products[index].quantity > 1) {
+            products[index].quantity--;
+            updateSummary();
+          }
+        });
+      });
+
+      // Add smooth parallax scrolling effect
+      window.addEventListener('scroll', function () {
+        const scrollPosition = window.scrollY;
+        const productImages = document.querySelectorAll('.product-image');
+
+        productImages.forEach(image => {
+          image.style.backgroundPosition = `center ${50 + scrollPosition * 0.05}%`;
+        });
+      });
+
+      // Add subtle hover effect for checkout button
+      const checkoutBtn = document.querySelector('.checkout-btn');
+
+      checkoutBtn.addEventListener('mouseover', function () {
+        this.style.letterSpacing = '3px';
+      });
+
+      checkoutBtn.addEventListener('mouseout', function () {
+        this.style.letterSpacing = '2px';
+      });
+
+      // Initialize the cart with default values
+      updateSummary();
+    });
+  </script>
+</body>
+
+</html>

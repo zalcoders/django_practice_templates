@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter Registration</title>
+    <!-- Bootstrap CSS from CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/google-fonts/1.0.0/roboto.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f43f5e;
+            --gradient-start: #6366f1;
+            --gradient-end: #8b5cf6;
+            --dark-text: #1e293b;
+            --light-text: #475569;
+            --bg-light: #f8fafc;
+            --border-light: #e2e8f0;
+        }
+
+        body {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark-text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 3rem 0;
+        }
+
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0;
+            background-color: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .form-left {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            padding: 3rem;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-left::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.6;
+        }
+
+        .form-right {
+            padding: 3rem;
+        }
+
+        .header {
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-title {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .form-subtitle {
+            font-weight: 400;
+            color: var(--light-text);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 14px 18px;
+            border: 1px solid var(--border-light);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s ease;
+            background-color: var(--bg-light);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            background-color: white;
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            color: var(--dark-text);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.15);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(99, 102, 241, 0.2);
+            background: linear-gradient(135deg, var(--primary-dark), var(--gradient-end));
+        }
+
+        .btn-primary:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-primary:hover:before {
+            left: 100%;
+        }
+
+        .interest-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .custom-checkbox {
+            background-color: var(--bg-light);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-light);
+            height: 100%;
+        }
+
+        .custom-checkbox:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .custom-checkbox input:checked+.checkbox-label {
+            background-color: rgba(99, 102, 241, 0.1);
+            border-color: var(--primary);
+        }
+
+        .checkbox-label {
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+            height: 100%;
+        }
+
+        .checkbox-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            border-radius: 6px;
+            margin-right: 10px;
+            border: 2px solid var(--border-light);
+            background-color: white;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .custom-checkbox input:checked+.checkbox-label .checkbox-icon {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .checkbox-icon:after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg) scale(0);
+            opacity: 0;
+            transition: all 0.2s ease;
+        }
+
+        .custom-checkbox input:checked+.checkbox-label .checkbox-icon:after {
+            opacity: 1;
+            transform: rotate(45deg) scale(1);
+        }
+
+        .checkbox-label i {
+            margin-right: 8px;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        /* Responsive adjustments for the interest grid */
+        @media (max-width: 575.98px) {
+            .interest-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .privacy-check {
+            background-color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-light);
+        }
+
+        .privacy-check .form-check-input {
+            width: 20px;
+            height: 20px;
+            margin-top: 0.2rem;
+            border-radius: 6px;
+            border: 2px solid var(--border-light);
+            background-color: white;
+        }
+
+        .privacy-check .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .privacy-check .form-check-label {
+            padding-left: 0.5rem;
+            color: var(--light-text);
+        }
+
+        .privacy-check a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .privacy-check a:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .privacy-check a:hover:after {
+            transform: scaleX(1);
+        }
+
+        .success-message {
+            display: none;
+            padding: 2rem;
+            background-color: #ecfdf5;
+            border-radius: 12px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-message i {
+            font-size: 3rem;
+            color: #10b981;
+            margin-bottom: 1rem;
+        }
+
+        .success-message h3 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #047857;
+        }
+
+        .success-message p {
+            color: #065f46;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--light-text);
+            margin-top: 2rem;
+            opacity: 0.8;
+        }
+
+        .newsletter-benefits {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2rem;
+        }
+
+        .newsletter-benefits li {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            color: white;
+            font-weight: 500;
+        }
+
+        .newsletter-benefits li i {
+            margin-right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .testimonial {
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            padding-left: 1.5rem;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial p {
+            font-style: italic;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .testimonial .author {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .testimonial .author img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 0.75rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 50px;
+            height: 50px;
+            top: 60%;
+            left: 15%;
+            animation-delay: 1s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 70px;
+            height: 70px;
+            top: 30%;
+            left: 85%;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 991.98px) {
+            .form-left {
+                padding: 2rem;
+            }
+
+            .form-right {
+                padding: 2rem;
+            }
+
+            .form-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .form-container {
+                border-radius: 20px;
+                margin: 0 1rem;
+            }
+
+            .form-left {
+                border-radius: 20px 20px 0 0;
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="row g-0">
+                <div class="col-lg-5">
+                    <div class="form-left">
+                        <div class="floating-elements">
+                            <div class="floating-element"></div>
+                            <div class="floating-element"></div>
+                            <div class="floating-element"></div>
+                        </div>
+
+                        <h2 class="mb-4 fw-bold">Why Join Our Newsletter?</h2>
+
+                        <ul class="newsletter-benefits">
+                            <li>
+                                <i class="fas fa-bolt"></i>
+                                Exclusive early access to new content
+                            </li>
+                            <li>
+                                <i class="fas fa-gift"></i>
+                                Special offers and subscriber-only discounts
+                            </li>
+                            <li>
+                                <i class="fas fa-chart-line"></i>
+                                Cutting-edge industry insights
+                            </li>
+                            <li>
+                                <i class="fas fa-calendar-alt"></i>
+                                Priority registration for events
+                            </li>
+                        </ul>
+
+                        <div class="testimonial">
+                            <p>"This newsletter has been a game-changer for my business. The insights are invaluable!"
+                            </p>
+                            <div class="author">
+                                <img src="/api/placeholder/50/50" alt="Avatar">
+                                <span>Sarah Johnson</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="form-right">
+                        <div class="header">
+                            <h1 class="form-title">Join Our Community</h1>
+                            <p class="form-subtitle">Stay ahead of the curve with personalized insights and updates
+                                delivered straight to your inbox.</p>
+                        </div>
+
+                        <form id="newsletter-form">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="firstName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="firstName"
+                                            placeholder="Your first name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="lastName" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="lastName"
+                                            placeholder="Your last name" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" placeholder="your.email@example.com"
+                                    required>
+                            </div>
+
+                            <label class="form-label">What topics interest you?</label>
+                            <div class="interest-grid">
+                                <div class="custom-checkbox">
+                                    <input type="checkbox" id="technology" value="technology">
+                                    <label class="checkbox-label" for="technology">
+                                        <div class="checkbox-icon"></div>
+                                        <div>
+                                            <i class="fas fa-microchip"></i>
+                                            Technology
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="custom-checkbox">
+                                    <input type="checkbox" id="business" value="business">
+                                    <label class="checkbox-label" for="business">
+                                        <div class="checkbox-icon"></div>
+                                        <div>
+                                            <i class="fas fa-briefcase"></i>
+                                            Business
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="custom-checkbox">
+                                    <input type="checkbox" id="lifestyle" value="lifestyle">
+                                    <label class="checkbox-label" for="lifestyle">
+                                        <div class="checkbox-icon"></div>
+                                        <div>
+                                            <i class="fas fa-spa"></i>
+                                            Lifestyle
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="custom-checkbox">
+                                    <input type="checkbox" id="arts" value="arts">
+                                    <label class="checkbox-label" for="arts">
+                                        <div class="checkbox-icon"></div>
+                                        <div>
+                                            <i class="fas fa-palette"></i>
+                                            Arts
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="privacy-check">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="privacyPolicy" required>
+                                    <label class="form-check-label" for="privacyPolicy">
+                                        I agree to the <a href="#">Privacy Policy</a> and consent to receive emails.
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    Subscribe Now
+                                </button>
+                            </div>
+
+                            <div id="success-message" class="success-message mt-4">
+                                <i class="fas fa-check-circle"></i>
+                                <h3>Thank You for Subscribing!</h3>
+                                <p>Check your inbox soon for exclusive content and special offers.</p>
+                            </div>
+
+                            <div class="footer">
+                                <p>We respect your privacy and will never share your information.</p>
+                                <p>&copy; 2025 Your Company. All rights reserved.</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Form submission script -->
+    <script>
+        document.getElementById('newsletter-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Here you would typically send the form data to your server
+            // For demonstration, we'll just show the success message
+            document.getElementById('success-message').style.display = 'block';
+
+            // Scroll to success message
+            document.getElementById('success-message').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+
+</html>

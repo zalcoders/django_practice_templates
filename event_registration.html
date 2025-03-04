@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #f8fafc;
+            --accent-color: #8b5cf6;
+            --text-color: #1e293b;
+            --light-text: #94a3b8;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        .hero-section {
+            background: linear-gradient(125deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            padding: 7rem 0 12rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            filter: blur(5px);
+            z-index: 0;
+        }
+
+        .floating-1 {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            left: -100px;
+        }
+
+        .floating-2 {
+            width: 200px;
+            height: 200px;
+            bottom: -50px;
+            right: 10%;
+        }
+
+        .floating-3 {
+            width: 150px;
+            height: 150px;
+            top: 20%;
+            right: -50px;
+        }
+
+        .main-container {
+            margin-top: -6rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card {
+            border: none;
+            border-radius: 1.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 1.5rem 1.5rem 0 0 !important;
+            padding: 2rem;
+        }
+
+        .form-control,
+        .form-select {
+            padding: 0.8rem 1.2rem;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.15);
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            border: none;
+            padding: 0.9rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--accent-color), var(--primary-color));
+            transition: all 0.4s ease-out;
+            z-index: -1;
+        }
+
+        .btn-primary:hover::before {
+            left: 0;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-icon::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            border-radius: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature:hover .feature-icon {
+            color: white;
+        }
+
+        .feature:hover .feature-icon::after {
+            opacity: 1;
+        }
+
+        .feature {
+            padding: 2.5rem;
+            background-color: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            height: 100%;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .feature::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+            transition: height 0.5s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature:hover::before {
+            height: 100%;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin: 2.5rem 0;
+        }
+
+        .countdown-item {
+            width: 6rem;
+            height: 6rem;
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .countdown-item::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+            top: -50%;
+            left: -50%;
+            transform: rotate(35deg);
+        }
+
+        .countdown-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+        }
+
+        .countdown-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        .text-primary-gradient {
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .ticket-type {
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ticket-type::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .ticket-type:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            border-color: transparent;
+        }
+
+        .ticket-type:hover::before {
+            opacity: 1;
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: 0.75rem;
+            font-weight: 500;
+            padding: 0.8rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .contact-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-radius: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            margin-right: 1rem;
+        }
+
+        .social-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: white;
+            border-radius: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .social-icon:hover {
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .custom-shape-divider {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+
+        .custom-shape-divider svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 70px;
+        }
+
+        .custom-shape-divider .shape-fill {
+            fill: #FFFFFF;
+        }
+
+        .footer {
+            background-color: #f1f5f9;
+            padding: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%236366f1' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 1;
+        }
+
+        /* Animation for conditional fields */
+        .conditional-field {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, opacity 0.3s ease-out, margin 0.3s ease-out, padding 0.3s ease-out;
+            opacity: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .conditional-field.active {
+            max-height: 2000px;
+            /* Set this to a value that will accommodate your largest possible content */
+            opacity: 1;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 767.98px) {
+            .hero-section {
+                padding: 5rem 0 8rem;
+            }
+
+            .countdown-item {
+                width: 4.5rem;
+                height: 4.5rem;
+            }
+
+            .countdown-value {
+                font-size: 1.75rem;
+            }
+
+            .countdown-label {
+                font-size: 0.7rem;
+            }
+
+            .card-header,
+            .feature {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="floating-element floating-1"></div>
+        <div class="floating-element floating-2"></div>
+        <div class="floating-element floating-3"></div>
+
+        <div class="container text-center position-relative">
+            <span class="badge bg-white text-primary-gradient px-3 py-2 mb-3 rounded-pill">March 15-17, 2025</span>
+            <h1 class="display-4 fw-bold mb-3">INNOVATION<span class="text-opacity-75">SUMMIT</span> 2025</h1>
+            <p class="lead mb-4 opacity-90">Join the most anticipated tech gathering of the year</p>
+            <p class="mb-2">Tech Convention Center • San Francisco • 2,500+ Attendees</p>
+
+            <!-- Countdown Timer -->
+            <div class="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-value" id="days">18</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="hours">12</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="minutes">45</div>
+                    <div class="countdown-label">Mins</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="seconds">30</div>
+                    <div class="countdown-label">Secs</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="custom-shape-divider">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
+                preserveAspectRatio="none">
+                <path
+                    d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+                    class="shape-fill"></path>
+            </svg>
+        </div>
+    </section>
+
+    <div class="container main-container mb-5">
+        <div class="row g-4">
+            <!-- Registration Form -->
+            <div class="col-lg-7">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="mb-1 text-primary-gradient">Secure Your Spot</h3>
+                        <p class="text-muted mb-0">Complete the form below to register for the event</p>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="registrationForm">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label for="firstName" class="form-label">First Name*</label>
+                                    <input type="text" class="form-control" id="firstName" placeholder="John" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lastName" class="form-label">Last Name*</label>
+                                    <input type="text" class="form-control" id="lastName" placeholder="Doe" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email Address*</label>
+                                    <input type="email" class="form-control" id="email"
+                                        placeholder="john.doe@example.com" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" placeholder="+1 (555) 123-4567">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="company" class="form-label">Company/Organization</label>
+                                    <input type="text" class="form-control" id="company"
+                                        placeholder="Tech Company Inc.">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="jobTitle" class="form-label">Job Title</label>
+                                    <input type="text" class="form-control" id="jobTitle"
+                                        placeholder="Software Engineer">
+                                </div>
+
+                                <!-- New Conditional Input 1: Country/Location -->
+                                <div class="col-md-6">
+                                    <label for="attendeeLocation" class="form-label">Where are you attending
+                                        from?*</label>
+                                    <select class="form-select" id="attendeeLocation" required>
+                                        <option value="" selected disabled>Select your location</option>
+                                        <option value="local">Within the USA</option>
+                                        <option value="international">International</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="attendeeType" class="form-label">Attendee Type*</label>
+                                    <select class="form-select" id="attendeeType" required>
+                                        <option value="" selected disabled>Select attendee type</option>
+                                        <option value="individual">Individual</option>
+                                        <option value="group">Group (3+ attendees)</option>
+                                        <option value="sponsor">Sponsor/Exhibitor</option>
+                                        <option value="speaker">Speaker/Presenter</option>
+                                        <option value="press">Press/Media</option>
+                                    </select>
+                                </div>
+
+                                <!-- Conditional field for International attendees -->
+                                <div id="internationalFields" class="col-12 conditional-field">
+                                    <div class="card border p-3 bg-light">
+                                        <h5 class="mb-3">International Attendee Information</h5>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label for="country" class="form-label">Country*</label>
+                                                <select class="form-select" id="country">
+                                                    <option value="" selected disabled>Select your country</option>
+                                                    <option value="ca">Canada</option>
+                                                    <option value="uk">United Kingdom</option>
+                                                    <option value="au">Australia</option>
+                                                    <option value="de">Germany</option>
+                                                    <option value="fr">France</option>
+                                                    <option value="jp">Japan</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="passport" class="form-label">Passport Number</label>
+                                                <input type="text" class="form-control" id="passport"
+                                                    placeholder="For visa assistance purposes">
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="visaAssistance">
+                                                    <label class="form-check-label" for="visaAssistance">
+                                                        I need assistance with visa documentation
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Conditional field for Group Registration -->
+                                <div id="groupRegistrationFields" class="col-12 conditional-field">
+                                    <div class="card border p-3 bg-light">
+                                        <h5 class="mb-3">Group Registration Details</h5>
+                                        <p class="text-muted small mb-3">Please provide details about additional
+                                            attendees in your group.</p>
+                                        <div id="additionalAttendeesContainer">
+                                            <div class="additional-attendee mb-3 p-3 border rounded">
+                                                <div class="row g-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Name*</label>
+                                                        <input type="text" class="form-control" placeholder="Full Name">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Email*</label>
+                                                        <input type="email" class="form-control"
+                                                            placeholder="email@example.com">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary mt-2"
+                                            id="addAttendeeBtn">
+                                            <i class="fas fa-plus me-1"></i>Add Another Attendee
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Conditional field for Speaker/Presenter -->
+                                <div id="speakerFields" class="col-12 conditional-field">
+                                    <div class="card border p-3 bg-light">
+                                        <h5 class="mb-3">Speaker Information</h5>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label for="presentationTitle" class="form-label">Presentation
+                                                    Title*</label>
+                                                <input type="text" class="form-control" id="presentationTitle"
+                                                    placeholder="Your session title">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="sessionTrack" class="form-label">Session Track*</label>
+                                                <select class="form-select" id="sessionTrack">
+                                                    <option value="" selected disabled>Select a track</option>
+                                                    <option value="ai">AI & Machine Learning</option>
+                                                    <option value="cloud">Cloud Computing</option>
+                                                    <option value="security">Cybersecurity</option>
+                                                    <option value="data">Data Science</option>
+                                                    <option value="blockchain">Blockchain</option>
+                                                    <option value="iot">IoT</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="presentationAbstract"
+                                                    class="form-label">Abstract/Summary*</label>
+                                                <textarea class="form-control" id="presentationAbstract" rows="3"
+                                                    placeholder="A brief summary of your presentation"></textarea>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="slidesReady">
+                                                    <label class="form-check-label" for="slidesReady">
+                                                        My presentation materials are ready for submission
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Original ticket selection -->
+                                <div class="col-12">
+                                    <label class="form-label">Select Your Ticket</label>
+                                    <div class="ticket-type">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="ticketType"
+                                                id="standardTicket" checked>
+                                            <label
+                                                class="form-check-label d-flex justify-content-between align-items-center"
+                                                for="standardTicket">
+                                                <div>
+                                                    <span class="d-block fw-bold">Standard Pass</span>
+                                                    <small class="text-muted">Access to all keynotes, general sessions,
+                                                        and expo</small>
+                                                </div>
+                                                <span class="badge bg-light text-primary-gradient px-3 py-2">$499</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="ticket-type">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="ticketType"
+                                                id="premiumTicket">
+                                            <label
+                                                class="form-check-label d-flex justify-content-between align-items-center"
+                                                for="premiumTicket">
+                                                <div>
+                                                    <span class="d-block fw-bold">Premium Pass</span>
+                                                    <small class="text-muted">Standard benefits plus workshop access and
+                                                        exclusive networking</small>
+                                                </div>
+                                                <span class="badge bg-light text-primary-gradient px-3 py-2">$799</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="ticket-type">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="ticketType"
+                                                id="vipTicket">
+                                            <label
+                                                class="form-check-label d-flex justify-content-between align-items-center"
+                                                for="vipTicket">
+                                                <div>
+                                                    <span class="d-block fw-bold">VIP Experience</span>
+                                                    <small class="text-muted">All premium benefits plus VIP lounge,
+                                                        speaker dinner, and more</small>
+                                                </div>
+                                                <span
+                                                    class="badge bg-light text-primary-gradient px-3 py-2">$1,299</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="workshops" class="form-label">Workshop Selection (Optional)</label>
+                                    <select class="form-select" id="workshops">
+                                        <option value="" selected disabled>Select a workshop</option>
+                                        <option value="w1">AI & Machine Learning Fundamentals</option>
+                                        <option value="w2">Blockchain Development</option>
+                                        <option value="w3">UX Design Masterclass</option>
+                                        <option value="w4">Cloud Architecture</option>
+                                    </select>
+                                </div>
+
+                                <!-- Accommodation Needs Checkbox (New Conditional Input) -->
+                                <div class="col-12 mt-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="needsAccommodation">
+                                        <label class="form-check-label" for="needsAccommodation">
+                                            I need help with accommodation
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Conditional field for Accommodation -->
+                                <div id="accommodationFields" class="col-12 conditional-field">
+                                    <div class="card border p-3 bg-light">
+                                        <h5 class="mb-3">Accommodation Preferences</h5>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label for="checkInDate" class="form-label">Check-in Date</label>
+                                                <input type="date" class="form-control" id="checkInDate">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="checkOutDate" class="form-label">Check-out Date</label>
+                                                <input type="date" class="form-control" id="checkOutDate">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="roomType" class="form-label">Room Type</label>
+                                                <select class="form-select" id="roomType">
+                                                    <option value="single">Single</option>
+                                                    <option value="double">Double</option>
+                                                    <option value="suite">Suite</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="hotelPreference" class="form-label">Hotel Preference</label>
+                                                <select class="form-select" id="hotelPreference">
+                                                    <option value="event">Event Hotel (Tech Plaza)</option>
+                                                    <option value="nearby">Nearby Hotels</option>
+                                                    <option value="budget">Budget Options</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="shareRoom">
+                                                    <label class="form-check-label" for="shareRoom">
+                                                        I'm open to room sharing to reduce costs
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Original dietary needs conditional field -->
+                                <div class="col-12 mt-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="dietaryNeeds">
+                                        <label class="form-check-label" for="dietaryNeeds">
+                                            I have special dietary requirements
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div id="dietaryFields" class="col-12 conditional-field">
+                                    <div class="card border p-3 bg-light">
+                                        <h5 class="mb-3">Dietary Preferences</h5>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label for="dietaryType" class="form-label">Dietary Type</label>
+                                                <select class="form-select" id="dietaryType">
+                                                    <option value="" selected disabled>Select preference</option>
+                                                    <option value="vegetarian">Vegetarian</option>
+                                                    <option value="vegan">Vegan</option>
+                                                    <option value="glutenFree">Gluten-Free</option>
+                                                    <option value="dairyFree">Dairy-Free</option>
+                                                    <option value="kosher">Kosher</option>
+                                                    <option value="halal">Halal</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="allergyInfo" class="form-label">Allergies</label>
+                                                <input type="text" class="form-control" id="allergyInfo"
+                                                    placeholder="List any allergies">
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="dietaryDetails" class="form-label">Additional
+                                                    Details</label>
+                                                <textarea class="form-control" id="dietaryDetails" rows="2"
+                                                    placeholder="Please specify any additional dietary requirements"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                        <label class="form-check-label" for="termsCheck">
+                                            I agree to the <a href="#" class="text-primary-gradient">terms and
+                                                conditions</a>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-ticket-alt me-2"></i>Complete Registration
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Information -->
+            <div class="col-lg-5">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-map-marker-alt fa-lg"></i>
+                            </div>
+                            <h4>Event Details</h4>
+                            <ul class="list-unstyled mb-0">
+                                <li class="d-flex align-items-center mb-4">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div>
+                                        <strong class="d-block mb-1">Venue</strong>
+                                        Tech Convention Center<br>
+                                        123 Innovation Blvd, San Francisco, CA
+                                    </div>
+                                </li>
+                                <li class="d-flex align-items-center mb-4">
+                                    <div class="contact-icon">
+                                        <i class="far fa-calendar-alt"></i>
+                                    </div>
+                                    <div>
+                                        <strong class="d-block mb-1">Dates & Time</strong>
+                                        March 15-17, 2025<br>
+                                        9:00 AM - 6:00 PM Daily
+                                    </div>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div>
+                                        <strong class="d-block mb-1">Attendees</strong>
+                                        2,500+ technology professionals from<br>
+                                        over 50 countries
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-star fa-lg"></i>
+                            </div>
+                            <h4>Event Highlights</h4>
+                            <div class="row g-3 mt-2">
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-primary me-2"></i>
+                                        <span>50+ Speakers</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-primary me-2"></i>
+                                        <span>Networking</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-primary me-2"></i>
+                                        <span>Tech Expo</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-primary me-2"></i>
+                                        <span>Workshops</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-primary me-2"></i>
+                                        <span>Panel Discussions</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-check-circle text-primary me-2"></i>
+                                        <span>Product Launches</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-question-circle fa-lg"></i>
+                            </div>
+                            <h4>Need Assistance?</h4>
+                            <p class="mb-4">Have questions about registration or the event? Our support team is here to
+                                help.</p>
+                            <div class="d-grid">
+                                <a href="#" class="btn btn-outline-primary">
+                                    <i class="fas fa-headset me-2"></i>Contact Support
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Partner Logos -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <h3 class="text-center mb-5 text-primary-gradient">Our Partners</h3>
+            <div class="row justify-content-center align-items-center g-5">
+                <div class="col-4 col-md-2 text-center">
+                    <div class="p-3 rounded-3 bg-light">
+                        <i class="fas fa-laptop fa-2x text-primary opacity-75"></i>
+                        <p class="small fw-bold mt-2 mb-0">TechCorp</p>
+                    </div>
+                </div>
+                <div class="col-4 col-md-2 text-center">
+                    <div class="p-3 rounded-3 bg-light">
+                        <i class="fas fa-cloud fa-2x text-primary opacity-75"></i>
+                        <p class="small fw-bold mt-2 mb-0">CloudSys</p>
+                    </div>
+                </div>
+                <div class="col-4 col-md-2 text-center">
+                    <div class="p-3 rounded-3 bg-light">
+                        <i class="fas fa-code fa-2x text-primary opacity-75"></i>
+                        <p class="small fw-bold mt-2 mb-0">DevHub</p>
+                    </div>
+                </div>
+                <div class="col-4 col-md-2 text-center">
+                    <div class="p-3 rounded-3 bg-light">
+                        <i class="fas fa-robot fa-2x text-primary opacity-75"></i>
+                        <p class="small fw-bold mt-2 mb-0">AI Labs</p>
+                    </div>
+                </div>
+                <div class="col-4 col-md-2 text-center">
+                    <div class="p-3 rounded-3 bg-light">
+                        <i class="fas fa-shield-alt fa-2x text-primary opacity-75"></i>
+                        <p class="small fw-bold mt-2 mb-0">SecureNet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container position-relative">
+            <div class="row gy-5">
+                <div class="col-lg-5">
+                    <h2 class="text-primary-gradient mb-4">INNOVATION<span class="text-opacity-50">SUMMIT</span></h2>
+                    <p class="mb-4">Join the most anticipated tech gathering of the year with industry leaders,
+                        innovators, and visionaries from around the globe.</p>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 offset-lg-1">
+                    <h5 class="mb-4">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted"><i
+                                    class="fas fa-chevron-right small me-2"></i>About the Event</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted"><i
+                                    class="fas fa-chevron-right small me-2"></i>Speakers</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted"><i
+                                    class="fas fa-chevron-right small me-2"></i>Schedule</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted"><i
+                                    class="fas fa-chevron-right small me-2"></i>Venue Information</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted"><i
+                                    class="fas fa-chevron-right small me-2"></i>FAQs</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h5 class="mb-4">Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2 d-flex">
+                            <i class="fas fa-envelope me-3 text-primary"></i>
+                            <span>info@innovationsummit.com</span>
+                        </li>
+                        <li class="mb-2 d-flex">
+                            <i class="fas fa-phone me-3 text-primary"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li class="d-flex">
+                            <i class="fas fa-map-marker-alt me-3 text-primary"></i>
+                            <span>123 Innovation Blvd,<br>San Francisco, CA 94103</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="border-top pt-4">
+                        <p class="text-center text-muted mb-0">© 2025 Innovation Summit. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Show/hide dietary requirements fields
+        document.getElementById('dietaryNeeds').addEventListener('change', function () {
+            const dietaryFields = document.getElementById('dietaryFields');
+            dietaryFields.classList.toggle('active', this.checked);
+        });
+
+        // Show/hide accommodation fields
+        document.getElementById('needsAccommodation').addEventListener('change', function () {
+            const accommodationFields = document.getElementById('accommodationFields');
+            accommodationFields.classList.toggle('active', this.checked);
+        });
+
+        // Show/hide international attendee fields
+        document.getElementById('attendeeLocation').addEventListener('change', function () {
+            const internationalFields = document.getElementById('internationalFields');
+            internationalFields.classList.toggle('active', this.value === 'international');
+        });
+
+        // Show/hide attendee type specific fields
+        document.getElementById('attendeeType').addEventListener('change', function () {
+            const groupRegistrationFields = document.getElementById('groupRegistrationFields');
+            const speakerFields = document.getElementById('speakerFields');
+
+            // Hide all first
+            groupRegistrationFields.classList.remove('active');
+            speakerFields.classList.remove('active');
+
+            // Show based on selection
+            if (this.value === 'group') {
+                groupRegistrationFields.classList.add('active');
+            } else if (this.value === 'speaker') {
+                speakerFields.classList.add('active');
+            }
+        });
+
+        // Add more attendees for group registration
+        document.getElementById('addAttendeeBtn').addEventListener('click', function () {
+            const container = document.getElementById('additionalAttendeesContainer');
+            const attendeeTemplate = document.querySelector('.additional-attendee').cloneNode(true);
+
+            // Clear the input values
+            attendeeTemplate.querySelectorAll('input').forEach(input => {
+                input.value = '';
+            });
+
+            // Add a remove button
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'btn btn-sm btn-outline-danger mt-2';
+            removeBtn.innerHTML = '<i class="fas fa-times me-1"></i>Remove';
+            removeBtn.addEventListener('click', function () {
+                container.removeChild(attendeeTemplate);
+            });
+
+            attendeeTemplate.appendChild(removeBtn);
+            container.appendChild(attendeeTemplate);
+        });
+
+        // Countdown timer
+        function updateCountdown() {
+            // Set the date we're counting down to (March 15, 2025)
+            const countDownDate = new Date("Mar 15, 2025 09:00:00").getTime();
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            // Time calculations
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the results
+            document.getElementById("days").innerHTML = days;
+            document.getElementById("hours").innerHTML = hours;
+            document.getElementById("minutes").innerHTML = minutes;
+            document.getElementById("seconds").innerHTML = seconds;
+        }
+
+        // Update the countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Animate ticket selection
+        document.querySelectorAll('.ticket-type').forEach(ticket => {
+            ticket.addEventListener('click', function () {
+                this.querySelector('input[type="radio"]').checked = true;
+                document.querySelectorAll('.ticket-type').forEach(t => {
+                    t.style.transform = 'scale(1)';
+                    t.style.borderColor = '#e2e8f0';
+                });
+                this.style.transform = 'scale(1.02)';
+                this.style.borderColor = '#6366f1';
+            });
+        });
+
+        // Form validation with proper error handling
+        document.getElementById('registrationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Basic validation
+            let isValid = true;
+            const requiredFields = this.querySelectorAll('[required]');
+
+            requiredFields.forEach(field => {
+                if (!field.value) {
+                    isValid = false;
+                    field.classList.add('is-invalid');
+
+                    // Create error message if it doesn't exist
+                    let errorElement = field.nextElementSibling;
+                    if (!errorElement || !errorElement.classList.contains('invalid-feedback')) {
+                        errorElement = document.createElement('div');
+                        errorElement.className = 'invalid-feedback';
+                        errorElement.innerText = 'This field is required';
+                        field.parentNode.insertBefore(errorElement, field.nextSibling);
+                    }
+                } else {
+                    field.classList.remove('is-invalid');
+                    const errorElement = field.nextElementSibling;
+                    if (errorElement && errorElement.classList.contains('invalid-feedback')) {
+                        errorElement.remove();
+                    }
+                }
+            });
+
+            // If form is valid, show success message
+            if (isValid) {
+                // Simulate form submission
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+
+                setTimeout(() => {
+                    // Show success alert
+                    const successAlert = document.createElement('div');
+                    successAlert.className = 'alert alert-success mt-3 animate__animated animate__fadeIn';
+                    successAlert.innerHTML = '<i class="fas fa-check-circle me-2"></i>Registration successful! We\'ve sent a confirmation email with further details.';
+
+                    this.appendChild(successAlert);
+
+                    // Reset button
+                    submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Registered';
+
+                    // Scroll to alert
+                    successAlert.scrollIntoView({ behavior: 'smooth' });
+
+                    // Reset form after 3 seconds
+                    setTimeout(() => {
+                        this.reset();
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                        successAlert.remove();
+
+                        // Hide all conditional fields
+                        document.querySelectorAll('.conditional-field').forEach(field => {
+                            field.classList.remove('active');
+                        });
+                    }, 5000);
+
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+
+</html>
